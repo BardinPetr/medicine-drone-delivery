@@ -1,0 +1,52 @@
+@startuml
+actor "Hospital" as H
+actor "Warehouse\n   Worker" as W
+actor "Drone" as D
+actor "Admin" as A
+actor "System" as S
+
+rectangle System {
+    usecase (Create request) as CR
+    H --> CR
+    CR <.. (Create via SMS) : <<extend>>
+    CR <.. (Create via web) : <<extend>>
+
+
+    usecase (Execute request) as EXEC
+    usecase (Start delivery) as DEL
+    usecase (Assign drone) as ASS
+
+    S --> (Get request\nfrom user)
+    (Get request\nfrom user) <.. (Store request) : <<include>>
+
+    S --> EXEC
+    EXEC <.. (Create warehouse task) : <<include>>
+    (Create warehouse task) <.. (Choose warehouse) : <<include>>
+    EXEC <.. ASS : <<include>>
+
+    DEL <.. (Send plan to drone) : <<include>>
+    DEL <.. (Create flight plan) : <<include>>
+    (Create flight plan) <.. (Create timetable) : <<include>>
+
+
+
+    ASS <.. DEL : <<include>>
+
+    W --> (Get request\nlist)
+    W --> (Collect delivery)
+    W --> (Send with drone)
+    (Send with drone) <.. (Mark task done) : <<include>>
+
+    usecase (Delivery) as DELIV
+    D --> DELIV
+    DELIV <.. (Do Delivery) : <<include>>
+    (Do Delivery) <.. (Get task) : <<include>
+
+
+    A --> (Analyze drone\nmap)
+    A --> (Configure drone\nfleet)
+    A --> (Manage\nwarehouse supply)
+    A --> (Manage requests)
+}
+
+@enduml

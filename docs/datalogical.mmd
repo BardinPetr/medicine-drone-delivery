@@ -1,0 +1,106 @@
+erDiagram
+  Drone {
+    int id PK
+    int model_id FK
+    int status_id FK 
+    point location
+    int flight_task_id FK
+  }
+  TypeOfDrone {
+    int id PK
+    varchar name
+    float max_weight
+  }
+  DroneStatus {
+    int id PK
+    varchar name
+  }
+
+
+  ProductType {
+    int id PK
+    varchar type
+    float piece_weight
+  }
+  Warehouse {
+    int id PK
+    varchar name
+    point location
+  }
+  WarehouseProducts {
+    int type_id PK,FK
+    int warehouse_id PK,FK
+    int quantity
+    int reserved_quantity
+  }
+
+  TaskStatus {
+    int id PK
+    varchar name
+  }
+  Request {
+    int id PK
+    int user_id FK
+    int task_status_id FK
+    int medical_facility_id FK    
+  }
+  RequestEntry {
+    int id PK
+    int request_id FK
+    int product_type_id FK
+    int quantity 
+  }
+  FlightTask {
+    int id PK
+    int request_id FK
+    int task_status_id FK
+    int product_type_id FK
+    int warehouse_id FK
+    int medical_facility_id FK
+    int quantity 
+  }
+  RoutePoint {
+    int point_number PK
+    int flight_task_id PK,FK
+    point location
+  }
+
+  MedicalFacility {
+    int id PK
+    varchar name
+    int responsible_user_id FK
+    point location
+  }
+
+  User {
+    int id PK
+    varchar name
+    varchar role
+    varchar login
+    varchar password_hash
+  }
+
+  NoFlightZone {
+    int id PK
+    float radius
+    point center
+  }
+
+  Drone }o..|| TypeOfDrone : "is of model"
+  Drone }o..|| DroneStatus : "has status"
+  Drone |o..o| FlightTask : "has task"
+  WarehouseProducts }o..|| ProductType : "product of type"
+  WarehouseProducts }o..|| Warehouse : "product in warehouse"
+  Request }|..|| User : "submitted by"
+  Request }|..|| TaskStatus : "has status"
+  Request }|..|| TaskStatus : "has status"
+
+  RequestEntry }|..|| Request : "contains"
+  RequestEntry }o..|| ProductType : "has product of type"
+  FlightTask }|..|| Request : "for request"
+  FlightTask }|..|| TaskStatus : "has status"
+  FlightTask }|..|| ProductType : "carries product of type"
+  FlightTask }o..|| Warehouse : "from warehouse"
+  FlightTask }o..|| MedicalFacility : "to facility"
+  RoutePoint }|..|| FlightTask : "has route of points"
+  MedicalFacility o|..|| User : "has responsible person"

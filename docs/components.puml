@@ -1,0 +1,91 @@
+@startuml
+
+interface "IOrderContentInput" as IOCI
+interface "IOrderInput" as IWOI
+interface "IDroneControl" as ICDC
+
+component "Drone control" {
+    portin inOrder
+    IWOI ..> inOrder
+
+    portin "HTTP" as ICC
+    ICDC ..> ICC
+
+    database "Drones" as DBD
+    database "Map" as DBM
+
+    component "Flight planner" as CFP
+    DBD -> CFP
+    DBM -> CFP
+
+    component "Drone Controller" as CDC
+    DBD <-> CDC
+    CFP --> CDC
+    ICC --> CDC
+
+    component "Drone Assigner" as CDA
+    inOrder --> CDA
+    CDA --> CFP
+    DBD --> CDA
+
+'    in1 ..>
+}
+
+
+component "Warehouse Control" {
+    portout outOrder
+    outOrder ..> IWOI
+
+    portin itemsIn
+    IOCI ..> itemsIn
+
+    database "Warehouses" as DBW
+    component "Warehouse Content Control" as WCC
+    component "Warehouse Planner" as WWP
+
+    DBW <--> WCC
+    DBW --> WWP
+    itemsIn --> WWP
+    WWP --> outOrder
+}
+
+
+interface "PlaceOrder over WEB" as IPOW
+interface "PlaceOrder over SMS" as IPOS
+component "Order control" {
+    portout itemsOut
+    itemsOut ..> IOCI
+
+    database "Orders" as DBO
+
+    component "Orders control" as OOC
+    DBO <--> OOC
+
+    component "Order reception" as OOR
+    IPOW --> OOR
+    IPOS --> OOR
+    OOR -> DBO
+
+    OOC --> itemsOut
+}
+
+component "Drone" {
+    portout "HTTP" as IDC
+    IDC ..> ICDC
+
+    component "Flight controller" as DFC
+    component "Communication adapter" as DCA
+
+    interface "Mavlink" as IDML
+
+    DCA <--> IDML
+    DFC <--> IDML
+    DFC --> IDC
+}
+
+
+
+
+
+
+@enduml

@@ -1,0 +1,151 @@
+@startchen
+  entity Drone {
+    id <<key>>
+    model_id
+    status_id
+    location
+    flight_task_id
+  }
+  entity TypeOfDrone {
+    id <<key>>
+    name
+    max_weight
+  }
+  entity DroneStatus {
+    id <<key>>
+    name
+  }
+
+  entity ProductType {
+    id <<key>>
+    type
+    piece_weight
+  }
+  entity Warehouse {
+    id <<key>>
+    name
+    location
+  }
+
+  entity TaskStatus {
+    id <<key>>
+    name
+  }
+  entity Request {
+    id <<key>>
+    user_id
+    task_status_id
+    medical_facility_id
+  }
+  entity FlightTask {
+    id <<key>>
+    request_id
+    task_status_id
+    product_type_id
+    warehouse_id
+    medical_facility_id
+    quantity
+  }
+  entity RoutePoint {
+    point_number <<key>>
+    flight_task_id <<key>>
+    location
+  }
+
+  entity MedicalFacility {
+    id <<key>>
+    name
+    responsible_user_id
+    location
+  }
+
+  entity User {
+    id <<key>>
+    name
+    role
+    login
+    password_hash
+  }
+
+  entity NoFlightZone {
+    id <<key>>
+    radius
+    center
+  }
+
+  relationship ProductInWarehouse {
+    quantity
+  }
+  ProductInWarehouse -N- ProductType
+  ProductInWarehouse -N- Warehouse
+
+  relationship ProductInRequest {
+    quantity
+  }
+  ProductInRequest -N- ProductType
+  ProductInRequest -N- Request
+
+  relationship is_of_model {
+  }
+    is_of_model -1- Drone
+    is_of_model -(0, N)- TypeOfDrone
+
+  relationship has_status {
+  }
+    has_status -1- Drone
+    has_status -(0, M)- DroneStatus
+
+  relationship has_task {
+  }
+    has_task -(0, 1)- Drone
+    has_task -(0, 1)- FlightTask
+
+  relationship submitted_by {
+  }
+    submitted_by -(1, N)- Request
+    submitted_by -1- User
+
+  relationship has_status {
+  }
+    has_status -(1, N)- Request
+    has_status -1- TaskStatus
+
+
+  relationship for_request {
+  }
+    for_request -(1, N)- FlightTask
+    for_request -1- Request
+
+  relationship has_status {
+  }
+    has_status -(1, N)- FlightTask
+    has_status -1- TaskStatus
+
+  relationship carries_product_of_type {
+  }
+    carries_product_of_type -(1, N)- FlightTask
+    carries_product_of_type -1- ProductType
+
+  relationship from_warehouse {
+  }
+    from_warehouse -(0, N)- FlightTask
+    from_warehouse -1- Warehouse
+
+  relationship to_facility {
+  }
+    to_facility -(0, N)- FlightTask
+    to_facility -1- MedicalFacility
+
+  relationship has_route_of_points {
+  }
+    has_route_of_points -(1, N)- RoutePoint
+    has_route_of_points -1- FlightTask
+
+  relationship has_responsible_person {
+  }
+    has_responsible_person -(0, 1)- MedicalFacility
+    has_responsible_person -1- User
+
+@endchen
+
+@endchen
