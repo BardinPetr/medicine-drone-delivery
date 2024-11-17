@@ -10,8 +10,8 @@ data class MedicalFacility(
     val name: String,
 
     @ManyToOne
-    @JoinColumn(name = "responsible_user_id", nullable = true)
-    val responsibleUser: User? = null,
+    @JoinColumn(name = "responsible_user_id", nullable = false)
+    val responsibleUser: User,
 
     @Embedded
     val location: Point,
