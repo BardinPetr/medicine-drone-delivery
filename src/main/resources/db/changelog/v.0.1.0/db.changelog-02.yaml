@@ -1,0 +1,116 @@
+databaseChangeLog:
+  - changeSet:
+      id: rename-person-owner-field
+      author: Bardin Petr
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: product
+            constraintName: fk_product_on_owner
+        - addColumn:
+            columns:
+              - column:
+                  name: person_id
+                  type: BIGINT
+            tableName: product_audit
+  - changeSet:
+      id: add-entity-owner
+      author: Bardin Petr
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: address
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: person_audit
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: organizations_audit
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: person
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: organizations
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: location_audit
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: location
+        - addColumn:
+            columns:
+              - column:
+                  name: owner_id
+                  type: BIGINT
+            tableName: address_audit
+        - addColumn:
+            columns:
+              - column:
+                  name: person_id
+                  type: BIGINT
+            tableName: product
+  - changeSet:
+      id: add-entity-owner-fk
+      author: Bardin Petr
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: address
+            constraintName: FK_ADDRESS_ON_OWNER
+            referencedColumnNames: id
+            referencedTableName: user
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: person
+            constraintName: FK_PERSON_ON_OWNER
+            referencedColumnNames: id
+            referencedTableName: user
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: location
+            constraintName: FK_LOCATION_ON_OWNER
+            referencedColumnNames: id
+            referencedTableName: user
+        - addForeignKeyConstraint:
+            baseColumnNames: person_id
+            baseTableName: product
+            constraintName: FK_PRODUCT_ON_PERSON
+            referencedColumnNames: id
+            referencedTableName: person
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: organizations
+            constraintName: FK_ORGANIZATIONS_ON_OWNER
+            referencedColumnNames: id
+            referencedTableName: user
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_id
+            baseTableName: product
+            constraintName: FK_PRODUCT_ON_OWNER
+            referencedColumnNames: id
+            referencedTableName: user
+
