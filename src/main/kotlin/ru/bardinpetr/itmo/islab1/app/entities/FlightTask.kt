@@ -18,13 +18,11 @@ data class FlightTask(
     val productType: ProductType,
 
     @ManyToOne
-    @JoinColumn(name = "warehouse_id")
-    @Column(nullable = true)
+    @JoinColumn(name = "warehouse_id", nullable = true)
     val warehouse: Warehouse? = null,
 
     @ManyToOne
-    @JoinColumn(name = "medical_facility_id")
-    @Column(nullable = true)
+    @JoinColumn(name = "medical_facility_id", nullable = true)
     val medicalFacility: MedicalFacility? = null,
 
     @Column(nullable = false)
