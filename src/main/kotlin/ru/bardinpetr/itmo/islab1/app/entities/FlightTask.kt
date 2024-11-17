@@ -1,7 +1,9 @@
 package ru.bardinpetr.itmo.islab1.app.entities
 
 import jakarta.persistence.*
+import org.hibernate.envers.RevisionTimestamp
 import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import java.time.Instant
 
 @Entity
 data class FlightTask(
@@ -33,6 +35,10 @@ data class FlightTask(
 
     @OneToMany(mappedBy = "flightTask")
     val routePoints: List<RoutePoint> = listOf(),
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    var timestamp: Instant,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
