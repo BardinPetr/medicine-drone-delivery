@@ -16,6 +16,9 @@ data class RequestEntry(
     @Column(nullable = false)
     val quantity: Int,
 
+    @Column(nullable = false)
+    val fulfilledQuantity: Int = 0,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null

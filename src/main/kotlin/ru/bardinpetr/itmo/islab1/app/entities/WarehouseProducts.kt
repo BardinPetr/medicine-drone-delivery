@@ -19,10 +19,7 @@ data class WarehouseProducts(
     val warehouse: Warehouse,
 
     @Column(nullable = false)
-    val quantity: Int,
-
-    @Column(nullable = false)
-    val reservedQuantity: Int
+    val quantity: Int
 ) : Serializable
 
 @Embeddable
