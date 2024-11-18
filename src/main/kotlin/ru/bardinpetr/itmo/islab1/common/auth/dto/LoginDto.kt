@@ -1,6 +1,6 @@
-package ru.bardinpetr.itmo.islab1.common.auth.dto
+package ru.bardinpetr.itmo.meddelivery.common.auth.dto
 
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 
 data class LoginDto(val username: String, val password: String)
 

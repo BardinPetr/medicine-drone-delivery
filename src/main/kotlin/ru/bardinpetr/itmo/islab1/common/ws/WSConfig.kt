@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.ws
+package ru.bardinpetr.itmo.meddelivery.common.ws
 
 import org.fusesource.mqtt.client.BlockingConnection
 import org.fusesource.mqtt.client.MQTT

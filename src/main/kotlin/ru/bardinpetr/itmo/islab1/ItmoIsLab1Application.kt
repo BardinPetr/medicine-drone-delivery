@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1
+package ru.bardinpetr.itmo.meddelivery
 
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured
 import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.scheduling.annotation.EnableScheduling
-import ru.bardinpetr.itmo.islab1.common.utils.logger
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 
 @SpringBootApplication
 @EnableScheduling
@@ -17,8 +17,8 @@ import ru.bardinpetr.itmo.islab1.common.utils.logger
 @ConfigurationPropertiesScan
 @EnableSpringDataWebSupport
 @EnableSpringConfigured
-class ItmoIsLab1Application {
-    val log = logger<ItmoIsLab1Application>()
+class ItmoMedDeliveryApplication {
+    val log = logger<ItmoMedDeliveryApplication>()
 
     @Bean
     fun demo(
@@ -29,5 +29,5 @@ class ItmoIsLab1Application {
 }
 
 fun main(args: Array<String>) {
-    runApplication<ItmoIsLab1Application>(*args)
+    runApplication<ItmoMedDeliveryApplication>(*args)
 }

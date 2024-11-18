@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.app.config
+package ru.bardinpetr.itmo.meddelivery.app.config
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Info
@@ -12,7 +12,7 @@ import org.springdoc.core.customizers.OperationCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.HandlerMethod
-import ru.bardinpetr.itmo.islab1.common.rest.controller.AbstractCommonRestController
+import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
 import java.util.*
 
 
@@ -25,7 +25,7 @@ import java.util.*
     servers = [Server(
         url = "http://0.0.0.0:8080"
     ), Server(
-        url = "http://islab1.bardinpetr.ru"
+        url = "http://meddelivery.bardinpetr.ru"
     )]
 )
 class OpenAPIConfiguration {

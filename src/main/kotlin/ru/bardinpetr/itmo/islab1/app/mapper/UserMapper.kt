@@ -1,8 +1,8 @@
-package ru.bardinpetr.itmo.islab1.app.mapper
+package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
-import ru.bardinpetr.itmo.islab1.app.dto.UserDto
-import ru.bardinpetr.itmo.islab1.common.auth.model.User
+import ru.bardinpetr.itmo.meddelivery.app.dto.UserDto
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 interface UserMapper {

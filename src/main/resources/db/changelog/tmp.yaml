@@ -1,0 +1,135 @@
+#databaseChangeLog:
+#  - changeSet:
+#      id: check_no_flight_zone
+#      author: artem
+#      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+#      rollback:
+#        - dropProcedure:
+#            procedureName: check_no_flight_zone
+#      changes:
+#        - createProcedure:
+#            procedureName: check_no_flight_zone
+#            procedureBody: |
+#              CREATE OR REPLACE FUNCTION check_no_flight_zone()
+#                  RETURNS TRIGGER AS
+#              $$
+#              DECLARE
+#                  facility  RECORD;
+#                  warehouse RECORD;
+#                  distance  DOUBLE PRECISION;
+#              BEGIN
+#                  -- Check each medical facility
+#                  FOR facility IN SELECT * FROM medical_facility
+#                      LOOP
+#                          distance := sqrt(
+#                                  power(NEW.lat - facility.lat, 2) +
+#                                  power(NEW.lon - facility.lon, 2)
+#                                      );
+#                          IF distance < NEW.radius THEN
+#                              RAISE EXCEPTION 'No flight zone includes a medical facility';
+#                          END IF;
+#                      END LOOP;
+#
+#                  -- Check each warehouse
+#                  FOR warehouse IN SELECT * FROM warehouse
+#                      LOOP
+#                          distance := sqrt(
+#                                  power(NEW.lat - warehouse.lat, 2) +
+#                                  power(NEW.lon - warehouse.lon, 2)
+#                                      );
+#                          IF distance < NEW.radius THEN
+#                              RAISE EXCEPTION 'No flight zone includes a warehouse';
+#                          END IF;
+#                      END LOOP;
+#
+#                  RETURN NEW;
+#              END;
+#              $$ LANGUAGE plpgsql;
+#
+#  - changeSet:
+#      id: check_location_in_zone
+#      author: artem
+#      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+#      rollback:
+#        - dropProcedure:
+#            procedureName: check_location_in_zone
+#      changes:
+#        - createProcedure:
+#            procedureName: check_location_in_zone
+#            procedureBody: |
+#              CREATE OR REPLACE FUNCTION check_location_in_zone()
+#                  RETURNS TRIGGER AS
+#              $$
+#              DECLARE
+#                  zone     RECORD;
+#                  distance DOUBLE PRECISION;
+#              BEGIN
+#                  FOR zone IN SELECT * FROM no_flight_zone
+#                      LOOP
+#                          distance := sqrt(
+#                                  power(NEW.lat - zone.lat, 2) +
+#                                  power(NEW.lon - zone.lon, 2)
+#                                      );
+#                          IF distance < zone.radius THEN
+#                              IF TG_TABLE_NAME = 'warehouse' THEN
+#                                  RAISE EXCEPTION 'Warehouse is within a no flight zone';
+#                              ELSEIF TG_TABLE_NAME = 'medical_facility' THEN
+#                                  RAISE EXCEPTION 'Medical facility is within a no flight zone';
+#                              END IF;
+#                          END IF;
+#                      END LOOP;
+#
+#                  RETURN NEW;
+#              END;
+#              $$ LANGUAGE plpgsql;
+#
+#  - changeSet:
+#      id: trig_check_no_flight_zone_trigger
+#      author: artem
+#      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+#      rollback:
+#        - dropTrigger:
+#            triggerName: trig_check_no_flight_zone_trigger
+#      changes:
+#        - createTrigger:
+#            triggerName: trig_check_no_flight_zone_trigger
+#            triggerBody: |
+#              CREATE TRIGGER check_no_flight_zone_trigger
+#                  BEFORE INSERT
+#                  ON no_flight_zone
+#                  FOR EACH ROW
+#              EXECUTE FUNCTION check_no_flight_zone();
+#
+#  - changeSet:
+#      id: trig_check_warehouse_zone_trigger
+#      author: artem
+#      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+#      rollback:
+#        - dropTrigger:
+#            triggerName: trig_check_warehouse_zone_trigger
+#      changes:
+#        - createTrigger:
+#            triggerName: trig_check_warehouse_zone_trigger
+#            triggerBody: |
+#              CREATE TRIGGER check_warehouse_zone_trigger
+#                  BEFORE INSERT
+#                  ON warehouse
+#                  FOR EACH ROW
+#              EXECUTE FUNCTION check_location_in_zone();
+#
+#  - changeSet:
+#      id: trig_check_medical_facility_zone_trigger
+#      author: artem
+#      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+#      rollback:
+#        - dropTrigger:
+#            triggerName: trig_check_medical_facility_zone_trigger
+#      changes:
+#        - createTrigger:
+#            triggerName: trig_check_medical_facility_zone_trigger
+#            triggerBody: |
+#              CREATE TRIGGER check_medical_facility_zone_trigger
+#                  BEFORE INSERT
+#                  ON medical_facility
+#                  FOR EACH ROW
+#              EXECUTE FUNCTION check_location_in_zone();

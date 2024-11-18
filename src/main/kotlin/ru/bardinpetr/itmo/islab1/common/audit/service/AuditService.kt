@@ -1,13 +1,13 @@
-package ru.bardinpetr.itmo.islab1.common.audit.service
+package ru.bardinpetr.itmo.meddelivery.common.audit.service
 
 import org.hibernate.envers.AuditReader
 import org.hibernate.envers.query.AuditEntity
 import org.hibernate.envers.query.AuditQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
-import ru.bardinpetr.itmo.islab1.common.audit.model.AuditLogEntry
-import ru.bardinpetr.itmo.islab1.common.audit.model.typedResultList
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.audit.model.AuditLogEntry
+import ru.bardinpetr.itmo.meddelivery.common.audit.model.typedResultList
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import kotlin.reflect.KClass
 
 abstract class AuditService<T : IBaseEntity>(

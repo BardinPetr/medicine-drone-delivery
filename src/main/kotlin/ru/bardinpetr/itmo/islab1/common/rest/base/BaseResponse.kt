@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.rest.base
+package ru.bardinpetr.itmo.meddelivery.common.rest.base
 
 import org.springframework.http.ResponseEntity
 

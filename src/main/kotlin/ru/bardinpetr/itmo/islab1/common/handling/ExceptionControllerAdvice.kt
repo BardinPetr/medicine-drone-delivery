@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.handling
+package ru.bardinpetr.itmo.meddelivery.common.handling
 
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.ResponseEntity
@@ -7,7 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
-import ru.bardinpetr.itmo.islab1.common.rest.base.BaseResponse
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.BaseResponse
 
 
 @ControllerAdvice

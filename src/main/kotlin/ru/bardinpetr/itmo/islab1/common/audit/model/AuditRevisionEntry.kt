@@ -1,11 +1,11 @@
-package ru.bardinpetr.itmo.islab1.common.audit.model
+package ru.bardinpetr.itmo.meddelivery.common.audit.model
 
 import jakarta.persistence.*
 import org.hibernate.envers.RevisionEntity
 import org.hibernate.envers.RevisionNumber
 import org.hibernate.envers.RevisionTimestamp
-import ru.bardinpetr.itmo.islab1.common.audit.service.AuditListener
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.audit.service.AuditListener
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import java.time.Instant
 
 

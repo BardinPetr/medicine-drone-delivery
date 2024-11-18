@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.app.modules.map.service
+package ru.bardinpetr.itmo.meddelivery.app.modules.map.service
 
 
 import io.github.dellisd.spatialk.geojson.Feature

@@ -1,3 +1,3 @@
-package ru.bardinpetr.itmo.islab1.common.utils.error
+package ru.bardinpetr.itmo.meddelivery.common.utils.error
 
 class NotFoundException : Exception("Not found")

@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 enum class TaskStatus {
     QUEUED, IN_PROGRESS, COMPLETED

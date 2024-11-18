@@ -1,8 +1,8 @@
-package ru.bardinpetr.itmo.islab1.common.audit.service
+package ru.bardinpetr.itmo.meddelivery.common.audit.service
 
 import org.hibernate.envers.RevisionListener
-import ru.bardinpetr.itmo.islab1.common.audit.model.AuditRevisionEntry
-import ru.bardinpetr.itmo.islab1.common.auth.service.getAuthenticatedUserDetails
+import ru.bardinpetr.itmo.meddelivery.common.audit.model.AuditRevisionEntry
+import ru.bardinpetr.itmo.meddelivery.common.auth.service.getAuthenticatedUserDetails
 
 class AuditListener : RevisionListener {
     override fun newRevision(revisionEntity: Any) {

@@ -1,8 +1,8 @@
-package ru.bardinpetr.itmo.islab1.common.auth.mapper
+package ru.bardinpetr.itmo.meddelivery.common.auth.mapper
 
-import ru.bardinpetr.itmo.islab1.common.auth.dto.RegisterDto
-import ru.bardinpetr.itmo.islab1.common.auth.model.User
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserPrincipal
+import ru.bardinpetr.itmo.meddelivery.common.auth.dto.RegisterDto
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserPrincipal
 
 fun RegisterDto.toPrincipal() =
     UserPrincipal(this.username, this.role)

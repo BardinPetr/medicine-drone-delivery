@@ -1,8 +1,8 @@
-package ru.bardinpetr.itmo.islab1.common.auth.dto
+package ru.bardinpetr.itmo.meddelivery.common.auth.dto
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 
 data class RegisterDto(
     val username: String,

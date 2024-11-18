@@ -14,6 +14,6 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 COPY run.sh .
-COPY --from=build /app/build/libs/islab1.jar ./app.jar
+COPY --from=build /app/build/libs/meddelivery.jar ./app.jar
 
 ENTRYPOINT ["./run.sh"]

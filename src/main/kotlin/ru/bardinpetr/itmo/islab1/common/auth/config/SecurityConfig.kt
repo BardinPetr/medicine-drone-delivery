@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.auth.config
+package ru.bardinpetr.itmo.meddelivery.common.auth.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,8 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import ru.bardinpetr.itmo.islab1.common.auth.service.DBUserDetailsService
-import ru.bardinpetr.itmo.islab1.common.auth.service.JwtAuthenticationFilter
+import ru.bardinpetr.itmo.meddelivery.common.auth.service.DBUserDetailsService
+import ru.bardinpetr.itmo.meddelivery.common.auth.service.JwtAuthenticationFilter
 
 
 const val HASH_ALGO: String = "SHA-512"

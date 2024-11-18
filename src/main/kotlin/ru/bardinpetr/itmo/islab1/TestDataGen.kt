@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1
+package ru.bardinpetr.itmo.meddelivery
 
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service

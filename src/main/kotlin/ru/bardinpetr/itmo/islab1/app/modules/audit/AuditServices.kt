@@ -1,1 +1,1 @@
-package ru.bardinpetr.itmo.islab1.app.modules.audit
+package ru.bardinpetr.itmo.meddelivery.app.modules.audit

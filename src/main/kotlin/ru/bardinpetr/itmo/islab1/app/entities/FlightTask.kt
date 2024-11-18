@@ -1,8 +1,8 @@
-package ru.bardinpetr.itmo.islab1.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
 import org.hibernate.envers.RevisionTimestamp
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import java.time.Instant
 
 @Entity

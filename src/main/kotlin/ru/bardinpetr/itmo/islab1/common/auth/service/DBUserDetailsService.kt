@@ -1,11 +1,11 @@
-package ru.bardinpetr.itmo.islab1.common.auth.service
+package ru.bardinpetr.itmo.meddelivery.common.auth.service
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 import org.springframework.security.core.userdetails.User as UserDetailsOfUser
 
 @Service

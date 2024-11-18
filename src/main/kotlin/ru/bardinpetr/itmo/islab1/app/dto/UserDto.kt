@@ -1,9 +1,9 @@
-package ru.bardinpetr.itmo.islab1.app.dto
+package ru.bardinpetr.itmo.meddelivery.app.dto
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
-import ru.bardinpetr.itmo.islab1.common.rest.base.IBaseDto
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 
 data class UserDto(
     @field:NotBlank

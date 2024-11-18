@@ -1,6 +1,6 @@
-package ru.bardinpetr.itmo.islab1.common.models
+package ru.bardinpetr.itmo.meddelivery.common.models
 
-import ru.bardinpetr.itmo.islab1.common.auth.model.User
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
 
 typealias IdType = Long
 

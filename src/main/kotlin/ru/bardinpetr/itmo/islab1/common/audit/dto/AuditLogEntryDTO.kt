@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.audit.dto
+package ru.bardinpetr.itmo.meddelivery.common.audit.dto
 
 import org.hibernate.envers.RevisionType
 

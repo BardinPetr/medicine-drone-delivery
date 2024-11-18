@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.auth.model
+package ru.bardinpetr.itmo.meddelivery.common.auth.model
 
 enum class UserRole {
     USER, ADMIN, ADMIN_PENDING

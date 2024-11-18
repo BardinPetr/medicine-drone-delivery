@@ -1,9 +1,9 @@
-package ru.bardinpetr.itmo.islab1.common.auth.model
+package ru.bardinpetr.itmo.meddelivery.common.auth.model
 
 import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import org.hibernate.envers.Audited
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity
 @Audited

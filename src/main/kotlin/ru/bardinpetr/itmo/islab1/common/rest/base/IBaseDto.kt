@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.rest.base
+package ru.bardinpetr.itmo.meddelivery.common.rest.base
 
 interface IBaseDto {
     val id: Long?

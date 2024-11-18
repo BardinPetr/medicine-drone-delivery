@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.handling
+package ru.bardinpetr.itmo.meddelivery.common.handling
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)

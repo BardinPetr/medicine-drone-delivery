@@ -1,13 +1,13 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package ru.bardinpetr.itmo.islab1.common.audit.model
+package ru.bardinpetr.itmo.meddelivery.common.audit.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
 import org.hibernate.envers.RevisionType
 import org.hibernate.envers.query.AuditQuery
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import java.time.LocalDateTime
 import java.time.ZoneId
 

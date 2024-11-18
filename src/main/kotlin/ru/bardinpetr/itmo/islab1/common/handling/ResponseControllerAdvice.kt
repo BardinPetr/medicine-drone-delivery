@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.handling
+package ru.bardinpetr.itmo.meddelivery.common.handling
 
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
@@ -8,7 +8,7 @@ import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
-import ru.bardinpetr.itmo.islab1.common.rest.base.BaseResponse
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.BaseResponse
 
 @ControllerAdvice(annotations = [EnableResponseWrapper::class])
 class ResponseControllerAdvice : ResponseBodyAdvice<Any> {

@@ -1,11 +1,11 @@
-package ru.bardinpetr.itmo.islab1.common.auth.service.util
+package ru.bardinpetr.itmo.meddelivery.common.auth.service.util
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.security.crypto.password.MessageDigestPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import ru.bardinpetr.itmo.islab1.common.auth.config.HASH_ALGO
+import ru.bardinpetr.itmo.meddelivery.common.auth.config.HASH_ALGO
 
 @Configuration
 class PasswordEncoderConfiguration {

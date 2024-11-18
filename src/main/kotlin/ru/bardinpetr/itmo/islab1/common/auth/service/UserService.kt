@@ -1,17 +1,17 @@
-package ru.bardinpetr.itmo.islab1.common.auth.service
+package ru.bardinpetr.itmo.meddelivery.common.auth.service
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import ru.bardinpetr.itmo.islab1.common.auth.dto.LoginDto
-import ru.bardinpetr.itmo.islab1.common.auth.dto.RegisterDto
-import ru.bardinpetr.itmo.islab1.common.auth.dto.UserRsDto
-import ru.bardinpetr.itmo.islab1.common.auth.mapper.toPrincipal
-import ru.bardinpetr.itmo.islab1.common.auth.model.User
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
-import ru.bardinpetr.itmo.islab1.common.auth.repository.UserRepository
-import ru.bardinpetr.itmo.islab1.common.auth.service.util.JWTService
+import ru.bardinpetr.itmo.meddelivery.common.auth.dto.LoginDto
+import ru.bardinpetr.itmo.meddelivery.common.auth.dto.RegisterDto
+import ru.bardinpetr.itmo.meddelivery.common.auth.dto.UserRsDto
+import ru.bardinpetr.itmo.meddelivery.common.auth.mapper.toPrincipal
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.auth.repository.UserRepository
+import ru.bardinpetr.itmo.meddelivery.common.auth.service.util.JWTService
 import org.springframework.security.core.userdetails.User as SpringUser
 
 @Service

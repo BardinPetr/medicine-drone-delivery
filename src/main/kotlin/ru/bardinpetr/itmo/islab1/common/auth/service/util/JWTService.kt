@@ -1,9 +1,9 @@
-package ru.bardinpetr.itmo.islab1.common.auth.service.util
+package ru.bardinpetr.itmo.meddelivery.common.auth.service.util
 
 import io.jsonwebtoken.Jwts
 import org.springframework.stereotype.Service
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserPrincipal
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserPrincipal
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 import java.util.*
 import javax.crypto.SecretKey
 

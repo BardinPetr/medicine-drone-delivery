@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.islab1.common.rest.controller
+package ru.bardinpetr.itmo.meddelivery.common.rest.controller
 
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -6,22 +6,22 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import ru.bardinpetr.itmo.islab1.common.audit.model.AuditLogEntry
-import ru.bardinpetr.itmo.islab1.common.audit.service.AuditService
-import ru.bardinpetr.itmo.islab1.common.auth.model.UserRole
-import ru.bardinpetr.itmo.islab1.common.auth.service.UserService
-import ru.bardinpetr.itmo.islab1.common.handling.EnableResponseWrapper
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
-import ru.bardinpetr.itmo.islab1.common.models.IBaseOwnedEntity
-import ru.bardinpetr.itmo.islab1.common.models.IdType
-import ru.bardinpetr.itmo.islab1.common.models.tryCheckOwnership
-import ru.bardinpetr.itmo.islab1.common.rest.base.IBaseDto
-import ru.bardinpetr.itmo.islab1.common.rest.base.IBaseMapper
-import ru.bardinpetr.itmo.islab1.common.rest.base.ICommonRestRepository
-import ru.bardinpetr.itmo.islab1.common.rest.search.FilterModel
-import ru.bardinpetr.itmo.islab1.common.utils.error.NotFoundException
-import ru.bardinpetr.itmo.islab1.common.ws.NotifyChangeType
-import ru.bardinpetr.itmo.islab1.common.ws.WebSocketNotifyService
+import ru.bardinpetr.itmo.meddelivery.common.audit.model.AuditLogEntry
+import ru.bardinpetr.itmo.meddelivery.common.audit.service.AuditService
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
+import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
+import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseOwnedEntity
+import ru.bardinpetr.itmo.meddelivery.common.models.IdType
+import ru.bardinpetr.itmo.meddelivery.common.models.tryCheckOwnership
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
+import ru.bardinpetr.itmo.meddelivery.common.rest.search.FilterModel
+import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
+import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
+import ru.bardinpetr.itmo.meddelivery.common.ws.WebSocketNotifyService
 import kotlin.reflect.KClass
 
 @Validated

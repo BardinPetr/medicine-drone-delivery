@@ -1,8 +1,8 @@
-package ru.bardinpetr.itmo.islab1.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
-import ru.bardinpetr.itmo.islab1.common.auth.model.User
-import ru.bardinpetr.itmo.islab1.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
+import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity
 data class MedicalFacility(
