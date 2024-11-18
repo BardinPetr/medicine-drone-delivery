@@ -33,8 +33,9 @@ data class FlightTask(
     @OneToMany(mappedBy = "flightTask")
     val drones: List<Drone> = listOf(),
 
-    @OneToMany(mappedBy = "flightTask")
-    val routePoints: List<RoutePoint> = listOf(),
+    @ManyToOne
+    @JoinColumn(name = "route_id", nullable = true)
+    val route: Route? = null,
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)

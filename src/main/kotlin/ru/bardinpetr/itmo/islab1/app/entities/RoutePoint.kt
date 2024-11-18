@@ -9,9 +9,9 @@ data class RoutePoint(
     val id: RoutePointId,
 
     @ManyToOne
-    @MapsId("flightTaskId")
-    @JoinColumn(name = "flight_task_id", nullable = false)
-    val flightTask: FlightTask,
+    @MapsId("routeId")
+    @JoinColumn(name = "route_id", nullable = false)
+    val route: Route,
 
     @Embedded
     val location: Point,
@@ -19,8 +19,8 @@ data class RoutePoint(
 
 @Embeddable
 data class RoutePointId(
-    @Column(name = "flight_task_id")
-    val flightTaskId: Long = 0,
+    @Column(name = "route_id")
+    val routeId: Long = 0,
     @Column(name = "point_number", nullable = false)
     val pointNumber: Int = 0,
 ) : Serializable
