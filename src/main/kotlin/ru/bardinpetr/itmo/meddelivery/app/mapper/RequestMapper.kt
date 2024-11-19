@@ -1,6 +1,7 @@
 package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import ru.bardinpetr.itmo.meddelivery.app.dto.RequestDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.Request
 
@@ -8,18 +9,18 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.Request
     unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
     uses = [RequestEntryMapper::class]
 )
-abstract class RequestMapper {
+abstract class RequestMapper : IBaseMapper<Request, RequestDto> {
 
     @Mappings(
         Mapping(source = "userUsername", target = "user.username"),
         Mapping(source = "medicalFacilityName", target = "medicalFacility.name")
     )
-    abstract fun toEntity(requestDto: RequestDto): Request
+    abstract override fun toEntity(requestDto: RequestDto): Request
 
     @InheritInverseConfiguration(name = "toEntity")
-    abstract fun toDto(request: Request): RequestDto
+    abstract override fun toDto(request: Request): RequestDto
 
     @InheritConfiguration(name = "toEntity")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    abstract fun partialUpdate(requestDto: RequestDto, @MappingTarget request: Request): Request
+    abstract override fun partialUpdate(requestDto: RequestDto, @MappingTarget request: Request): Request
 }

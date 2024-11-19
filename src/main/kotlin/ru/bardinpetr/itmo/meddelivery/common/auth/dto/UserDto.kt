@@ -12,6 +12,4 @@ data class UserDto(
     @field:NotNull
     val role: UserRole?,
     override val id: Long? = null,
-    override val ownerUsername: String? = null,
-    override val ownerId: Long? = null
 ) : IBaseDto

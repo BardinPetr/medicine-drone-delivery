@@ -2,6 +2,7 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.mapstruct.*
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import ru.bardinpetr.itmo.meddelivery.app.dto.FlightTaskDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask
 import ru.bardinpetr.itmo.meddelivery.app.entities.Request
@@ -12,7 +13,7 @@ import ru.bardinpetr.itmo.meddelivery.common.auth.repository.RouteRepository
 import kotlin.jvm.optionals.getOrNull
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-abstract class FlightTaskMapper {
+abstract class FlightTaskMapper : IBaseMapper<FlightTask, FlightTaskDto> {
 
     @Autowired
     private lateinit var reqRepo: RequestRepository
@@ -27,10 +28,10 @@ abstract class FlightTaskMapper {
         Mapping(source = "medicalFacilityMedicalFacilityName", target = "medicalFacility.name"),
         Mapping(source = "routeId", target = "route.id")
     )
-    abstract fun toEntity(flightTaskDto: FlightTaskDto): FlightTask
+    abstract override fun toEntity(flightTaskDto: FlightTaskDto): FlightTask
 
     @InheritInverseConfiguration(name = "toEntity")
-    abstract fun toDto(flightTask: FlightTask): FlightTaskDto
+    abstract override fun toDto(flightTask: FlightTask): FlightTaskDto
 
     @InheritConfiguration(name = "toEntity")
     @Mappings(
@@ -38,7 +39,7 @@ abstract class FlightTaskMapper {
         Mapping(source = "routeId", target = "route")
     )
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    abstract fun partialUpdate(flightTaskDto: FlightTaskDto, @MappingTarget flightTask: FlightTask): FlightTask
+    abstract override fun partialUpdate(flightTaskDto: FlightTaskDto, @MappingTarget flightTask: FlightTask): FlightTask
 
     fun createRequest(requestId: Long?): Request? =
         requestId

@@ -6,6 +6,8 @@ import java.time.Instant
 /**
  * DTO for {@link ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask}
  */
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
+
 data class FlightTaskDto(
     val requestId: Long? = null,
     val status: TaskStatus?,
@@ -15,5 +17,5 @@ data class FlightTaskDto(
     val quantity: Int?,
     val routeId: Long? = null,
     val timestamp: Instant?,
-    val id: Long? = null
-)
+    override val id: Long? = null
+) : IBaseDto

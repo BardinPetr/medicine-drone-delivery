@@ -1,6 +1,7 @@
 package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import org.springframework.beans.factory.annotation.Autowired
 import ru.bardinpetr.itmo.meddelivery.app.dto.RouteDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
@@ -15,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
     uses = [RoutePointMapper::class]
 )
-abstract class RouteMapper {
+abstract class RouteMapper : IBaseMapper<Route, RouteDto> {
 
     @Autowired
     private lateinit var mRepo: MedicalFacilityRepository
@@ -27,17 +28,17 @@ abstract class RouteMapper {
         Mapping(source = "warehouseId", target = "warehouse.id"),
         Mapping(source = "medicalFacilityId", target = "medicalFacility.id")
     )
-    abstract fun toEntity(routeDto: RouteDto): Route
+    abstract override fun toEntity(routeDto: RouteDto): Route
 
     @InheritInverseConfiguration(name = "toEntity")
-    abstract fun toDto(route: Route): RouteDto
+    abstract override fun toDto(route: Route): RouteDto
 
     @Mappings(
         Mapping(source = "warehouseId", target = "warehouse"),
         Mapping(source = "medicalFacilityId", target = "medicalFacility")
     )
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    abstract fun partialUpdate(routeDto: RouteDto, @MappingTarget route: Route): Route
+    abstract override fun partialUpdate(routeDto: RouteDto, @MappingTarget route: Route): Route
 
     fun createWarehouse(warehouseId: Long?): Warehouse? =
         warehouseId

@@ -22,12 +22,22 @@ for n in os.listdir('mapper'):
     n = n.replace('.kt', '')
     txt = open(fn).read()
     if 'IBaseMapper' in txt: continue
-    out = re.sub("(import org.mapstruct.*)", "\\1\nimport ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper", txt)
-    out = re.sub("abstract class (\w+)Mapper \{", "abstract class \\1Mapper : IBaseMapper<\\1, \\1Dto> {", txt)
+    if n.replace("Mapper", "") not in base_entities: continue
+    out = re.sub("(import org\.mapstruct\.\*)", "\\1\nimport ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper", txt)
+    out = re.sub("abstract class (\w+)Mapper \{", "abstract class \\1Mapper : IBaseMapper<\\1, \\1Dto> {", out)
+    out = out.replace("abstract fun", "abstract override fun")
+    wr(fn, out)
 
+# for n in os.listdir('dto'):
+#     fn = 'dto/'+n
+#     n = n.replace('.kt', '')
+#     txt = open(fn).read()
+#     if 'IBaseDto' in txt: continue
+#     if 'val id: Long? = null' not in txt: continue
+#     out = re.sub("data class", "import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto\n\ndata class", txt)
+#     out = out.strip() + " : IBaseDto"
+#     out = out.replace("val id: Long? = null", "override val id: Long? = null")
 #     wr(fn, out)
-    print(out)
-    exit(0)
 
 
 # for n, _ in entities:

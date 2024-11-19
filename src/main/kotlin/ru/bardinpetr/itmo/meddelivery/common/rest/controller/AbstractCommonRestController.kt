@@ -39,8 +39,8 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
     @Autowired
     protected lateinit var repository: ICommonRestRepository<E>
 
-    @Autowired
-    protected lateinit var auditService: AuditService<E>
+//    @Autowired
+//    protected lateinit var auditService: AuditService<E>
 
     @Autowired
     protected lateinit var userService: UserService
@@ -65,7 +65,6 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
             .also { notifier.notifyChanges(clazz, it.id!!, NotifyChangeType.ADD) }
 
     protected fun preCreateHook(e: E) {
-        e.owner = userService.getCurrent()
     }
 
     @GetMapping("/{id}")
@@ -103,28 +102,21 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
 
     protected fun preUpdateHook(old: E, next: E) {
         next.id = old.id
-        next.owner = old.owner
     }
 
     @GetMapping("/count")
     fun count() = repository.count()
 
-    @GetMapping("/audit")
-    fun audit(pageable: Pageable): List<AuditLogEntry<E>> =
-        auditService.getAuditLog(pageable)
+//    @GetMapping("/audit")
+//    fun audit(pageable: Pageable): List<AuditLogEntry<E>> =
+//        auditService.getAuditLog(pageable)
+//
+//    @GetMapping("/{id}/audit")
+//    fun auditItem(@PathVariable id: IdType): List<AuditLogEntry<E>>? {
+//        if (!repository.existsById(id))
+//            throw NotFoundException()
+//        return auditService.getEntityAuditLog(id)
+//    }
 
-    @GetMapping("/{id}/audit")
-    fun auditItem(@PathVariable id: IdType): List<AuditLogEntry<E>>? {
-        if (!repository.existsById(id))
-            throw NotFoundException()
-        return auditService.getEntityAuditLog(id)
-    }
-
-    private fun raiseForOwnership(item: IBaseEntity): Unit =
-        userService
-            .getCurrent()!!
-            .let {
-                if (!item.tryCheckOwnership(it) && it.role != UserRole.ADMIN)
-                    throw IllegalAccessException("Entity not owned")
-            }
+    private fun raiseForOwnership(item: IBaseEntity) {}
 }
