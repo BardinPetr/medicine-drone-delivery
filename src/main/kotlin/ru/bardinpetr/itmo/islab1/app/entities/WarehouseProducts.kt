@@ -1,12 +1,13 @@
 package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
+import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import java.io.Serializable
 
 @Entity
 data class WarehouseProducts(
     @EmbeddedId
-    val id: WarehouseProductsId,
+    override var id: WarehouseProductsId?,
 
     @ManyToOne
     @MapsId("productId")
@@ -20,7 +21,7 @@ data class WarehouseProducts(
 
     @Column(nullable = false)
     val quantity: Int
-) : Serializable
+) : Serializable, ITypedBaseEntity<WarehouseProductsId>
 
 @Embeddable
 data class WarehouseProductsId(

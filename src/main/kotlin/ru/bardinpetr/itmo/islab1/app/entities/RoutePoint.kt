@@ -1,12 +1,13 @@
 package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
+import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import java.io.Serializable
 
 @Entity
 data class RoutePoint(
     @EmbeddedId
-    val id: RoutePointId,
+    override var id: RoutePointId?,
 
     @ManyToOne
     @MapsId("routeId")
@@ -15,7 +16,7 @@ data class RoutePoint(
 
     @Embedded
     val location: Point,
-)
+) : ITypedBaseEntity<RoutePointId>
 
 @Embeddable
 data class RoutePointId(

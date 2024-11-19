@@ -4,8 +4,10 @@ import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
 
 typealias IdType = Long
 
-interface IBaseEntity {
-    var id: IdType?
+interface IBaseEntity : ITypedBaseEntity<IdType>
+
+interface ITypedBaseEntity<I> {
+    var id: I?
 }
 
 interface IBaseOwnedEntity : IBaseEntity {

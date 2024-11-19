@@ -52,7 +52,7 @@ VALUES (1, 1, 4),
 
 UPDATE drone
     SET status = 'IDLE'
-WHERE id < 10
+WHERE id < 2
 
 -- SELECT *
 -- FROM flight_task;

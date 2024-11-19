@@ -9,6 +9,7 @@ import org.springframework.data.repository.history.RevisionRepository
 import org.springframework.transaction.annotation.Transactional
 import ru.bardinpetr.itmo.meddelivery.common.audit.model.RevisionIdType
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
+import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 
 
@@ -18,9 +19,16 @@ import ru.bardinpetr.itmo.meddelivery.common.models.IdType
  */
 @Transactional(readOnly = true)
 @NoRepositoryBean
-interface ICommonRestRepository<T : IBaseEntity> :
-    CrudRepository<T, IdType>,
-    JpaRepository<T, IdType>,
-    ListPagingAndSortingRepository<T, IdType>,
-    JpaSpecificationExecutor<T>,
-    RevisionRepository<T, IdType, RevisionIdType>
+interface ICommonRestRepository<T : IBaseEntity> : IBaseCommonRestRepository<T, IdType>
+
+/**
+ * Common repository for Entity
+ * @param T object type
+ */
+@Transactional(readOnly = true)
+@NoRepositoryBean
+interface IBaseCommonRestRepository<T : ITypedBaseEntity<I>, I: Any> :
+    CrudRepository<T, I>,
+    JpaRepository<T, I>,
+    ListPagingAndSortingRepository<T, I>,
+    JpaSpecificationExecutor<T>

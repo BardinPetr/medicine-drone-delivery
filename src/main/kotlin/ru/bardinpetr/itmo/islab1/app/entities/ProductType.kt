@@ -8,9 +8,6 @@ data class ProductType(
     @Column(nullable = false)
     val type: String,
 
-    @Column(nullable = false)
-    val pieceWeight: Float,
-
     @OneToMany(mappedBy = "product")
     val warehouses: List<WarehouseProducts> = listOf(),
 

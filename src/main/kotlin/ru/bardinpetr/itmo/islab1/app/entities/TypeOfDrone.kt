@@ -9,7 +9,10 @@ data class TypeOfDrone(
     val name: String,
 
     @Column(nullable = false)
-    val maxWeight: Float,
+    val maxWeight: Long,
+
+    @Column(nullable = false)
+    val speed: Double,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
