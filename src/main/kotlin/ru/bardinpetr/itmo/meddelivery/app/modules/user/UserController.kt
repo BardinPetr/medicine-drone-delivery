@@ -31,18 +31,4 @@ class UserController(
     @GetMapping("/self")
     fun get() =
         userAuthService.getCurrent()!!
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/{id}/verify")
-    fun verifyAdmin(@PathVariable id: Long): UserDto =
-        userRepository
-            .findById(id)
-            .orElseThrow { NotFoundException() }
-            .apply {
-                if (role != UserRole.ADMIN_PENDING)
-                    throw IllegalStateException("Not in list of pending admins")
-            }
-            .apply { role = UserRole.ADMIN }
-            .let(userRepository::save)
-            .let(mapper::toDto)
 }

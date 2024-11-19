@@ -15,10 +15,11 @@ class WebSocketNotifyService(
     private val events: MutableMap<String, MutableList<NotifyEvent>> = mutableMapOf()
 
     fun notifyChanges(entityClazz: KClass<*>, id: Long, type: NotifyChangeType) {
-        val name = entityClazz.simpleName!!
-        events
-            .putIfAbsent(name, mutableListOf())
-            ?.add(NotifyEvent(name, id, type))
+        // TODO enable
+//        val name = entityClazz.simpleName!!
+//        events
+//            .putIfAbsent(name, mutableListOf())
+//            ?.add(NotifyEvent(name, id, type))
     }
 
     @Scheduled(fixedRate = 3000)
