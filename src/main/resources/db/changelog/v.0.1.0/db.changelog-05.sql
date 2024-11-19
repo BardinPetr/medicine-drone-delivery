@@ -9,4 +9,12 @@ ALTER TABLE flight_task
     DROP CONSTRAINT IF EXISTS chk_flighttask_status;
 
 ALTER TABLE flight_task
-    ADD CONSTRAINT chk_flighttask_status CHECK (status IN ('QUEUED', 'PACKING', 'IN_PROGRESS', 'COMPLETED'));
+    ADD CONSTRAINT chk_flighttask_status CHECK (status IN ('QUEUED', 'READY', 'PACKING', 'IN_PROGRESS', 'COMPLETED'));
+
+-- changeset petr:upd_drone_status
+
+ALTER TABLE drone
+    DROP CONSTRAINT IF EXISTS chk_drone_status;
+
+ALTER TABLE drone
+    ADD CONSTRAINT chk_drone_status CHECK (status IN ('IDLE', 'READY', 'FLYING_TO', 'FLYING_FROM'));

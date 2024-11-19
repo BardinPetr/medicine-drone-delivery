@@ -26,5 +26,5 @@ data class Drone(
 ) : IBaseEntity
 
 enum class DroneStatus {
-    IDLE, FLYING_TO, FLYING_FROM
+    IDLE, READY, FLYING_TO, FLYING_FROM
 }

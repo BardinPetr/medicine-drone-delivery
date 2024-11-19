@@ -2,3 +2,7 @@ databaseChangeLog:
   - includeAll:
       relativeToChangelogFile: true
       path: v.0.1.0/
+
+  - includeAll:
+      relativeToChangelogFile: true
+      path: v.0.2.0/
