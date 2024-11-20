@@ -4,7 +4,10 @@ import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.WarehouseProductsDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(
+    unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
+    uses = [ProductTypeMapper::class, WarehouseMapper::class]
+)
 abstract class WarehouseProductsMapper {
 
     @Mappings(

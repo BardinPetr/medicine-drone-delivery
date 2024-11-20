@@ -7,7 +7,6 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
-    uses = [WarehouseProductsMapper::class]
 )
 abstract class WarehouseMapper : IBaseMapper<Warehouse, WarehouseDto> {
 

@@ -9,6 +9,5 @@ data class WarehouseDto(
     val name: String?,
     val locationLat: Double?,
     val locationLon: Double?,
-    val products: MutableList<WarehouseProductsDto> = mutableListOf(),
     override val id: Long? = null
 ) : IBaseDto
