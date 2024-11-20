@@ -148,6 +148,9 @@ class DroneMover(private val dronRep: DroneRepository) {
                     if (nextPoint != null) {
                         drone.location.lat = nextPoint.lat
                         drone.location.lon = nextPoint.lon
+                        if (drone.location.lat == drone.flightTask!!.medicalFacility?.location?.lat &&
+                            drone.location.lon == drone.flightTask!!.medicalFacility?.location?.lon)
+                                drone.status = DroneStatus.FLYING_FROM
                     }
                 }
             }
