@@ -47,10 +47,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/WarehouseDto"
     delete:
       tags:
       - warehouse-controller
@@ -65,10 +61,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/typeofdrone/{id}:
     get:
       tags:
@@ -126,10 +118,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/route/{id}:
     get:
       tags:
@@ -474,10 +462,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MedicalFacilityDto"
     delete:
       tags:
       - medical-facility-controller
@@ -492,10 +476,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/flighttask/{id}:
     get:
       tags:
@@ -694,25 +674,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WarehouseDto"
-  /api/user/{id}/verify:
-    post:
-      tags:
-      - user-controller
-      operationId: verifyAdmin
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserDto"
   /api/typeofdrone:
     get:
       tags:
@@ -1073,6 +1034,21 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DroneDto"
+  /api/drone/{id}/send:
+    post:
+      tags:
+      - drone-controller
+      operationId: sendDrone
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
   /api/warehouse/count:
     get:
       tags:
@@ -1135,6 +1111,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+  /api/user/all:
+    get:
+      tags:
+      - user-controller
+      operationId: listAll
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserDto"
   /api/typeofdrone/count:
     get:
       tags:
@@ -1536,14 +1526,32 @@ components:
       properties:
         name:
           type: string
-        responsibleUserUsername:
-          type: string
+        responsibleUser:
+          $ref: "#/components/schemas/UserDto"
         locationLat:
           type: number
           format: double
         locationLon:
           type: number
           format: double
+        id:
+          type: integer
+          format: int64
+    UserDto:
+      required:
+      - role
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        role:
+          type: string
+          enum:
+          - USER
+          - ADMIN
+          - MEDIC
+          - WAREHOUSE
         id:
           type: integer
           format: int64
@@ -1582,8 +1590,8 @@ components:
     DroneDto:
       type: object
       properties:
-        typeOfDroneName:
-          type: string
+        typeOfDrone:
+          $ref: "#/components/schemas/TypeOfDroneDto"
         status:
           type: string
           enum:
@@ -1597,9 +1605,8 @@ components:
         locationLon:
           type: number
           format: double
-        flightTaskId:
-          type: integer
-          format: int64
+        flightTask:
+          $ref: "#/components/schemas/FlightTaskDto"
         id:
           type: integer
           format: int64
@@ -1621,7 +1628,8 @@ components:
           enum:
           - USER
           - ADMIN
-          - ADMIN_PENDING
+          - MEDIC
+          - WAREHOUSE
     UserRsDto:
       required:
       - role
@@ -1636,7 +1644,8 @@ components:
           enum:
           - USER
           - ADMIN
-          - ADMIN_PENDING
+          - MEDIC
+          - WAREHOUSE
         token:
           type: string
     LoginDto:
@@ -1649,23 +1658,6 @@ components:
           type: string
         password:
           type: string
-    UserDto:
-      required:
-      - role
-      - username
-      type: object
-      properties:
-        username:
-          type: string
-        role:
-          type: string
-          enum:
-          - USER
-          - ADMIN
-          - ADMIN_PENDING
-        id:
-          type: integer
-          format: int64
     Pageable:
       type: object
       properties:
@@ -1788,7 +1780,8 @@ components:
           enum:
           - USER
           - ADMIN
-          - ADMIN_PENDING
+          - MEDIC
+          - WAREHOUSE
         id:
           type: integer
           format: int64

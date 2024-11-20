@@ -9,7 +9,6 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
 abstract class MedicalFacilityMapper : IBaseMapper<MedicalFacility, MedicalFacilityDto> {
 
     @Mappings(
-        Mapping(source = "responsibleUserUsername", target = "responsibleUser.username"),
         Mapping(source = "locationLat", target = "location.lat"),
         Mapping(source = "locationLon", target = "location.lon")
     )

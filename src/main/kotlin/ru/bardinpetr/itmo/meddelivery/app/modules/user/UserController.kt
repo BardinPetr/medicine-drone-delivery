@@ -31,4 +31,8 @@ class UserController(
     @GetMapping("/self")
     fun get() =
         userAuthService.getCurrent()!!
+
+    @GetMapping("/all")
+    fun listAll(): List<UserDto> =
+        userRepository.findAll().map(mapper::toDto)
 }
