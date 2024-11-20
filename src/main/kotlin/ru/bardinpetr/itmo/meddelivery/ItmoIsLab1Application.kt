@@ -33,9 +33,7 @@ class ItmoMedDeliveryApplication {
         droneRepository: DroneRepository
     ) = CommandLineRunner {
         gen.createTestData()
-        droneSender.sendDrone(droneRepository.findById(1).get())
-
-
+//        droneSender.sendDrone(droneRepository.findById(1).get())
     }
 }
 

@@ -124,7 +124,7 @@ class DroneMover(private val dronRep: DroneRepository) {
     }
 
 
-    @Scheduled(fixedRate = 1500)
+    @Scheduled(fixedRate = 500)
     @Transactional
     fun moveDrones() {
 //        System.out.println("Aaaa");
