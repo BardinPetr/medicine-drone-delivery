@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.RestController
 import ru.bardinpetr.itmo.meddelivery.app.dto.DroneDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
+import ru.bardinpetr.itmo.meddelivery.app.modules.transport.DroneSender
 import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
 
 @RequestMapping("/api/drone")
 @RestController
-class DroneController : AbstractCommonRestController<Drone, DroneDto>(Drone::class) {
+class DroneController(
+    private val droneSender: DroneSender
+) : AbstractCommonRestController<Drone, DroneDto>(Drone::class) {
 
     override fun preCreateHook(e: Drone) {
         super.preCreateHook(e)
@@ -24,7 +27,9 @@ class DroneController : AbstractCommonRestController<Drone, DroneDto>(Drone::cla
         val drone = repository
             .findById(id)
             .orElseThrow { IllegalArgumentException("Not found") }
-        println(drone.id);
+        if(drone.status != DroneStatus.READY)
+            throw IllegalArgumentException("Drone is not ready")
+        droneSender.sendDrone(drone)
         return true
     }
 }

@@ -28,7 +28,7 @@ class DroneSender(
         val inputJson = objectMapper.writeValueAsString(inputMap)
 
         // Run the Python script
-        val processBuilder = ProcessBuilder("python", "C:\\Users\\zam12\\OneDrive\\Документы\\university\\course3\\IS\\course_work\\medicine-drone-delivery\\python\\router.py")
+        val processBuilder = ProcessBuilder("python", "router.py")
         val process = processBuilder.start()
 
         // Write input JSON to the process
