@@ -7,7 +7,7 @@ import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 data class RequestEntry(
     @ManyToOne
     @JoinColumn(name = "request_id", nullable = false)
-    var request: Request,
+    var request: Request?,
 
     @ManyToOne
     @JoinColumn(name = "product_type_id", nullable = false)

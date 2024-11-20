@@ -5,9 +5,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.ListPagingAndSortingRepository
 import org.springframework.data.repository.NoRepositoryBean
-import org.springframework.data.repository.history.RevisionRepository
 import org.springframework.transaction.annotation.Transactional
-import ru.bardinpetr.itmo.meddelivery.common.audit.model.RevisionIdType
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType

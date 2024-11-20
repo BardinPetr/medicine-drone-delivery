@@ -8,7 +8,7 @@ import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 data class Request(
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    var user: User,
+    var user: User?,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -16,7 +16,7 @@ data class Request(
 
     @ManyToOne
     @JoinColumn(name = "medical_facility_id", nullable = false)
-    var medicalFacility: MedicalFacility,
+    var medicalFacility: MedicalFacility?,
 
     @OneToMany(mappedBy = "request")
     var requestEntries: MutableList<RequestEntry> = mutableListOf(),
