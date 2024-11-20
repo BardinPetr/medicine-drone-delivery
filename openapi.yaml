@@ -1395,11 +1395,11 @@ paths:
             application/json:
               schema:
                 type: string
-  /api/map/medicalFacility.geojson:
+  /api/map/medical.geojson:
     get:
       tags:
       - map-controller
-      operationId: medicalFacilitys
+      operationId: medicalFacilities
       responses:
         "200":
           description: OK

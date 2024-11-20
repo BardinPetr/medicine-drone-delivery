@@ -17,14 +17,13 @@ class MapController(
     fun drones(): String =
         mapService.getDrones().json()
 
-    @GetMapping("medicalFacility.geojson")
-    fun medicalFacilitys(): String =
+    @GetMapping("medical.geojson")
+    fun medicalFacilities(): String =
         mapService.getMedicalFacilities().json()
 
     @GetMapping("warehouses.geojson")
     fun warehouses(): String =
         mapService.getWarehouses().json()
-
 
     @GetMapping("noFlightZones.geojson")
     fun noZones(): String =

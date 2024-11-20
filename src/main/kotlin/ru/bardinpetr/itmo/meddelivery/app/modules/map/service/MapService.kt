@@ -40,8 +40,6 @@ class MapService(
             .findAll()
             .mapNotNull(NoFlightZone::toGeoFeature)
             .let(::FeatureCollection)
-
-
 }
 
 fun Drone.toGeoFeature(): Feature? {
@@ -57,7 +55,6 @@ fun MedicalFacility.toGeoFeature(): Feature? {
     return feature(
         id = id.toString(),
         geometry = Point(Position(location.lon, location.lat))
-
     ) {
         put("name", name)
     }
@@ -67,7 +64,6 @@ fun Warehouse.toGeoFeature(): Feature? {
     return feature(
         id = id.toString(),
         geometry = Point(Position(location.lon, location.lat))
-
     ) {
         put("name", name)
     }
@@ -78,7 +74,6 @@ fun NoFlightZone.toGeoFeature(): Feature? {
     return feature(
         id = id.toString(),
         geometry = Point(Position(center.lon, center.lat))
-
     ) {
         put("radius", radius)
     }
