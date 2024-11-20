@@ -127,40 +127,8 @@ class DroneMover(private val dronRep: DroneRepository) {
     @Scheduled(fixedRate = 1500)
     @Transactional
     fun moveDrones() {
-//        System.out.println("Aaaa");
-        var drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
 
-        if (!drones.isEmpty()){
-            drones.forEach { drone ->
-                run {
-                    val route = drone.flightTask?.route
-                    val path = route?.routePoints?.sortedBy { point -> point.id?.pointNumber }
-                    val nextPoint = path?.let {
-                        findNextPoint(
-                            it,
-                            drone.location.lat,
-                            drone.location.lon,
-                            drone.typeOfDrone.speed,
-                            1.0
-                        )
-                    }
-
-                    if (nextPoint != null) {
-                        drone.location.lat = nextPoint.lat
-                        drone.location.lon = nextPoint.lon
-                        if (
-                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
-                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
-                                drone.status = DroneStatus.FLYING_FROM
-                    }
-                }
-            }
-
-            dronRep.saveAll(drones);
-        }
-
-
-        drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
+        var drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
 
         if (!drones.isEmpty()) {
             drones.forEach { drone ->
@@ -191,6 +159,39 @@ class DroneMover(private val dronRep: DroneRepository) {
 
             dronRep.saveAll(drones);
         }
+
+//        System.out.println("Aaaa");
+        drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
+
+        if (!drones.isEmpty()){
+            drones.forEach { drone ->
+                run {
+                    val route = drone.flightTask?.route
+                    val path = route?.routePoints?.sortedBy { point -> point.id?.pointNumber }
+                    val nextPoint = path?.let {
+                        findNextPoint(
+                            it,
+                            drone.location.lat,
+                            drone.location.lon,
+                            drone.typeOfDrone.speed,
+                            1.0
+                        )
+                    }
+
+                    if (nextPoint != null) {
+                        drone.location.lat = nextPoint.lat
+                        drone.location.lon = nextPoint.lon
+                        if (
+                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
+                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
+                                drone.status = DroneStatus.FLYING_FROM
+                    }
+                }
+            }
+
+            dronRep.saveAll(drones);
+        }
+
 
     }
 }
