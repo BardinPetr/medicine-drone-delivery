@@ -20,10 +20,11 @@ class DroneController : AbstractCommonRestController<Drone, DroneDto>(Drone::cla
     }
 
     @PostMapping("/{id}/send")
-    fun sendDrone(@PathVariable id: Long) {
+    fun sendDrone(@PathVariable id: Long) : Boolean {
         val drone = repository
             .findById(id)
             .orElseThrow { IllegalArgumentException("Not found") }
         println(drone.id);
+        return true
     }
 }

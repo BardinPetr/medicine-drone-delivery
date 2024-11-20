@@ -1,21 +1,20 @@
 package ru.bardinpetr.itmo.meddelivery.app.dto
 
 import ru.bardinpetr.itmo.meddelivery.app.entities.TaskStatus
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 import java.time.Instant
 
 /**
  * DTO for {@link ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask}
  */
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
-
 data class FlightTaskDto(
-    val requestId: Long? = null,
+    val request: RequestDto?,
     val status: TaskStatus?,
-    val productTypeProductTypeName: String?,
-    val warehouseWarehouseName: String?,
-    val medicalFacilityMedicalFacilityName: String?,
+    val productType: ProductTypeDto?,
+    val warehouse: WarehouseDto? = null,
+    val medicalFacility: MedicalFacilityDto? = null,
     val quantity: Int?,
-    val routeId: Long? = null,
+    val route: RouteDto? = null,
     val timestamp: Instant?,
     override val id: Long? = null
 ) : IBaseDto

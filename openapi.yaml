@@ -515,10 +515,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FlightTaskDto"
     delete:
       tags:
       - flight-task-controller
@@ -533,10 +529,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/drone/{id}:
     get:
       tags:
@@ -990,10 +982,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FlightTaskDto"
   /api/drone:
     get:
       tags:
@@ -1558,9 +1546,8 @@ components:
     FlightTaskDto:
       type: object
       properties:
-        requestId:
-          type: integer
-          format: int64
+        request:
+          $ref: "#/components/schemas/RequestDto"
         status:
           type: string
           enum:
@@ -1569,18 +1556,17 @@ components:
           - PACKING
           - IN_PROGRESS
           - COMPLETED
-        productTypeProductTypeName:
-          type: string
-        warehouseWarehouseName:
-          type: string
-        medicalFacilityMedicalFacilityName:
-          type: string
+        productType:
+          $ref: "#/components/schemas/ProductTypeDto"
+        warehouse:
+          $ref: "#/components/schemas/WarehouseDto"
+        medicalFacility:
+          $ref: "#/components/schemas/MedicalFacilityDto"
         quantity:
           type: integer
           format: int32
-        routeId:
-          type: integer
-          format: int64
+        route:
+          $ref: "#/components/schemas/RouteDto"
         timestamp:
           type: string
           format: date-time

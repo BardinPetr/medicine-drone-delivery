@@ -35,7 +35,7 @@ class ExceptionControllerAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException::class)
     fun handleExceptionDIVE(e: Throwable): ResponseEntity<BaseResponse> =
-        BaseResponse.error("Not possible according to present relations")
+        BaseResponse.error("Not possible according to constraints")
             .toResponseEntity()
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
