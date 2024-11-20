@@ -23,13 +23,13 @@ class MapService(
             .mapNotNull(Drone::toGeoFeature)
             .let(::FeatureCollection)
 
-    fun getMedicalFacility(): FeatureCollection =
+    fun getMedicalFacilities(): FeatureCollection =
         medicalFacilityRepository
             .findAll()
             .mapNotNull(MedicalFacility::toGeoFeature)
             .let(::FeatureCollection)
 
-    fun getWarehouse(): FeatureCollection =
+    fun getWarehouses(): FeatureCollection =
         warehouseRepository
             .findAll()
             .mapNotNull(Warehouse::toGeoFeature)
