@@ -2,6 +2,7 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.Point
 import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
@@ -119,57 +120,68 @@ class DroneMover(private val dronRep: DroneRepository) {
         }
 
         // If we've completed the path return last point
-        return path.last().location
+        return path.last().location //TODO change status to flying_from
     }
 
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 3000)
     @Transactional
     fun moveDrones() {
-        var drones = dronRep.findAllByStatus("FLYING_TO") //TODO FLYING_TO, FLYING_FROM
+//        System.out.println("Aaaa");
+        var drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
 
-        drones.forEach { drone ->
-            run {
-                val route = drone.flightTask?.route
-                val path = route?.routePoints?.sortedBy { routePoint -> routePoint.id?.pointNumber }
-                val nextPoint = path?.let {
-                    findNextPoint(
-                        it,
-                        drone.location.lat,
-                        drone.location.lon,
-                        drone.typeOfDrone.speed,
-                        1.0
-                    )
-                }
+        if (!drones.isEmpty()){
+            drones.forEach { drone ->
+                run {
+                    val route = drone.flightTask?.route
+                    val path = route?.routePoints?.sortedBy { point -> point.id?.pointNumber }
+                    val nextPoint = path?.let {
+                        findNextPoint(
+                            it,
+                            drone.location.lat,
+                            drone.location.lon,
+                            drone.typeOfDrone.speed,
+                            1.0
+                        )
+                    }
 
-                if (nextPoint != null) {
-                    drone.location.lat = nextPoint.lat
-                }
-            }
-        }
-
-        drones = dronRep.findAllByStatus("FLYING_FROM") //TODO FLYING_TO, FLYING_FROM
-
-        drones.forEach { drone ->
-            run {
-                val route = drone.flightTask?.route
-                val path = route?.routePoints?.sortedByDescending { routePoint -> routePoint.id?.pointNumber }
-                val nextPoint = path?.let {
-                    findNextPoint(
-                        it,
-                        drone.location.lat,
-                        drone.location.lon,
-                        drone.typeOfDrone.speed,
-                        1.0
-                    )
-                }
-
-                if (nextPoint != null) {
-                    drone.location.lat = nextPoint.lat
+                    if (nextPoint != null) {
+                        drone.location.lat = nextPoint.lat
+                        drone.location.lon = nextPoint.lon
+                    }
                 }
             }
+
+            dronRep.saveAll(drones);
         }
 
+
+        drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
+
+        if (!drones.isEmpty()) {
+            drones.forEach { drone ->
+                run {
+                    val route = drone.flightTask?.route
+                    val path = route?.routePoints?.sortedByDescending { routePoint -> routePoint.id?.pointNumber }
+                    val nextPoint = path?.let {
+                        findNextPoint(
+                            it,
+                            drone.location.lat,
+                            drone.location.lon,
+                            drone.typeOfDrone.speed,
+                            1.0
+                        )
+                    }
+
+                    if (nextPoint != null) {
+                        drone.location.lat = nextPoint.lat
+                        drone.location.lon = nextPoint.lon
+                    }
+                }
+            }
+
+            dronRep.saveAll(drones);
+        }
 
     }
 }
