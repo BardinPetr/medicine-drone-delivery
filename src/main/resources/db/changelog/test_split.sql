@@ -1,7 +1,7 @@
-INSERT INTO product_type (type, piece_weight)
-VALUES ('Product A', 1.0),
-       ('Product B', 2.0),
-       ('Product C', 3.0);
+INSERT INTO product_type (type)
+VALUES ('Product A'),
+       ('Product B'),
+       ('Product C');
 
 INSERT INTO warehouse (name, lat, lon)
 VALUES ('Warehouse 1', 0.0, 0.0),
@@ -17,17 +17,17 @@ VALUES ('test', 1, 1.1, 2.2);
 INSERT INTO request (user_id, status, medical_facility_id)
 VALUES (1, 'QUEUED', 1);
 
-INSERT INTO type_of_drone (name, max_weight)
-VALUES ('1', 2),
-       ('2', 5);
+INSERT INTO type_of_drone (name, max_weight, speed)
+VALUES ('1', 2, 0.001),
+       ('2', 5, 0.0001);
 
 INSERT INTO request (user_id, status, medical_facility_id)
 VALUES (1, 'QUEUED', 1),
        (1, 'QUEUED', 1);
 
-INSERT INTO route (warehouse_id, medical_facility_id)
-VALUES (1, 1),
-       (2, 1);
+-- INSERT INTO route (warehouse_id, medical_facility_id)
+-- VALUES (1, 1),
+--        (2, 1);
 
 TRUNCATE TABLE warehouse_products CASCADE;
 TRUNCATE TABLE flight_task CASCADE;
@@ -45,14 +45,25 @@ VALUES (1, 0.0, 0.0, 'IDLE'),
        (2, 0.0, 0.0, 'IDLE'),
        (2, 0.0, 0.0, 'IDLE');
 
+-- INSERT INTO route_point(point_number, lat, lon, route_id)
+-- VALUES (0, 0, 0, 1),
+--        (1, 5, 5, 1),
+--        (2, 10, 15, 1),
+--        (0, 0, 0, 2),
+--        (1, -10, 15, 2),
+--        (2, -10, 15, 2);
+
+
+
 INSERT INTO request_entry (request_id, product_type_id, quantity)
 VALUES (1, 1, 4),
        (1, 2, 8),
        (2, 1, 10);
 
-UPDATE drone
-    SET status = 'IDLE'
-WHERE id < 2
+-- UPDATE drone
+--     SET status = 'FLYING_TO'
+--     WHERE id < 3;
+
 
 -- SELECT *
 -- FROM flight_task;
