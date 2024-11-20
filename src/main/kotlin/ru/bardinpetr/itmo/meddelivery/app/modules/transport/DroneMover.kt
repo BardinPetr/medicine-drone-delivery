@@ -148,8 +148,9 @@ class DroneMover(private val dronRep: DroneRepository) {
                     if (nextPoint != null) {
                         drone.location.lat = nextPoint.lat
                         drone.location.lon = nextPoint.lon
-                        if (drone.location.lat == drone.flightTask!!.medicalFacility?.location?.lat &&
-                            drone.location.lon == drone.flightTask!!.medicalFacility?.location?.lon)
+                        if (
+                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
+                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
                                 drone.status = DroneStatus.FLYING_FROM
                     }
                 }
@@ -180,8 +181,9 @@ class DroneMover(private val dronRep: DroneRepository) {
                         drone.location.lat = nextPoint.lat
                         drone.location.lon = nextPoint.lon
 
-                        if (drone.location.lat == drone.flightTask!!.warehouse?.location?.lat &&
-                            drone.location.lon == drone.flightTask!!.warehouse?.location?.lon)
+                        if (
+                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
+                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
                             drone.status = DroneStatus.IDLE
                     }
                 }
