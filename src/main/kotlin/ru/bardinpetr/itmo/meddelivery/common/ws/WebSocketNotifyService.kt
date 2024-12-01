@@ -21,7 +21,7 @@ class WebSocketNotifyService(
             ?.add(NotifyEvent(name, id, type))
     }
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(fixedRate = 750)
     @Transactional
     fun check() {
         publish("/notify", "OK")
