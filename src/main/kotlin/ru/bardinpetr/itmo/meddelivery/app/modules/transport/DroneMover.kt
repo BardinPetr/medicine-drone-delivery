@@ -150,8 +150,8 @@ class DroneMover(private val dronRep: DroneRepository) {
                         drone.location.lon = nextPoint.lon
 
                         if (
-                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
-                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
+                            (drone.location.lat - drone.flightTask!!.warehouse?.location?.lat!!) < 0.001 &&
+                            (drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.001 )
                             drone.status = DroneStatus.IDLE
                     }
                 }
