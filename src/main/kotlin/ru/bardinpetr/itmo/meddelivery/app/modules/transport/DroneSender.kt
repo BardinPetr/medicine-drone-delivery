@@ -30,7 +30,7 @@ class DroneSender(
         // Run the Python script
         val processBuilder = ProcessBuilder("python", "router.py")
         val process = processBuilder.start()
-
+        println(inputJson)
         // Write input JSON to the process
         process.outputStream.bufferedWriter().use { it.write(inputJson) }
 
@@ -75,6 +75,7 @@ class DroneSender(
 
             drone.location = start
             drone.status = DroneStatus.FLYING_TO
+            drone.flightTask!!.status = TaskStatus.IN_PROGRESS
 
             droneRepository.save(drone)
 

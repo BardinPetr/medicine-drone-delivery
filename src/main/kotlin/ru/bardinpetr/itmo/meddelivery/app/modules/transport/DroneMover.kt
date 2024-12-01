@@ -3,6 +3,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.Point
+import ru.bardinpetr.itmo.meddelivery.app.entities.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
 import java.lang.Math.pow
 import kotlin.math.*
@@ -19,7 +20,7 @@ class DroneMover(private val dronRep: DroneRepository) {
         var closestPointIndex = -1
         var minDistance = Double.MAX_VALUE
 
-        for (i in 0 until path.size) {
+        for (i in path.size - 1 downTo 0) {
             val distanceToPoint = calculateDistance(
                 path[i], Point(currentLat, currentLon)
             )
@@ -55,7 +56,7 @@ class DroneMover(private val dronRep: DroneRepository) {
         if (forwardPath.isEmpty()) return result
 
         result.add(forwardPath[0])
-        for (i in forwardPath.size - 2 downTo 0) {
+        for (i in 0 until forwardPath.size - 1) {
             val currentPoint = forwardPath[i]
             val nextPoint = forwardPath[i + 1]
             val distance = calculateDistance(currentPoint, nextPoint)
@@ -102,10 +103,12 @@ class DroneMover(private val dronRep: DroneRepository) {
                         drone.location.lon = nextPoint.lon
 
                         if (
-                            abs(drone.location.lat - drone.flightTask!!.warehouse?.location?.lat!!) < 0.001 &&
-                            abs(drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.001
-                        )
+                            abs(drone.location.lat - drone.flightTask!!.warehouse?.location?.lat!!) < 0.0001 &&
+                            abs(drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.0001
+                        ) {
                             drone.status = DroneStatus.IDLE
+                            drone.flightTask!!.status = TaskStatus.COMPLETED
+                        }
                     }
 
                 }
@@ -142,8 +145,8 @@ class DroneMover(private val dronRep: DroneRepository) {
                         drone.location.lat = nextPoint.lat
                         drone.location.lon = nextPoint.lon
                         if (
-                            abs(drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
-                            abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001
+                            abs(drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.0001 &&
+                            abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.0001
                         )
                             drone.status = DroneStatus.FLYING_FROM
                     }
