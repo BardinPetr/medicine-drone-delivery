@@ -6,6 +6,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.Point
 import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
+import java.lang.Math.pow
 import kotlin.math.*
 
 
@@ -13,16 +14,17 @@ import kotlin.math.*
 class DroneMover(private val dronRep: DroneRepository) {
 
     fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val R = 6371e3 // Earth radius in meters
-        val phi1 = lat1.toRadians()
-        val phi2 = lat2.toRadians()
-        val deltaPhi = (lat2 - lat1).toRadians()
-        val deltaLambda = (lon2 - lon1).toRadians()
-
-        val a = sin(deltaPhi / 2).pow(2) + cos(phi1) * cos(phi2) * sin(deltaLambda / 2).pow(2)
-        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-        return R * c // in meters
+        return sqrt((lat2 - lat1).pow(2) + (lon2 - lon1).pow(2))
+//        val R = 6371e3 // Earth radius in meters
+//        val phi1 = lat1.toRadians()
+//        val phi2 = lat2.toRadians()
+//        val deltaPhi = (lat2 - lat1).toRadians()
+//        val deltaLambda = (lon2 - lon1).toRadians()
+//
+//        val a = sin(deltaPhi / 2).pow(2) + cos(phi1) * cos(phi2) * sin(deltaLambda / 2).pow(2)
+//        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+//
+//        return R * c // in meters
     }
 
     fun Double.toRadians() = this * PI / 180
@@ -54,6 +56,7 @@ class DroneMover(private val dronRep: DroneRepository) {
     }
 
     fun distanceToLineSegment(lat: Double, lon: Double, lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+//        return (haversineDistance(lat, lon, lat1, lon1) + haversineDistance(lat, lon, lat2, lon1)) - haversineDistance(lat1, lon1, lat2, lon2)
         // Calculate the distance from a point to a line segment
         val A = lat - lat1
         val B = lon - lon1
@@ -124,43 +127,10 @@ class DroneMover(private val dronRep: DroneRepository) {
     }
 
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 250)
     @Transactional
     fun moveDrones() {
-//        System.out.println("Aaaa");
-        var drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
-
-        if (!drones.isEmpty()){
-            drones.forEach { drone ->
-                run {
-                    val route = drone.flightTask?.route
-                    val path = route?.routePoints?.sortedBy { point -> point.id?.pointNumber }
-                    val nextPoint = path?.let {
-                        findNextPoint(
-                            it,
-                            drone.location.lat,
-                            drone.location.lon,
-                            drone.typeOfDrone.speed,
-                            1.0
-                        )
-                    }
-
-                    if (nextPoint != null) {
-                        drone.location.lat = nextPoint.lat
-                        drone.location.lon = nextPoint.lon
-                        if (
-                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
-                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
-                                drone.status = DroneStatus.FLYING_FROM
-                    }
-                }
-            }
-
-            dronRep.saveAll(drones);
-        }
-
-
-        drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
+        var drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
 
         if (!drones.isEmpty()) {
             drones.forEach { drone ->
@@ -182,15 +152,49 @@ class DroneMover(private val dronRep: DroneRepository) {
                         drone.location.lon = nextPoint.lon
 
                         if (
-                            (drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
-                            (drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
+                            abs(drone.location.lat - drone.flightTask!!.warehouse?.location?.lat!!) < 0.001 &&
+                            abs(drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.001 )
                             drone.status = DroneStatus.IDLE
                     }
                 }
             }
 
-            dronRep.saveAll(drones);
+            dronRep.saveAllAndFlush(drones);
         }
+//        System.out.println("Aaaa");
+         drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
+
+        if (!drones.isEmpty()){
+            drones.forEach { drone ->
+                run {
+                    val route = drone.flightTask?.route
+                    val path = route?.routePoints?.sortedBy { point -> point.id?.pointNumber }
+                    val nextPoint = path?.let {
+                        findNextPoint(
+                            it,
+                            drone.location.lat,
+                            drone.location.lon,
+                            drone.typeOfDrone.speed,
+                            1.0
+                        )
+                    }
+
+                    if (nextPoint != null) {
+                        drone.location.lat = nextPoint.lat
+                        drone.location.lon = nextPoint.lon
+                        if (
+                            abs(drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
+                            abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
+                                drone.status = DroneStatus.FLYING_FROM
+                    }
+                }
+            }
+
+            dronRep.saveAllAndFlush(drones);
+        }
+
+
+
 
     }
 }

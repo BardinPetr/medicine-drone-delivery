@@ -17,8 +17,8 @@ VALUES ('Pharmacy', 1, 59.9282, 30.3023),
 
 TRUNCATE TABLE type_of_drone CASCADE;
 INSERT INTO type_of_drone (name, max_weight, speed)
-VALUES ('TYP1', 2, 100),
-       ('TYP2', 5, 300);
+VALUES ('TYP1', 2, 50),
+       ('TYP2', 5, 100);
 
 TRUNCATE TABLE drone CASCADE;
 INSERT INTO drone (model_id, lat, lon, status)
