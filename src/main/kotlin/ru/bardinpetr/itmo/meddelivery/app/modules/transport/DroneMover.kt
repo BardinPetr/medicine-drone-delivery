@@ -1,10 +1,8 @@
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.Point
-import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
 import java.lang.Math.pow
 import kotlin.math.*
@@ -13,124 +11,71 @@ import kotlin.math.*
 @Service
 class DroneMover(private val dronRep: DroneRepository) {
 
-    fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        return sqrt((lat2 - lat1).pow(2) + (lon2 - lon1).pow(2))
-//        val R = 6371e3 // Earth radius in meters
-//        val phi1 = lat1.toRadians()
-//        val phi2 = lat2.toRadians()
-//        val deltaPhi = (lat2 - lat1).toRadians()
-//        val deltaLambda = (lon2 - lon1).toRadians()
-//
-//        val a = sin(deltaPhi / 2).pow(2) + cos(phi1) * cos(phi2) * sin(deltaLambda / 2).pow(2)
-//        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-//
-//        return R * c // in meters
-    }
-
-    fun Double.toRadians() = this * PI / 180
-
-    fun findClosestSegment(
-        path: List<RoutePoint>,
+    fun findClosestPoint(
+        path: List<Point>,
         currentLat: Double,
         currentLon: Double
     ): Int {
-        var closestSegmentIndex = -1
+        var closestPointIndex = -1
         var minDistance = Double.MAX_VALUE
 
-        for (i in 0 until path.size - 1) {
-            val currentPoint = path[i]
-            val nextPoint = path[i + 1]
-
-            val distanceToSegment = distanceToLineSegment(
-                currentLat, currentLon,
-                currentPoint.location.lat, currentPoint.location.lon,
-                nextPoint.location.lat, nextPoint.location.lon
+        for (i in 0 until path.size) {
+            val distanceToPoint = calculateDistance(
+                path[i], Point(currentLat, currentLon)
             )
 
-            if (distanceToSegment < minDistance) {
-                minDistance = distanceToSegment
-                closestSegmentIndex = i
+            if (distanceToPoint < minDistance) {
+                minDistance = distanceToPoint
+                closestPointIndex = i
             }
         }
-        return closestSegmentIndex
+        return closestPointIndex
     }
 
-    fun distanceToLineSegment(lat: Double, lon: Double, lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-//        return (haversineDistance(lat, lon, lat1, lon1) + haversineDistance(lat, lon, lat2, lon1)) - haversineDistance(lat1, lon1, lat2, lon2)
-        // Calculate the distance from a point to a line segment
-        val A = lat - lat1
-        val B = lon - lon1
-        val C = lat2 - lat1
-        val D = lon2 - lon1
 
-        val dot = A * C + B * D
-        val lenSq = C * C + D * D
-        val param = if (lenSq != 0.0) dot / lenSq else -1.0
-
-        val xx: Double
-        val yy: Double
-
-        if (param < 0) {
-            xx = lat1
-            yy = lon1
-        } else if (param > 1) {
-            xx = lat2
-            yy = lon2
-        } else {
-            xx = lat1 + param * C
-            yy = lon1 + param * D
-        }
-
-        return haversineDistance(lat, lon, xx, yy)
-    }
 
     fun findNextPoint(
-        path: List<RoutePoint>,
+        path: List<Point>,
         currentLat: Double,
         currentLon: Double,
         speed: Double, // speed in meters per second
         time: Double // time in seconds
     ): Point {
-        val segmentIndex = findClosestSegment(path, currentLat, currentLon)
-        if (segmentIndex == -1) return path.last().location // If not on a valid segment, return the last point
+        val pointId = findClosestPoint(path, currentLat, currentLon)
 
-        var remainingDistance = speed * time
-        var currentLatVar = currentLat
-        var currentLonVar = currentLon
+        return path[min(pointId + 1, path.size - 1)]
+    }
 
-        for (i in segmentIndex until path.size - 1) {
-            val currentPoint = path[i]
-            val nextPoint = path[i + 1]
+    fun calculateDistance(point1: Point, point2: Point): Double {
+        return Math.sqrt(pow(point2.lat - point1.lat, 2.0) + pow(point2.lon - point1.lon, 2.0))
+    }
 
-            val segmentDistance = haversineDistance(
-                currentLatVar, currentLonVar,
-                nextPoint.location.lat, nextPoint.location.lon
-            )
+    fun addPointsAtInterval(forwardPath: List<Point>, interval: Double): List<Point> {
+        val result = mutableListOf<Point>()
+        if (forwardPath.isEmpty()) return result
 
-            if (segmentDistance > remainingDistance) {
-                // Compute the fraction of the segment to travel
-                val fraction = remainingDistance / segmentDistance
+        result.add(forwardPath[0])
+        for (i in 0 until forwardPath.size - 1) {
+            val currentPoint = forwardPath[i]
+            val nextPoint = forwardPath[i + 1]
+            val distance = calculateDistance(currentPoint, nextPoint)
+            val numberOfNewPoints = (distance / interval).toInt()
 
-                val newLat = currentLatVar + fraction * (nextPoint.location.lat - currentPoint.location.lat)
-                val newLon = currentLonVar + fraction * (nextPoint.location.lon - currentPoint.location.lon)
-
-                return Point(newLat, newLon)
-            } else {
-                remainingDistance -= segmentDistance
-                currentLatVar = nextPoint.location.lat
-                currentLonVar = nextPoint.location.lon
+            for (j in 1..numberOfNewPoints) {
+                val newX = currentPoint.lat + (nextPoint.lat - currentPoint.lat) * (j * interval / distance)
+                val newY = currentPoint.lon + (nextPoint.lon - currentPoint.lon) * (j * interval / distance)
+                result.add(Point(newX, newY))
             }
+            result.add(nextPoint)
         }
-
-        // If we've completed the path return last point
-        return path.last().location //TODO change status to flying_from
+        return result
     }
 
 
     @Scheduled(fixedRate = 250)
     @Transactional
     fun moveDrones() {
-
+        val time = 1
         var drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
 
         if (!drones.isEmpty()) {
@@ -138,64 +83,77 @@ class DroneMover(private val dronRep: DroneRepository) {
                 run {
                     val route = drone.flightTask?.route
                     val path = route?.routePoints?.sortedByDescending { routePoint -> routePoint.id?.pointNumber }
-                    val nextPoint = path?.let {
-                        findNextPoint(
-                            it,
-                            drone.location.lat,
-                            drone.location.lon,
-                            drone.typeOfDrone.speed,
-                            1.0
+                    if (path != null) {
+                        val ppath = addPointsAtInterval(
+                            path.map { routePoint -> routePoint.location },
+                            drone.typeOfDrone.speed * time
                         )
-                    }
+                        val nextPoint = ppath.let {
+                            findNextPoint(
+                                it,
+                                drone.location.lat,
+                                drone.location.lon,
+                                drone.typeOfDrone.speed,
+                                time.toDouble()
+                            )
+                        }
 
-                    if (nextPoint != null) {
                         drone.location.lat = nextPoint.lat
                         drone.location.lon = nextPoint.lon
 
                         if (
                             abs(drone.location.lat - drone.flightTask!!.warehouse?.location?.lat!!) < 0.001 &&
-                            abs(drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.001 )
+                            abs(drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.001
+                        )
                             drone.status = DroneStatus.IDLE
                     }
+
                 }
             }
 
-            dronRep.saveAllAndFlush(drones);
+            dronRep.saveAllAndFlush(drones)
         }
-//        System.out.println("Aaaa");
-         drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
+//        System.out.println("Aaaa")
+        drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
 
-        if (!drones.isEmpty()){
+        if (!drones.isEmpty()) {
             drones.forEach { drone ->
                 run {
                     val route = drone.flightTask?.route
-                    val path = route?.routePoints?.sortedBy { point -> point.id?.pointNumber }
-                    val nextPoint = path?.let {
-                        findNextPoint(
-                            it,
-                            drone.location.lat,
-                            drone.location.lon,
-                            drone.typeOfDrone.speed,
-                            1.0
+                    val path = route?.routePoints?.sortedBy { routePoint -> routePoint.id?.pointNumber }
+                    if (path != null) {
+                        val ppath = addPointsAtInterval(
+                            path.map { routePoint -> routePoint.location },
+                            drone.typeOfDrone.speed * time
                         )
-                    }
+                        val nextPoint = ppath.let {
+                            findNextPoint(
+                                it,
+                                drone.location.lat,
+                                drone.location.lon,
+                                drone.typeOfDrone.speed,
+                                time.toDouble()
+                            )
+                        }
 
-                    if (nextPoint != null) {
+                        drone.location.lat = nextPoint.lat
+                        drone.location.lon = nextPoint.lon
+
                         drone.location.lat = nextPoint.lat
                         drone.location.lon = nextPoint.lon
                         if (
                             abs(drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.001 &&
-                            abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001 )
-                                drone.status = DroneStatus.FLYING_FROM
+                            abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.001
+                        )
+                            drone.status = DroneStatus.FLYING_FROM
                     }
+
+
                 }
             }
 
-            dronRep.saveAllAndFlush(drones);
+            dronRep.saveAllAndFlush(drones)
         }
-
-
-
 
 
     }
