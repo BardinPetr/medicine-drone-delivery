@@ -55,7 +55,7 @@ class DroneMover(private val dronRep: DroneRepository) {
         if (forwardPath.isEmpty()) return result
 
         result.add(forwardPath[0])
-        for (i in 0 until forwardPath.size - 1) {
+        for (i in forwardPath.size - 2 downTo 0) {
             val currentPoint = forwardPath[i]
             val nextPoint = forwardPath[i + 1]
             val distance = calculateDistance(currentPoint, nextPoint)
