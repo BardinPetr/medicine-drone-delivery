@@ -3,16 +3,17 @@ services:
     image: bardinpetr/itmo_is_lab_1:latest
     build: ../
     restart: always
+    depends_on:
+      - pg
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://pg:5432/studs
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pg:5432/medical
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: s367079
 
   pg:
-    image: postgres
-    ports:
-      - "15432:5432"
+    image: postgres:17-alpine
+    volumes:
+      - ./.tmp/pg:/data
     environment:
       POSTGRES_DB: medical
       POSTGRES_USER: postgres
@@ -21,23 +22,14 @@ services:
   frontend:
     image: bardinpetr/itmo_is_lab_1_client:latest
     restart: always
-    ports:
-      - "8081:80"
-
-  #  nginx:
-  #    image: nginx
-  #    restart: always
-  #    volumes:
-  #      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  #    ports:
-  #      - "18888:80"
 
   nginx:
     image: nginx
     restart: always
     volumes:
-      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
-    network_mode: host
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "18888:80"
 
   mqtt:
     image: eclipse-mosquitto
@@ -46,6 +38,4 @@ services:
       - "1885:1883"
       - "9001:9001"
     volumes:
-      - ./mqconfig:/mosquitto/config:rw
-      - ./mqdata:/mosquitto/data:rw
-      - ./mqlog:/mosquitto/log:rw
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro

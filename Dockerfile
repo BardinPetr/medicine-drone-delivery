@@ -1,13 +1,15 @@
-FROM gradle:8-jdk21-alpine as build
+FROM gradle:8.14.3-jdk21-alpine as build
 WORKDIR /app
 
-COPY gradle ./
-COPY gradlew ./
-COPY gradle.properties ./
-COPY *.gradle.kts ./
+COPY gradle gradlew gradle.properties ./
+COPY build.gradle.kts settings.gradle.kts ./
+
+RUN gradle --no-daemon --parallel dependencies
+
+COPY gradle gradle
 COPY src src
 
-RUN gradle bootJar
+RUN gradle --no-daemon --parallel bootJar
 
 FROM eclipse-temurin:21-jre-alpine as run
 
@@ -19,11 +21,10 @@ RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
 RUN pip3 install extremitypathfinder
 
-COPY router.py .
+COPY python/router.py .
 
 FROM run
 
-COPY run.sh .
 COPY --from=build /app/build/libs/meddelivery.jar ./app.jar
 
-ENTRYPOINT ["./run.sh"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

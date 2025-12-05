@@ -14,12 +14,12 @@ typealias MQTTConn = BlockingConnection
 @Configuration
 class MQTTConfig {
 
-    var mqttHost: String = "78.24.218.122"
+    var mqttHost: String = "127.0.0.1"
 
     @Bean
     fun getMQTTConn(): MQTTConn =
         MQTT()
-            .apply { setHost(mqttHost, 1883) }
+            .apply { setHost(mqttHost, 11883) }
             .blockingConnection()
             .apply { connect() }
 }

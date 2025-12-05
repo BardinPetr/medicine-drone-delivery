@@ -81,9 +81,9 @@
 - формирование полетных заданий
 - учет наличия продуктов на складах
 
-![usecase diagram](docs/diagram.png)
+![usecase diagram](diagram.png)
 
-![usecase diagram](docs/components.png)
+![usecase diagram](components.png)
 
 
 
