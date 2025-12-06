@@ -11,18 +11,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
-  nginx:
-    image: nginx
-    restart: always
-    volumes:
-      - ./config/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-    network_mode: host
-
   mqtt:
     image: eclipse-mosquitto
-    container_name: mqtt
-    ports:
-      - "1885:1883"
-      - "9001:9001"
     volumes:
-      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./config/mqtt:/mosquitto/config:ro
+    ports:
+      - "11883:1883"
+      - "9001:9001"

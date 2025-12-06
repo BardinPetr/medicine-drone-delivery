@@ -20,7 +20,7 @@ import java.util.*
 @OpenAPIDefinition(
     info = Info(
         title = "ITMO Lab1 API",
-        version = "0.1.0"
+        version = "0.3.3"
     ),
     servers = [Server(
         url = "http://0.0.0.0:8080"

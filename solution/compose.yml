@@ -27,15 +27,14 @@ services:
     image: nginx
     restart: always
     volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "18888:80"
 
   mqtt:
     image: eclipse-mosquitto
-    container_name: mqtt
     ports:
-      - "1885:1883"
+      - "11883:1883"
       - "9001:9001"
     volumes:
-      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./config/mqtt:/mosquitto/config:ro

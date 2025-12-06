@@ -10,15 +10,13 @@ plugins {
 
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
-    id("org.openapi.generator") version "7.1.0"
+    id("org.openapi.generator") version "7.17.0"
     id("org.liquibase.gradle") version "2.2.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 group = "ru.bardinpetr.itmo"
 version = "0.3.0"
-
-val fePath: String by project
 
 configurations {
     compileOnly {
@@ -98,16 +96,15 @@ tasks.getByName<BootJar>("bootJar") {
 openApiGenerate {
     generatorName = "typescript-angular"
     inputSpec = "$rootDir/openapi.yaml"
-    outputDir = "$fePath/src/lib"
+    outputDir = layout.buildDirectory.dir("fe-lib").get().toString()
     skipValidateSpec = true
     additionalProperties.apply {
-        put("packageName", "lab1api")
+        put("packageName", "medicine-drone-delivery-fe-lib")
     }
     configOptions.apply {
-        put("npmName", "itmo-is-lab1")
-        put("npmRepository", "https://github.com/BardinPetr/itmo-is-lab-1-server")
+        put("npmName", "medicine-drone-delivery-fe-lib")
         put("withInterfaces", "true")
-        put("ngVersion", "17")
+        put("ngVersion", "18")
     }
 }
 

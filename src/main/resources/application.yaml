@@ -37,8 +37,6 @@ spring:
       initialize-schema: always
 
   jackson:
-#    serialization:
-#      write_dates_as_timestamps: false
     deserialization:
       accept-empty-string-as-null-object: true
       accept-empty-array-as-null-object: false
@@ -46,7 +44,7 @@ spring:
 
 springdoc:
   api-docs:
-    path: /docs
+    path: /openapi
   swagger-ui:
     path: /
   default-produces-media-type: application/json
