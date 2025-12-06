@@ -3,11 +3,14 @@ package ru.bardinpetr.itmo.meddelivery.app.modules.transport
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.stereotype.Service
-import ru.bardinpetr.itmo.meddelivery.app.entities.*
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.FlightTaskRepository
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.NoFlightZoneRepository
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.RouteRepository
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.geo.*
+import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.FlightTaskRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.RouteRepository
 
 @Service
 class DroneSender(
@@ -16,7 +19,7 @@ class DroneSender(
     private val flaskRepository: FlightTaskRepository,
     private val droneRepository: DroneRepository
 ) {
-    fun createRoute(zones: List<NoFlightZone>, start: Point, finish: Point, route: Route): MutableList<RoutePoint>{
+    fun createRoute(zones: List<NoFlightZone>, start: Point, finish: Point, route: Route): MutableList<RoutePoint> {
         // Prepare input JSON
         val inputMap = mapOf(
             "circles" to zones.map { listOf(it.center.lat, it.center.lon, it.radius) },
@@ -46,10 +49,10 @@ class DroneSender(
                 location = Point(coordinates[0], coordinates[1])
             )
         }
-        return points.toMutableList();
+        return points.toMutableList()
     }
 
-    fun sendDrone(drone: Drone){
+    fun sendDrone(drone: Drone) {
         val zones = zoneRep.findAll()
         val start = drone.flightTask?.warehouse?.location
         val finish = drone.flightTask?.medicalFacility?.location
@@ -63,10 +66,10 @@ class DroneSender(
             }
         }
 
-        if (start != null && finish != null && route != null){
+        if (start != null && finish != null && route != null) {
             val points = createRoute(zones, start, finish, route)
             routeRepository.save(route)
-            points.mapIndexed() {index, it -> it.id = route.id?.let { it1 -> RoutePointId(it1, index) } }
+            points.mapIndexed { index, it -> it.id = route.id?.let { it1 -> RoutePointId(it1, index) } }
             route.routePoints.addAll(points)
             routeRepository.save(route)
 

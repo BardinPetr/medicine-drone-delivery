@@ -6,15 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import ru.bardinpetr.itmo.meddelivery.common.audit.model.AuditLogEntry
-import ru.bardinpetr.itmo.meddelivery.common.audit.service.AuditService
-import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
-import ru.bardinpetr.itmo.meddelivery.common.models.IBaseOwnedEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.models.tryCheckOwnership
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
@@ -29,7 +24,6 @@ import kotlin.reflect.KClass
 abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
     private val clazz: KClass<E>,
 ) {
-
     @Autowired
     protected lateinit var notifier: WebSocketNotifyService
 

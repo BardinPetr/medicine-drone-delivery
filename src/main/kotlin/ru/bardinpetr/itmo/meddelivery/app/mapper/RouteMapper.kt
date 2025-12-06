@@ -1,19 +1,18 @@
 package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import org.springframework.beans.factory.annotation.Autowired
 import ru.bardinpetr.itmo.meddelivery.app.dto.RouteDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.Route
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.MedicalFacilityRepository
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.RequestRepository
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.RouteRepository
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.WarehouseRepository
+import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Route
+import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import kotlin.jvm.optionals.getOrNull
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
+@Mapper(
+    unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
     uses = [RoutePointMapper::class]
 )
 abstract class RouteMapper : IBaseMapper<Route, RouteDto> {

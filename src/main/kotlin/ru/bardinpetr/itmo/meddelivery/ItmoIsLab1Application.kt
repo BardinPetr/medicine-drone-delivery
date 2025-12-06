@@ -10,7 +10,7 @@ import org.springframework.context.annotation.aspectj.EnableSpringConfigured
 import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.scheduling.annotation.EnableScheduling
 import ru.bardinpetr.itmo.meddelivery.app.modules.transport.DroneMover
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 
 @SpringBootApplication
 @EnableScheduling

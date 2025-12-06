@@ -1,15 +1,12 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.product
 
 import jakarta.persistence.*
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity
-data class NoFlightZone(
+data class ProductType(
     @Column(nullable = false)
-    var radius: Float,
-
-    @Embedded
-    var center: Point,
+    var type: String,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

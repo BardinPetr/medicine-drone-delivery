@@ -1,6 +1,7 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.drones
 
 import jakarta.persistence.*
+import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity
@@ -24,7 +25,3 @@ data class Drone(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null
 ) : IBaseEntity
-
-enum class DroneStatus {
-    IDLE, READY, FLYING_TO, FLYING_FROM
-}

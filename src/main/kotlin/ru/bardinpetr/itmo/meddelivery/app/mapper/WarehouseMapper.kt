@@ -1,9 +1,9 @@
 package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import ru.bardinpetr.itmo.meddelivery.app.dto.WarehouseDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,

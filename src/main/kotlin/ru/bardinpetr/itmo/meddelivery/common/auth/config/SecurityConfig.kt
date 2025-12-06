@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.DBUserDetailsService
@@ -31,13 +30,14 @@ const val HASH_ALGO: String = "SHA-512"
     jsr250Enabled = true
 )
 class SecurityConfig(
-    private val userDetailsService: DBUserDetailsService,
-    private val passwordEncoder: PasswordEncoder,
     private val jwtAuthenticationFilter: JwtAuthenticationFilter
 ) {
 
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(
+        http: HttpSecurity,
+        authProvider: AuthenticationProvider
+    ): SecurityFilterChain {
         return http
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -47,26 +47,14 @@ class SecurityConfig(
                 it.disable()
             }
             .authorizeHttpRequests {
-                it
-                    .anyRequest().permitAll()
-//                    .requestMatchers(
-//                        AntPathRequestMatcher("/docs*"),
-//                        AntPathRequestMatcher("/docs/*"),
-//                        AntPathRequestMatcher("/swagger-ui/*"),
-//                        AntPathRequestMatcher("/auth/register"),
-//                        AntPathRequestMatcher("/auth/login"),
-//                        AntPathRequestMatcher("/auth/**"),
-//                        AntPathRequestMatcher("/ws"),
-//                        AntPathRequestMatcher("/ws/**")
-//                    ).permitAll()
-//                    .anyRequest().authenticated()
+                it.anyRequest().permitAll()
             }
             .exceptionHandling {
                 it.accessDeniedHandler { request, response, accessDeniedException ->
                     response.status = 403
                 }
             }
-            .authenticationProvider(authenticationProvider())
+            .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
@@ -86,7 +74,10 @@ class SecurityConfig(
     }
 
     @Bean
-    fun authenticationProvider(): AuthenticationProvider =
+    fun authenticationProvider(
+        userDetailsService: DBUserDetailsService,
+        passwordEncoder: PasswordEncoder
+    ): AuthenticationProvider =
         DaoAuthenticationProvider()
             .apply {
                 setUserDetailsService(userDetailsService)

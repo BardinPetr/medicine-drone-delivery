@@ -1,9 +1,9 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.geo
 
 import jakarta.persistence.*
-import org.hibernate.envers.RevisionTimestamp
+import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
-import java.time.Instant
 
 @Entity
 data class Route(

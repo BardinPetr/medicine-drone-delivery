@@ -1,4 +1,3 @@
-
 package ru.bardinpetr.itmo.meddelivery.app.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,7 +9,8 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestC
 
 @RequestMapping("/api/medicalfacility")
 @RestController
-class MedicalFacilityController : AbstractCommonRestController<MedicalFacility, MedicalFacilityDto>(MedicalFacility::class) {
+class MedicalFacilityController :
+    AbstractCommonRestController<MedicalFacility, MedicalFacilityDto>(MedicalFacility::class) {
     override fun remove(id: IdType) = throw IllegalAccessException("Not available")
     override fun update(id: IdType, rq: MedicalFacilityDto) = throw IllegalAccessException("Not available")
 }

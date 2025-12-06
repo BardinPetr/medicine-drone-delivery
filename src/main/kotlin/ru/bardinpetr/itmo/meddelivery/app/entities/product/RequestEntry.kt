@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.product
 
 import jakarta.persistence.*
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity

@@ -1,7 +1,11 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.drones
 
 import jakarta.persistence.*
-import org.hibernate.envers.RevisionTimestamp
+import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
+import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Route
+import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
+import ru.bardinpetr.itmo.meddelivery.app.entities.product.Request
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import java.time.Instant
 

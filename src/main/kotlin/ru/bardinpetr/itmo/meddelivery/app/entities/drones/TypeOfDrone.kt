@@ -1,12 +1,18 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.drones
 
 import jakarta.persistence.*
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity
-data class ProductType(
+data class TypeOfDrone(
     @Column(nullable = false)
-    var type: String,
+    var name: String,
+
+    @Column(nullable = false)
+    var maxWeight: Long,
+
+    @Column(nullable = false)
+    var speed: Double,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

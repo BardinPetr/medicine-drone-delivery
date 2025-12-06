@@ -25,12 +25,7 @@ class ResponseControllerAdvice : ResponseBodyAdvice<Any> {
         request: ServerHttpRequest,
         response: ServerHttpResponse
     ): Any =
-        if (body is ResponseEntity<*>)
-            body
-        else
-            (body ?: BaseResponse.error(404, "Not found"))
-                .let {
-                    if (it is BaseResponse) it
-                    else BaseResponse.ok(it)
-                }
+        body as? ResponseEntity<*>
+            ?: (body ?: BaseResponse.error(404, "Not found"))
+                .let { it as? BaseResponse ?: BaseResponse.ok(it) }
 }

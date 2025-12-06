@@ -1,18 +1,15 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.geo
 
 import jakarta.persistence.*
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity
-data class TypeOfDrone(
+data class NoFlightZone(
     @Column(nullable = false)
-    var name: String,
+    var radius: Float,
 
-    @Column(nullable = false)
-    var maxWeight: Long,
-
-    @Column(nullable = false)
-    var speed: Double,
+    @Embedded
+    var center: Point,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

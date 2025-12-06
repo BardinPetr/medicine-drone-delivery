@@ -1,7 +1,6 @@
 package ru.bardinpetr.itmo.meddelivery.common.rest.base
 
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
-import ru.bardinpetr.itmo.meddelivery.common.models.IBaseOwnedEntity
 
 
 interface IBaseMapper<E : IBaseEntity, D : IBaseDto> {

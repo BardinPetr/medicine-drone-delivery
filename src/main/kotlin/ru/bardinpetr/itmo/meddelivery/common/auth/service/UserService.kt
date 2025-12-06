@@ -12,7 +12,6 @@ import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.UserRepository
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.util.JWTService
-import org.springframework.security.core.userdetails.User as SpringUser
 
 @Service
 class UserService(
@@ -77,8 +76,8 @@ class UserService(
             ?.let(::find)
 }
 
-fun getAuthenticatedUserDetails(): org.springframework.security.core.userdetails.User? =
+fun getAuthenticatedUserDetails(): User? =
     SecurityContextHolder
         .getContext()
         ?.let { it.authentication as? UsernamePasswordAuthenticationToken }
-        ?.let { it.principal as? SpringUser }
+        ?.let { it.principal as? User }

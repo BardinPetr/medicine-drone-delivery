@@ -1,14 +1,16 @@
 package ru.bardinpetr.itmo.meddelivery.app.modules.map.service
 
 
-import io.github.dellisd.spatialk.geojson.*
-import io.github.dellisd.spatialk.geojson.dsl.feature
+import io.github.dellisd.spatialk.geojson.FeatureCollection
 import org.springframework.stereotype.Service
-import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.NoFlightZone
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.*
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
+import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository
+import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
 
 @Service
 class MapService(
@@ -41,42 +43,3 @@ class MapService(
             .mapNotNull(NoFlightZone::toGeoFeature)
             .let(::FeatureCollection)
 }
-
-fun Drone.toGeoFeature(): Feature? {
-    return feature(
-        id = id.toString(),
-        geometry = Point(Position(location.lon, location.lat))
-    ) {
-        put("type", typeOfDrone.name)
-    }
-}
-
-fun MedicalFacility.toGeoFeature(): Feature? {
-    return feature(
-        id = id.toString(),
-        geometry = Point(Position(location.lon, location.lat))
-    ) {
-        put("name", name)
-    }
-}
-
-fun Warehouse.toGeoFeature(): Feature? {
-    return feature(
-        id = id.toString(),
-        geometry = Point(Position(location.lon, location.lat))
-    ) {
-        put("name", name)
-    }
-}
-
-
-fun NoFlightZone.toGeoFeature(): Feature? {
-    return feature(
-        id = id.toString(),
-        geometry = Point(Position(center.lon, center.lat))
-    ) {
-        put("radius", radius)
-    }
-}
-
-

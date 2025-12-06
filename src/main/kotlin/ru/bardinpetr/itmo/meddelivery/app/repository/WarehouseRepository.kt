@@ -1,5 +1,4 @@
-
-package ru.bardinpetr.itmo.meddelivery.common.auth.repository
+package ru.bardinpetr.itmo.meddelivery.app.repository
 
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
