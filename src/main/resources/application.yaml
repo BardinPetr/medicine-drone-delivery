@@ -59,3 +59,7 @@ server:
 
 mqtt:
   host: 78.24.218.122
+
+app:
+  jwt:
+    secret: "demo-secret-key-to-be-changed-32-chars-minimum"

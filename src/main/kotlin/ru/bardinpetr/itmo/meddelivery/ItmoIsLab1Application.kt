@@ -11,6 +11,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.scheduling.annotation.EnableScheduling
 import ru.bardinpetr.itmo.meddelivery.app.modules.transport.DroneMover
 import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
+import ru.bardinpetr.itmo.meddelivery.app.service.DemoDataGenerator
 
 @SpringBootApplication
 @EnableScheduling
@@ -23,7 +24,9 @@ class ItmoMedDeliveryApplication {
     fun droneMover(droneRepository: DroneRepository): DroneMover = DroneMover(droneRepository)
 
     @Bean
-    fun demo() = CommandLineRunner {}
+    fun launchDataGenerator(gen: DemoDataGenerator) = CommandLineRunner { params ->
+        if (params.firstOrNull() == "generate") gen.launch()
+    }
 }
 
 fun main(args: Array<String>) {

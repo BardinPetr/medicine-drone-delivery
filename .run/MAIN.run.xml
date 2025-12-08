@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MAIN" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <module name="meddelivery.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="ru.bardinpetr.itmo.meddelivery.ItmoMedDeliveryApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
