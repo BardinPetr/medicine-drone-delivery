@@ -2,6 +2,7 @@ package ru.bardinpetr.itmo.meddelivery.app.modules.transport
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
@@ -11,13 +12,16 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.FlightTaskRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RouteRepository
+import java.util.concurrent.TimeUnit
 
 @Service
 class DroneSender(
     private val zoneRep: NoFlightZoneRepository,
     private val routeRepository: RouteRepository,
     private val flaskRepository: FlightTaskRepository,
-    private val droneRepository: DroneRepository
+    private val droneRepository: DroneRepository,
+    @Value("\${app.python-executable:}")
+    private val pythonExecutable: String
 ) {
     fun createRoute(zones: List<NoFlightZone>, start: Point, finish: Point, route: Route): MutableList<RoutePoint> {
         // Prepare input JSON
@@ -31,11 +35,15 @@ class DroneSender(
         val inputJson = objectMapper.writeValueAsString(inputMap)
 
         // Run the Python script
-        val processBuilder = ProcessBuilder("python", "router.py")
+        val processBuilder = ProcessBuilder(pythonExecutable)
         val process = processBuilder.start()
-        println(inputJson)
+
         // Write input JSON to the process
         process.outputStream.bufferedWriter().use { it.write(inputJson) }
+
+        process.waitFor(10, TimeUnit.SECONDS)
+        if (process.exitValue() != 0)
+            throw RuntimeException("Failed to communicate with router process")
 
         // Read the output JSON from the process
         val outputJson = process.inputStream.bufferedReader().use { it.readText() }

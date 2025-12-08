@@ -63,3 +63,4 @@ mqtt:
 app:
   jwt:
     secret: "demo-secret-key-to-be-changed-32-chars-minimum"
+  python-executable: "./python/run.sh"

@@ -118,7 +118,6 @@ class DroneMover(private val dronRep: DroneRepository) {
 
             dronRep.saveAllAndFlush(drones)
         }
-//        System.out.println("Aaaa")
         drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
 
         if (!drones.isEmpty()) {

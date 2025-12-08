@@ -120,8 +120,8 @@ class DemoDataGenerator(
     fun makeDrones() {
         val types = dTypeRepo.saveAllAndFlush(
             listOf(
-                TypeOfDrone("D-1", 100L, 10.0),
-                TypeOfDrone("D-2", 500L, 20.0),
+                TypeOfDrone("D-1", 100L, 0.002),
+                TypeOfDrone("D-2", 500L, 0.001),
             )
         )
         droneRepo.saveAllAndFlush((0..9).map {
