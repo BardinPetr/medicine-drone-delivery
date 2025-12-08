@@ -2,24 +2,32 @@ package ru.bardinpetr.itmo.meddelivery.common.ws
 
 import org.fusesource.mqtt.client.BlockingConnection
 import org.fusesource.mqtt.client.MQTT
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 
 typealias MQTTConn = BlockingConnection
 
-@EnableConfigurationProperties
-@ConfigurationProperties(prefix = "mqtt")
 @Configuration
-class MQTTConfig {
-
-    var mqttHost: String = "127.0.0.1"
+class MQTTConfig(
+    @Value("\${app.mqtt.host:127.0.0.1}")
+    val mqttHost: String,
+    @Value("\${app.mqtt.port:1883}")
+    val mqttPort: Int,
+) {
+    val log = logger<MQTTConfig>()
 
     @Bean
     fun getMQTTConn(): MQTTConn =
         MQTT()
-            .apply { setHost(mqttHost, 11883) }
+            .apply {
+                log.info("MQTT connecting to $mqttHost:$mqttPort")
+                setHost(mqttHost, mqttPort)
+            }
             .blockingConnection()
-            .apply { connect() }
+            .apply {
+                log.info("MQTT connected")
+                connect()
+            }
 }

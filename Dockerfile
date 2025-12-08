@@ -1,30 +1,31 @@
-FROM gradle:8.14.3-jdk21-alpine as build
+FROM gradle:8.14.3-jdk21-alpine AS build
 WORKDIR /app
 
 COPY gradle gradlew gradle.properties ./
 COPY build.gradle.kts settings.gradle.kts ./
 
-RUN gradle --no-daemon --parallel dependencies
+RUN gradle dependencies --no-daemon --info
 
 COPY gradle gradle
 COPY src src
 
 RUN gradle --no-daemon --parallel bootJar
 
-FROM eclipse-temurin:21-jre-alpine as run
+FROM eclipse-temurin:21-jre-alpine AS pyrun
 
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
-RUN pip3 install extremitypathfinder
+RUN apk add --update --no-cache python3
 
-COPY python/router.py .
+RUN mkdir /app/python
+COPY python/requirements.txt /app/python/
+RUN cd /app/python && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt
 
-FROM run
+COPY python/router.py python/run.sh /app/python/
+
+FROM pyrun
 
 COPY --from=build /app/build/libs/meddelivery.jar ./app.jar
 
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar", "generate"]
