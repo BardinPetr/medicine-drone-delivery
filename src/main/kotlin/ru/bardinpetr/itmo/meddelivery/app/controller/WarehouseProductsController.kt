@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.WarehouseProductsDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
+import ru.bardinpetr.itmo.meddelivery.app.entities.facility.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.mapper.WarehouseProductsMapper
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseProductsRepository
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
@@ -33,8 +33,9 @@ class WarehouseProductsController(
     fun create(@Valid @RequestBody rq: WarehouseProductsDto): WarehouseProductsDto =
         rq
             .also {
-                if (repository.findByProductIdAndWarehouseId(rq.product?.id!!, rq.warehouse?.id!!) != null)
-                    throw IllegalArgumentException("Existing product")
+                require(repository.findByProductIdAndWarehouseId(rq.product?.id!!, rq.warehouse?.id!!) == null) {
+                    "Existing product"
+                }
             }
             .let(mapper::toEntity)
             .let(repository::save)
@@ -46,7 +47,7 @@ class WarehouseProductsController(
         repository
             .findByProductIdAndWarehouseId(rq.product?.id!!, rq.warehouse?.id!!)
             ?.apply {
-                if (rq.quantity!! < 1) throw IllegalArgumentException("Invalid quantity")
+                require(rq.quantity!! >= 1) { "Invalid quantity" }
                 quantity = rq.quantity
             }
             ?.let(repository::save)

@@ -6,8 +6,15 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.drones.FlightTask
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 
 @Mapper(
-    unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
-    uses = [RequestMapper::class, ProductTypeMapper::class, WarehouseMapper::class, MedicalFacilityMapper::class, RouteMapper::class]
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
+    componentModel = MappingConstants.ComponentModel.SPRING,
+    uses = [
+        RequestMapper::class,
+        ProductTypeMapper::class,
+        WarehouseMapper::class,
+        MedicalFacilityMapper::class,
+        RouteMapper::class
+    ]
 )
 abstract class FlightTaskMapper : IBaseMapper<FlightTask, FlightTaskDto> {
 

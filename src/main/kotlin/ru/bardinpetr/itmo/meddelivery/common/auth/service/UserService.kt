@@ -28,10 +28,7 @@ class UserService(
 
     fun login(user: LoginDto): UserRsDto? =
         find(user.username)
-            ?.let {
-                if (passwordEncoder.matches(user.password, it.passwordHash)) it
-                else throw IllegalArgumentException("Invalid password")
-            }
+            ?.also { require(passwordEncoder.matches(user.password, it.passwordHash)) { "Invalid password" } }
             ?.let(User::toPrincipal)
             ?.let {
                 UserRsDto(
@@ -43,11 +40,10 @@ class UserService(
             ?: throw IllegalArgumentException("User not found")
 
     fun register(user: RegisterDto): UserRsDto? {
-        if (exists(user.username))
-            throw IllegalArgumentException("User already exists")
-        if (user.role == UserRole.ADMIN &&
-            userRepository.existsUserByRoleIs(UserRole.ADMIN)
-        ) throw IllegalArgumentException("Only once initial admin could be registered")
+        require(!exists(user.username)) { "User already exists" }
+        require(user.role != UserRole.ADMIN || !userRepository.existsUserByRoleIs(UserRole.ADMIN)) {
+            "Only once initial admin could be registered"
+        }
 
         return user
             .let {

@@ -9,4 +9,3 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestC
 @RequestMapping("/api/noflightzone")
 @RestController
 class NoFlightZoneController : AbstractCommonRestController<NoFlightZone, NoFlightZoneDto>(NoFlightZone::class)
-        

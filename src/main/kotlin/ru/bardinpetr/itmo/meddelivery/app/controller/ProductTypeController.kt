@@ -9,4 +9,3 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestC
 @RequestMapping("/api/producttype")
 @RestController
 class ProductTypeController : AbstractCommonRestController<ProductType, ProductTypeDto>(ProductType::class)
-        

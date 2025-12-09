@@ -1,6 +1,7 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities
+package ru.bardinpetr.itmo.meddelivery.app.entities.facility
 
 import jakarta.persistence.*
+import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
 import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
 import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import java.io.Serializable
@@ -23,4 +24,3 @@ data class WarehouseProducts(
     @Column(nullable = false)
     var quantity: Int
 ) : Serializable, ITypedBaseEntity<WarehouseProductsId>
-

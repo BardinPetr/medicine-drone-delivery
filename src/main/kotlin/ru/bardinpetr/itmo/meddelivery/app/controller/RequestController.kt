@@ -26,7 +26,7 @@ class RequestController(
 ) : AbstractCommonRestController<Request, RequestDto>(Request::class) {
 
     override fun preUpdateHook(old: Request, next: Request) {
-        throw IllegalStateException("Should not be updated")
+        error("Should not be updated")
     }
 
     @PostMapping

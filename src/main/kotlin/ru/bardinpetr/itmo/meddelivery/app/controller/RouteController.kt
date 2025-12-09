@@ -9,4 +9,3 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestC
 @RequestMapping("/api/route")
 @RestController
 class RouteController : AbstractCommonRestController<Route, RouteDto>(Route::class)
-        

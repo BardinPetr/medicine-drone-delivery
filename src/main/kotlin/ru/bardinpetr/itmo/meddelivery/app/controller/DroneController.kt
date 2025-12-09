@@ -27,8 +27,7 @@ class DroneController(
         val drone = repository
             .findById(id)
             .orElseThrow { IllegalArgumentException("Not found") }
-        if (drone.status != DroneStatus.READY)
-            throw IllegalArgumentException("Drone is not ready")
+        require(drone.status == DroneStatus.READY) { "Drone is not ready" }
         droneSender.sendDrone(drone)
         return true
     }

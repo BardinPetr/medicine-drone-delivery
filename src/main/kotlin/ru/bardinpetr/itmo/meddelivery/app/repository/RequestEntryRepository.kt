@@ -4,4 +4,3 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.product.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
 
 interface RequestEntryRepository : ICommonRestRepository<RequestEntry>
-        

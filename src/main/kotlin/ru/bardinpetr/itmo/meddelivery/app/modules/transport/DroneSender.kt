@@ -14,6 +14,8 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RouteRepository
 import java.util.concurrent.TimeUnit
 
+// TODO full refactor
+@Suppress("all")
 @Service
 class DroneSender(
     private val zoneRep: NoFlightZoneRepository,
@@ -23,7 +25,7 @@ class DroneSender(
     @Value("\${app.python-executable:}")
     private val pythonExecutable: String
 ) {
-    fun createRoute(zones: List<NoFlightZone>, start: Point, finish: Point, route: Route): MutableList<RoutePoint> {
+    fun createRoute(zones: List<NoFlightZone>, start: Point, finish: Point, route: Route): List<RoutePoint> {
         // Prepare input JSON
         val inputMap = mapOf(
             "circles" to zones.map { listOf(it.center.lat, it.center.lon, it.radius) },
@@ -42,15 +44,16 @@ class DroneSender(
         process.outputStream.bufferedWriter().use { it.write(inputJson) }
 
         process.waitFor(10, TimeUnit.SECONDS)
-        if (process.exitValue() != 0)
+        if (process.exitValue() != 0) {
             throw RuntimeException("Failed to communicate with router process")
+        }
 
         // Read the output JSON from the process
         val outputJson = process.inputStream.bufferedReader().use { it.readText() }
 
         // Deserialize the result into a list of Points
         val result: List<List<Double>> = objectMapper.readValue(outputJson)
-        val points = result.mapIndexed { index, coordinates ->
+        val points = result.mapIndexed { _, coordinates ->
             RoutePoint(
                 id = null,
                 route = route,
@@ -61,7 +64,7 @@ class DroneSender(
     }
 
     fun sendDrone(drone: Drone) {
-        val zones = zoneRep.findAll()
+        val zones: List<NoFlightZone> = zoneRep.findAll()
         val start = drone.flightTask?.warehouse?.location
         val finish = drone.flightTask?.medicalFacility?.location
 
@@ -77,7 +80,9 @@ class DroneSender(
         if (start != null && finish != null && route != null) {
             val points = createRoute(zones, start, finish, route)
             routeRepository.save(route)
-            points.mapIndexed { index, it -> it.id = route.id?.let { it1 -> RoutePointId(it1, index) } }
+            points.mapIndexed { index, pt ->
+                pt.id = route.id?.let { RoutePointId(it, index) }
+            }
             route.routePoints.addAll(points)
             routeRepository.save(route)
 
@@ -89,8 +94,6 @@ class DroneSender(
             drone.flightTask!!.status = TaskStatus.IN_PROGRESS
 
             droneRepository.save(drone)
-
         }
-
     }
 }

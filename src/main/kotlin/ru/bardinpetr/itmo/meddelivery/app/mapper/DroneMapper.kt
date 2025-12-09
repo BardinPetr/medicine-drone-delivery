@@ -6,7 +6,8 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 
 @Mapper(
-    unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
+    componentModel = MappingConstants.ComponentModel.SPRING,
     uses = [TypeOfDroneMapper::class]
 )
 abstract class DroneMapper : IBaseMapper<Drone, DroneDto> {

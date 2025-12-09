@@ -16,4 +16,3 @@ data class BaseResponse(
 
     fun toResponseEntity(): ResponseEntity<BaseResponse> = ResponseEntity.ok(this)
 }
-

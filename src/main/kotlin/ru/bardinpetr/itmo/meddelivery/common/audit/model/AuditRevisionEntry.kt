@@ -8,7 +8,6 @@ import ru.bardinpetr.itmo.meddelivery.common.audit.service.AuditListener
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import java.time.Instant
 
-
 typealias RevisionIdType = Long
 
 @Entity

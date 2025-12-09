@@ -6,4 +6,3 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
 interface ProductTypeRepository : ICommonRestRepository<ProductType> {
     fun findByType(typeName: String): ProductType?
 }
-        

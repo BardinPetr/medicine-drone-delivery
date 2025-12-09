@@ -19,9 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.DBUserDetailsService
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.JwtAuthenticationFilter
 
-
-const val HASH_ALGO: String = "SHA-512"
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(
@@ -50,7 +47,7 @@ class SecurityConfig(
                 it.anyRequest().permitAll()
             }
             .exceptionHandling {
-                it.accessDeniedHandler { request, response, accessDeniedException ->
+                it.accessDeniedHandler { _, response, _ ->
                     response.status = 403
                 }
             }
@@ -58,7 +55,6 @@ class SecurityConfig(
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
-
 
     @Bean
     fun corsConfigurer(): WebMvcConfigurer {

@@ -2,14 +2,15 @@ package ru.bardinpetr.itmo.meddelivery.common.auth.service.util
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder
-import org.springframework.security.crypto.password.MessageDigestPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import ru.bardinpetr.itmo.meddelivery.common.auth.config.HASH_ALGO
+
+const val PASS_ALGO = "bcrypt"
 
 @Configuration
 class PasswordEncoderConfiguration {
     @Bean
     fun passwordEncoder(): PasswordEncoder =
-        DelegatingPasswordEncoder(HASH_ALGO, mapOf(HASH_ALGO to MessageDigestPasswordEncoder(HASH_ALGO)))
+        DelegatingPasswordEncoder(PASS_ALGO, mapOf(PASS_ALGO to BCryptPasswordEncoder()))
 }

@@ -4,14 +4,13 @@ import io.github.dellisd.spatialk.geojson.Feature
 import io.github.dellisd.spatialk.geojson.Point
 import io.github.dellisd.spatialk.geojson.Position
 import io.github.dellisd.spatialk.geojson.dsl.feature
-import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
 import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
 import java.lang.Math.toRadians
 import kotlin.math.*
 import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point as PointEntity
-
 
 fun Drone.toGeoFeature(): Feature? {
     return feature(
@@ -41,7 +40,6 @@ fun Warehouse.toGeoFeature(): Feature? {
     }
 }
 
-
 fun NoFlightZone.toGeoFeature(): Feature? {
     return feature(
         id = id.toString(),
@@ -51,6 +49,7 @@ fun NoFlightZone.toGeoFeature(): Feature? {
     }
 }
 
+const val EARTH_RADIUS_M = 6371000
 
 fun PointEntity.distance(other: PointEntity): Double {
     val lat1 = toRadians(lat)
@@ -61,9 +60,8 @@ fun PointEntity.distance(other: PointEntity): Double {
     val dLon = lon2 - lon1
     val a = sin(dLat / 2).pow(2.0) + cos(lat1) * cos(lat2) * sin(dLon / 2).pow(2.0)
     val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    return 6371000.0 * c
+    return EARTH_RADIUS_M * c
 }
 
 fun NoFlightZone.containsPoint(point: PointEntity): Boolean =
     center.distance(point) <= this.radius
-

@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.util.JWTService
 
-
 @Component
 class JwtAuthenticationFilter(
     private val userDetailsService: DBUserDetailsService,
     private val jwtService: JWTService
 ) : OncePerRequestFilter() {
 
+    @Suppress("ReturnCount")
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -26,7 +26,9 @@ class JwtAuthenticationFilter(
         if (authHeader == null ||
             !authHeader.startsWith("Bearer") ||
             SecurityContextHolder.getContext().authentication != null
-        ) return filterChain.doFilter(request, response)
+        ) {
+            return filterChain.doFilter(request, response)
+        }
 
         val jwt = authHeader
             .split(" ")

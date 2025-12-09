@@ -16,6 +16,8 @@ import org.springframework.web.method.support.ModelAndViewContainer
 @Service
 class CustomPageableResolver : PageableHandlerMethodArgumentResolver() {
 
+    val defaultPageSize = 100
+
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return Pageable::class.java.isAssignableFrom(parameter.parameterType)
     }
@@ -27,7 +29,7 @@ class CustomPageableResolver : PageableHandlerMethodArgumentResolver() {
         binderFactory: WebDataBinderFactory?
     ): Pageable {
         val page = webRequest.getParameter(pageParameterName)?.toIntOrNull() ?: 0
-        val size = webRequest.getParameter(sizeParameterName)?.toIntOrNull() ?: 100
+        val size = webRequest.getParameter(sizeParameterName)?.toIntOrNull() ?: defaultPageSize
 
         val sort = webRequest
             .getParameter("sort")

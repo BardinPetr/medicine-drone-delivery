@@ -13,6 +13,7 @@ plugins {
     id("org.openapi.generator") version "7.17.0"
     id("org.liquibase.gradle") version "2.2.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    id("org.sonarqube") version "7.2.0.6526"
 }
 
 group = "ru.bardinpetr.itmo"
@@ -119,6 +120,27 @@ dependencyAnalysis {
 }
 
 detekt {
+    config.setFrom("detekt.yml")
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        html.required = true
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "BardinPetr_medicine-drone-delivery")
+        property("sonar.organization", "bardinpetr")
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "BardinPetr_medicine-drone-delivery")
+        property("sonar.organization", "bardinpetr")
+    }
 }
 
 tasks.withType<Detekt>().configureEach {

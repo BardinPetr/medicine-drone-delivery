@@ -39,6 +39,6 @@ private fun resolveField(root: Root<*>, path: String): Path<Any> {
     var src: Path<Any> = root as Path<Any>
     path
         .split(".")
-        .forEach { src = src.get(it) }
+        .forEach { src = src[it] }
     return src
 }

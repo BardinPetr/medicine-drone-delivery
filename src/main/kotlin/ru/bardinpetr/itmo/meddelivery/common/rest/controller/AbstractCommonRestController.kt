@@ -58,7 +58,7 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
             .let(mapper::toDto)
             .also { notifier.notifyChanges(clazz, it.id!!, NotifyChangeType.ADD) }
 
-    protected fun preCreateHook(e: E) {
+    protected fun preCreateHook(e: E) { // can be used to alter initial object state
     }
 
     @GetMapping("/{id}")
@@ -73,7 +73,6 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
         repository
             .findById(id)
             .orElseThrow { NotFoundException() }
-            .also(::raiseForOwnership)
             .let(repository::delete)
             .also { notifier.notifyChanges(clazz, id, NotifyChangeType.REM) }
         return true
@@ -85,7 +84,6 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
             repository
                 .findById(id)
                 .orElseThrow { NotFoundException() }
-                .also(::raiseForOwnership)
         return rq
             .let(mapper::toEntity)
             .apply { preUpdateHook(original, this) }
@@ -111,6 +109,4 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
 //            throw NotFoundException()
 //        return auditService.getEntityAuditLog(id)
 //    }
-
-    private fun raiseForOwnership(item: IBaseEntity) {}
 }

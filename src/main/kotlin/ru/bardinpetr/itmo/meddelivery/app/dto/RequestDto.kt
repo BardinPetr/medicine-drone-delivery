@@ -1,10 +1,6 @@
 package ru.bardinpetr.itmo.meddelivery.app.dto
 
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
-
-/**
- * DTO for {@link ru.bardinpetr.itmo.meddelivery.app.entities.Request}
- */
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 
 data class RequestDto(

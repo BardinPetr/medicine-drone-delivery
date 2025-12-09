@@ -36,7 +36,7 @@ def proc_dto():
         txt = open(fn).read()
         if 'IBaseDto' in txt: continue
         if 'val id: Long? = null' not in txt: continue
-        out = re.sub("data class", "import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto\n\ndata class", txt)
+        out = txt.replace("data class", "import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto\n\ndata class")
         out = out.strip() + " : IBaseDto"
         out = out.replace("val id: Long? = null", "override val id: Long? = null")
         wr(fn, out)

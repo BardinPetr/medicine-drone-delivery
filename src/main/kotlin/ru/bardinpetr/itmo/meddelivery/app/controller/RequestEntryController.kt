@@ -9,4 +9,3 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestC
 @RequestMapping("/api/requestentry")
 @RestController
 class RequestEntryController : AbstractCommonRestController<RequestEntry, RequestEntryDto>(RequestEntry::class)
-        

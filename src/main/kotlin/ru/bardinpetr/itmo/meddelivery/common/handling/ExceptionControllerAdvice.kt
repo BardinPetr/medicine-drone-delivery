@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.BaseResponse
 
-
 @ControllerAdvice
 class ExceptionControllerAdvice {
     @ExceptionHandler(Throwable::class)

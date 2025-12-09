@@ -32,13 +32,16 @@ class FilterModelQueryConverter : Converter<String, FilterModel> {
                 .split(",")
                 .mapNotNull {
                     val parts = it.split("#")
-                    if (parts.size != 3) null else
+                    if (parts.size != 3) {
+                        null
+                    } else {
                         FilterConstraintModel(
                             field = parts[0],
                             operator = FilterOperator.valueOf(parts[1]),
                             value = parts[2],
                             type = "string"
                         )
+                    }
                 }
         )
 }

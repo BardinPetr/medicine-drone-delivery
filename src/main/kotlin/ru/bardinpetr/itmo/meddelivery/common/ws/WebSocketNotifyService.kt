@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.reflect.KClass
 
-
 @Service
 class WebSocketNotifyService(
     private val mqtt: MQTTConn

@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
-import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TypeOfDrone
+import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
+import ru.bardinpetr.itmo.meddelivery.app.entities.facility.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
 import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point
 import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
@@ -23,6 +23,7 @@ import ru.bardinpetr.itmo.meddelivery.common.auth.repository.UserRepository
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 @Service
 class DemoDataGenerator(
     val em: EntityManager,
@@ -38,8 +39,8 @@ class DemoDataGenerator(
 ) {
     @Autowired
     @Lazy
-    protected lateinit var _self: DemoDataGenerator
-    protected val self
+    private lateinit var _self: DemoDataGenerator
+    private val self
         get() = if (this::_self.isInitialized) _self else this
 
     var noFlightZones: List<NoFlightZone> = emptyList()
@@ -83,7 +84,6 @@ class DemoDataGenerator(
             .let(em::createNativeQuery)
             .executeUpdate()
 
-
     @Transactional
     fun makeUsers() {
         userService.register(RegisterDto("admin", "12345678", UserRole.ADMIN))
@@ -96,24 +96,28 @@ class DemoDataGenerator(
     @Transactional
     fun makeMedicalFacilities() {
         val medics = userRepo.findAllByRoleIs(UserRole.MEDIC)
-        mfRepo.saveAllAndFlush(medics.mapIndexed { i, mUser ->
-            MedicalFacility(
-                name = "MF#$i",
-                responsibleUser = mUser,
-                location = randomPoint()
-            )
-        })
+        mfRepo.saveAllAndFlush(
+            medics.mapIndexed { i, mUser ->
+                MedicalFacility(
+                    name = "MF#$i",
+                    responsibleUser = mUser,
+                    location = randomPoint()
+                )
+            }
+        )
     }
 
     @Transactional
     fun makeWarehouses() {
-        wRepo.saveAllAndFlush((1..5).map {
-            Warehouse(
-                name = "WH#$it",
-                location = randomPoint(),
-                products = mutableListOf()
-            )
-        })
+        wRepo.saveAllAndFlush(
+            (1..5).map {
+                Warehouse(
+                    name = "WH#$it",
+                    location = randomPoint(),
+                    products = mutableListOf()
+                )
+            }
+        )
     }
 
     @Transactional
@@ -124,13 +128,15 @@ class DemoDataGenerator(
                 TypeOfDrone("D-2", 500L, 0.001),
             )
         )
-        droneRepo.saveAllAndFlush((0..9).map {
-            Drone(
-                typeOfDrone = types.random(),
-                status = DroneStatus.IDLE,
-                location = randomPoint(),
-            )
-        })
+        droneRepo.saveAllAndFlush(
+            (0..9).map {
+                Drone(
+                    typeOfDrone = types.random(),
+                    status = DroneStatus.IDLE,
+                    location = randomPoint(),
+                )
+            }
+        )
     }
 
     @Transactional

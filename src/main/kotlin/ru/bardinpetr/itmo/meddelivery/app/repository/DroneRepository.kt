@@ -7,4 +7,3 @@ import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
 interface DroneRepository : ICommonRestRepository<Drone> {
     fun findAllByStatus(status: DroneStatus): List<Drone>
 }
-        

@@ -11,7 +11,8 @@ import java.lang.Math.pow
 import kotlin.math.abs
 import kotlin.math.min
 
-
+// TODO full refactor
+@Suppress("all")
 @Service
 class DroneMover(private val dronRep: DroneRepository) {
 
@@ -25,7 +26,8 @@ class DroneMover(private val dronRep: DroneRepository) {
 
         for (i in path.size - 1 downTo 0) {
             val distanceToPoint = calculateDistance(
-                path[i], Point(currentLat, currentLon)
+                path[i],
+                Point(currentLat, currentLon)
             )
 
             if (distanceToPoint < minDistance) {
@@ -35,7 +37,6 @@ class DroneMover(private val dronRep: DroneRepository) {
         }
         return closestPointIndex
     }
-
 
     fun findNextPoint(
         path: List<Point>,
@@ -74,7 +75,6 @@ class DroneMover(private val dronRep: DroneRepository) {
         return result
     }
 
-
     @Scheduled(fixedRate = 250)
     @Transactional
     fun moveDrones() {
@@ -112,7 +112,6 @@ class DroneMover(private val dronRep: DroneRepository) {
                             drone.flightTask!!.status = TaskStatus.COMPLETED
                         }
                     }
-
                 }
             }
 
@@ -148,17 +147,14 @@ class DroneMover(private val dronRep: DroneRepository) {
                         if (
                             abs(drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.0001 &&
                             abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.0001
-                        )
+                        ) {
                             drone.status = DroneStatus.FLYING_FROM
+                        }
                     }
-
-
                 }
             }
 
             dronRep.saveAllAndFlush(drones)
         }
-
-
     }
 }

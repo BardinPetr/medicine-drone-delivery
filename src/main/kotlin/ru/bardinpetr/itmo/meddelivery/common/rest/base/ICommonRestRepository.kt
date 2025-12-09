@@ -10,7 +10,6 @@ import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 
-
 /**
  * Common repository for Entity
  * @param T object type
