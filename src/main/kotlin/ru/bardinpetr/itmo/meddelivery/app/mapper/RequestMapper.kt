@@ -3,8 +3,8 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 import org.mapstruct.*
 import org.springframework.beans.factory.annotation.Autowired
 import ru.bardinpetr.itmo.meddelivery.app.dto.RequestDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.Request
+import ru.bardinpetr.itmo.meddelivery.app.entities.Request
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper

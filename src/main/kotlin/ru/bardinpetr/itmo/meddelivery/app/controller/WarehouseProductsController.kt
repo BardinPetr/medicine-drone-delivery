@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.WarehouseProductsDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.WarehouseProducts
+import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.mapper.WarehouseProductsMapper
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseProductsRepository
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper

@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured
 import org.springframework.data.web.config.EnableSpringDataWebSupport
 import org.springframework.scheduling.annotation.EnableScheduling
-import ru.bardinpetr.itmo.meddelivery.app.modules.transport.DroneMover
 import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.DemoDataGenerator
+import ru.bardinpetr.itmo.meddelivery.app.service.drone.DroneSimulator
 
 @SpringBootApplication
 @EnableScheduling
@@ -21,7 +21,7 @@ import ru.bardinpetr.itmo.meddelivery.app.service.DemoDataGenerator
 @EnableSpringConfigured
 class ItmoMedDeliveryApplication {
     @Bean
-    fun droneMover(droneRepository: DroneRepository): DroneMover = DroneMover(droneRepository)
+    fun droneMover(droneRepository: DroneRepository): DroneSimulator = DroneSimulator(droneRepository)
 
     @Bean
     fun launchDataGenerator(gen: DemoDataGenerator) = CommandLineRunner { params ->

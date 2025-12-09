@@ -1,8 +1,6 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities.geo
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity

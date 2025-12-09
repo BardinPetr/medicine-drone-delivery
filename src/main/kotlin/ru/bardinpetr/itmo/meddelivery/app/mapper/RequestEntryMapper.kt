@@ -3,8 +3,8 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 import org.mapstruct.*
 import org.springframework.beans.factory.annotation.Autowired
 import ru.bardinpetr.itmo.meddelivery.app.dto.RequestEntryDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.Request
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.RequestEntry
+import ru.bardinpetr.itmo.meddelivery.app.entities.Request
+import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import kotlin.jvm.optionals.getOrNull

@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities.product
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable

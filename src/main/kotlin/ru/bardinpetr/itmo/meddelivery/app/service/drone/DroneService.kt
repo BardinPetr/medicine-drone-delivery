@@ -1,10 +1,9 @@
-package ru.bardinpetr.itmo.meddelivery.app.service
+package ru.bardinpetr.itmo.meddelivery.app.service.drone
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
-import ru.bardinpetr.itmo.meddelivery.app.modules.transport.DroneSender
+import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
 
 @Service

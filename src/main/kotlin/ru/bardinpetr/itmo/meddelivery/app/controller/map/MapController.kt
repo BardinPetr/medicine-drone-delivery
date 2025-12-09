@@ -1,9 +1,9 @@
-package ru.bardinpetr.itmo.meddelivery.app.modules.map.controller
+package ru.bardinpetr.itmo.meddelivery.app.controller.map
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.bardinpetr.itmo.meddelivery.app.modules.map.service.MapService
+import ru.bardinpetr.itmo.meddelivery.app.service.map.MapService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
 
 @RestController

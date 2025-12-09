@@ -2,7 +2,7 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.NoFlightZoneDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
+import ru.bardinpetr.itmo.meddelivery.app.entities.NoFlightZone
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)

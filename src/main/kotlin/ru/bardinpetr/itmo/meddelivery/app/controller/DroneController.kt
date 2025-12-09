@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.bardinpetr.itmo.meddelivery.app.dto.DroneDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
-import ru.bardinpetr.itmo.meddelivery.app.service.DroneService
+import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.app.service.drone.DroneService
 import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
 

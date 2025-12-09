@@ -1,13 +1,17 @@
-package ru.bardinpetr.itmo.meddelivery.app.modules.transport
+package ru.bardinpetr.itmo.meddelivery.app.service.drone
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.*
+import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.NoFlightZone
+import ru.bardinpetr.itmo.meddelivery.app.entities.Point
+import ru.bardinpetr.itmo.meddelivery.app.entities.Route
+import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
+import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePointId
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.FlightTaskRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository

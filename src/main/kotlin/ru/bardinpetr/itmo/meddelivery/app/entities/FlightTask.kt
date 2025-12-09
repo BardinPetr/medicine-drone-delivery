@@ -1,11 +1,7 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities.drones
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Route
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.Request
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import java.time.Instant
 

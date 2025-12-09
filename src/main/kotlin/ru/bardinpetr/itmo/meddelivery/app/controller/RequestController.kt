@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.bardinpetr.itmo.meddelivery.app.dto.RequestDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.Request
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.RequestEntry
+import ru.bardinpetr.itmo.meddelivery.app.entities.Request
+import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.ProductTypeRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestEntryRepository

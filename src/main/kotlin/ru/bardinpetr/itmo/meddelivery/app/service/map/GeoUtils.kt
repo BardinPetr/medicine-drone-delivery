@@ -1,16 +1,16 @@
-package ru.bardinpetr.itmo.meddelivery.app.modules.map.service
+package ru.bardinpetr.itmo.meddelivery.app.service.map
 
 import io.github.dellisd.spatialk.geojson.Feature
 import io.github.dellisd.spatialk.geojson.Point
 import io.github.dellisd.spatialk.geojson.Position
 import io.github.dellisd.spatialk.geojson.dsl.feature
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
+import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.NoFlightZone
+import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import java.lang.Math.toRadians
 import kotlin.math.*
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point as PointEntity
+import ru.bardinpetr.itmo.meddelivery.app.entities.Point as PointEntity
 
 fun Drone.toGeoFeature(): Feature? {
     return feature(

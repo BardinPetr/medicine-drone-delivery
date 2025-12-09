@@ -1,7 +1,7 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities.drones
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 
 @Entity

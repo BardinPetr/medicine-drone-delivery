@@ -1,8 +1,6 @@
-package ru.bardinpetr.itmo.meddelivery.app.entities.facility
+package ru.bardinpetr.itmo.meddelivery.app.entities
 
 import jakarta.persistence.*
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.WarehouseProductsId
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
 import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 import java.io.Serializable
 

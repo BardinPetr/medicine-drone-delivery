@@ -3,9 +3,9 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 import org.mapstruct.*
 import org.springframework.beans.factory.annotation.Autowired
 import ru.bardinpetr.itmo.meddelivery.app.dto.RouteDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Route
+import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.Route
+import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
