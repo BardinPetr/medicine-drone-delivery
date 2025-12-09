@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.bardinpetr.itmo.meddelivery.app.dto.DroneDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
-import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.modules.transport.DroneSender
 import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
 
@@ -23,11 +23,11 @@ class DroneController(
     }
 
     @PostMapping("/{id}/send")
-    fun sendDrone(@PathVariable id: Long) : Boolean {
+    fun sendDrone(@PathVariable id: Long): Boolean {
         val drone = repository
             .findById(id)
             .orElseThrow { IllegalArgumentException("Not found") }
-        if(drone.status != DroneStatus.READY)
+        if (drone.status != DroneStatus.READY)
             throw IllegalArgumentException("Drone is not ready")
         droneSender.sendDrone(drone)
         return true

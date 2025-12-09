@@ -1,6 +1,6 @@
 package ru.bardinpetr.itmo.meddelivery.app.dto
 
-import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 
 /**

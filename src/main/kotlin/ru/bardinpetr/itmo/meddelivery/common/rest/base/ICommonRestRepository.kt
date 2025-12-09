@@ -25,7 +25,7 @@ interface ICommonRestRepository<T : IBaseEntity> : IBaseCommonRestRepository<T, 
  */
 @Transactional(readOnly = true)
 @NoRepositoryBean
-interface IBaseCommonRestRepository<T : ITypedBaseEntity<I>, I: Any> :
+interface IBaseCommonRestRepository<T : ITypedBaseEntity<I>, I : Any> :
     CrudRepository<T, I>,
     JpaRepository<T, I>,
     ListPagingAndSortingRepository<T, I>,

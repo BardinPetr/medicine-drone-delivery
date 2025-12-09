@@ -5,4 +5,9 @@ package ru.bardinpetr.itmo.meddelivery.app.dto
  */
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 
-data class TypeOfDroneDto(val name: String?, val maxWeight: Long?, val speed: Double?, override val id: Long? = null) : IBaseDto
+data class TypeOfDroneDto(
+    val name: String?,
+    val maxWeight: Long?,
+    val speed: Double?,
+    override val id: Long? = null
+) : IBaseDto

@@ -8,4 +8,5 @@ interface UserRepository : ICommonRestRepository<User> {
     fun existsUserByRoleIs(role: UserRole): Boolean
     fun findUserByUsername(username: String): User?
     fun existsUserByUsername(username: String): Boolean
+    fun findAllByRoleIs(role: UserRole): List<User>
 }

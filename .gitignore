@@ -42,3 +42,6 @@ out/
 amplicode.xml
 
 solution/.ssh/
+solution/.tmp/
+
+python/venv/

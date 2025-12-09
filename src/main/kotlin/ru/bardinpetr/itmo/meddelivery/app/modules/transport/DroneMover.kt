@@ -1,12 +1,15 @@
+package ru.bardinpetr.itmo.meddelivery.app.modules.transport
+
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.bardinpetr.itmo.meddelivery.app.entities.DroneStatus
-import ru.bardinpetr.itmo.meddelivery.app.entities.Point
-import ru.bardinpetr.itmo.meddelivery.app.entities.TaskStatus
-import ru.bardinpetr.itmo.meddelivery.common.auth.repository.DroneRepository
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
+import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point
+import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import java.lang.Math.pow
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.min
 
 
 @Service
@@ -32,7 +35,6 @@ class DroneMover(private val dronRep: DroneRepository) {
         }
         return closestPointIndex
     }
-
 
 
     fun findNextPoint(
@@ -116,7 +118,6 @@ class DroneMover(private val dronRep: DroneRepository) {
 
             dronRep.saveAllAndFlush(drones)
         }
-//        System.out.println("Aaaa")
         drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
 
         if (!drones.isEmpty()) {
