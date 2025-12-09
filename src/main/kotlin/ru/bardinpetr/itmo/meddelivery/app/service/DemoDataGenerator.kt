@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TypeOfDrone
@@ -15,6 +14,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.facility.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
 import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point
 import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
+import ru.bardinpetr.itmo.meddelivery.app.entities.product.WarehouseProductsId
 import ru.bardinpetr.itmo.meddelivery.app.modules.map.service.containsPoint
 import ru.bardinpetr.itmo.meddelivery.app.repository.*
 import ru.bardinpetr.itmo.meddelivery.common.auth.dto.RegisterDto

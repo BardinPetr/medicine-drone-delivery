@@ -10,19 +10,20 @@ import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
 import ru.bardinpetr.itmo.meddelivery.common.rest.search.FilterModel
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
-import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 import ru.bardinpetr.itmo.meddelivery.common.ws.WebSocketNotifyService
 import kotlin.reflect.KClass
 
 @Validated
 @EnableResponseWrapper
 abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
-    private val clazz: KClass<E>,
+    protected val clazz: KClass<E>,
+    protected val service: AbstractBaseService<E>
 ) {
     @Autowired
     protected lateinit var notifier: WebSocketNotifyService
@@ -32,9 +33,6 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
 
     @Autowired
     protected lateinit var repository: ICommonRestRepository<E>
-
-//    @Autowired
-//    protected lateinit var auditService: AuditService<E>
 
     @Autowired
     protected lateinit var userService: UserService
@@ -47,66 +45,33 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
 
     @GetMapping("/all")
     fun listAll(): List<D> =
-        repository.findAll().map(mapper::toDto)
+        service.getAll().map(mapper::toDto)
 
     @PostMapping
     fun create(@Valid @RequestBody rq: D): D =
         rq
             .let(mapper::toEntity)
-            .apply(::preCreateHook)
-            .let(repository::save)
+            .let(service::create)
             .let(mapper::toDto)
-            .also { notifier.notifyChanges(clazz, it.id!!, NotifyChangeType.ADD) }
-
-    protected fun preCreateHook(e: E) { // can be used to alter initial object state
-    }
 
     @GetMapping("/{id}")
     fun get(@PathVariable id: IdType): D =
-        repository
-            .findById(id)
-            .orElseThrow { NotFoundException() }
-            .let(mapper::toDto)
+        service.get(id)
+            ?.let(mapper::toDto)
+            ?: throw NotFoundException()
 
     @DeleteMapping("/{id}")
-    fun remove(@PathVariable id: IdType): Boolean {
-        repository
-            .findById(id)
-            .orElseThrow { NotFoundException() }
-            .let(repository::delete)
-            .also { notifier.notifyChanges(clazz, id, NotifyChangeType.REM) }
-        return true
-    }
+    fun remove(@PathVariable id: IdType) =
+        service.remove(id)
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: IdType, @Valid @RequestBody rq: D): D {
-        val original =
-            repository
-                .findById(id)
-                .orElseThrow { NotFoundException() }
         return rq
             .let(mapper::toEntity)
-            .apply { preUpdateHook(original, this) }
-            .let(repository::save)
+            .let { service.update(id, it) }
             .let(mapper::toDto)
-            .also { notifier.notifyChanges(clazz, id, NotifyChangeType.MOD) }
-    }
-
-    protected fun preUpdateHook(old: E, next: E) {
-        next.id = old.id
     }
 
     @GetMapping("/count")
-    fun count() = repository.count()
-
-//    @GetMapping("/audit")
-//    fun audit(pageable: Pageable): List<AuditLogEntry<E>> =
-//        auditService.getAuditLog(pageable)
-//
-//    @GetMapping("/{id}/audit")
-//    fun auditItem(@PathVariable id: IdType): List<AuditLogEntry<E>>? {
-//        if (!repository.existsById(id))
-//            throw NotFoundException()
-//        return auditService.getEntityAuditLog(id)
-//    }
+    fun count() = service.count()
 }

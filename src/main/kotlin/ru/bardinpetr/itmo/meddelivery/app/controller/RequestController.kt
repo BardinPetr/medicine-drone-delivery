@@ -13,7 +13,10 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.ProductTypeRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestEntryRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
+import ru.bardinpetr.itmo.meddelivery.app.service.RequestService
+import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
+import ru.bardinpetr.itmo.meddelivery.common.rest.controller.deny
 import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 
 @RequestMapping("/api/request")
@@ -22,12 +25,11 @@ class RequestController(
     val mfRepo: MedicalFacilityRepository,
     val requestRepository: RequestRepository,
     val productTypeRepository: ProductTypeRepository,
-    val entryRepository: RequestEntryRepository
-) : AbstractCommonRestController<Request, RequestDto>(Request::class) {
+    val entryRepository: RequestEntryRepository,
+    override val service: RequestService
+) : AbstractCommonRestController<Request, RequestDto>(Request::class, service) {
 
-    override fun preUpdateHook(old: Request, next: Request) {
-        error("Should not be updated")
-    }
+    override fun update(id: IdType, rq: RequestDto): RequestDto = deny()
 
     @PostMapping
     override fun create(@Valid @RequestBody rq: RequestDto): RequestDto {
