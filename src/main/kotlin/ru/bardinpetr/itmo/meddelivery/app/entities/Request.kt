@@ -19,7 +19,7 @@ data class Request(
     @JoinColumn(name = "medical_facility_id", nullable = false)
     var medicalFacility: MedicalFacility?,
 
-    @OneToMany(mappedBy = "request")
+    @OneToMany(mappedBy = "request", cascade = [CascadeType.ALL], orphanRemoval = true)
     var requestEntries: MutableList<RequestEntry> = mutableListOf(),
 
     @Id

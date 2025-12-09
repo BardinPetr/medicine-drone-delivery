@@ -11,6 +11,7 @@ class DroneService(
     private val droneSender: DroneSender
 ) : AbstractBaseService<Drone>(Drone::class) {
 
+    @Transactional
     override fun create(entity: Drone): Drone =
         entity
             .copy(status = DroneStatus.IDLE, flightTask = null)

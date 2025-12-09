@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.app.controller.auth
+package ru.bardinpetr.itmo.meddelivery.common.auth.controller
 
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
