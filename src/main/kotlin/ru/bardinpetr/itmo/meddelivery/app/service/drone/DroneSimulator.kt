@@ -13,7 +13,10 @@ import kotlin.math.min
 // TODO full refactor
 @Suppress("all")
 @Service
-class DroneSimulator(private val dronRep: DroneRepository) {
+class DroneSimulator(
+    private val repo: DroneRepository,
+    private val droneService: DroneService,
+) {
 
     fun findClosestPoint(
         path: List<Point>,
@@ -78,7 +81,7 @@ class DroneSimulator(private val dronRep: DroneRepository) {
     @Transactional
     fun moveDrones() {
         val time = 1
-        var drones = dronRep.findAllByStatus(DroneStatus.FLYING_FROM)
+        var drones = repo.findAllByStatus(DroneStatus.FLYING_FROM)
 
         if (!drones.isEmpty()) {
             drones.forEach { drone ->
@@ -109,14 +112,15 @@ class DroneSimulator(private val dronRep: DroneRepository) {
                         ) {
                             drone.status = DroneStatus.IDLE
                             drone.flightTask!!.status = TaskStatus.COMPLETED
+                            droneService.droneArrived(drone)
                         }
                     }
                 }
             }
 
-            dronRep.saveAllAndFlush(drones)
+            repo.saveAllAndFlush(drones)
         }
-        drones = dronRep.findAllByStatus(DroneStatus.FLYING_TO)
+        drones = repo.findAllByStatus(DroneStatus.FLYING_TO)
 
         if (!drones.isEmpty()) {
             drones.forEach { drone ->
@@ -153,7 +157,7 @@ class DroneSimulator(private val dronRep: DroneRepository) {
                 }
             }
 
-            dronRep.saveAllAndFlush(drones)
+            repo.saveAllAndFlush(drones)
         }
     }
 }

@@ -5,12 +5,14 @@ import org.springframework.transaction.annotation.Transactional
 import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
+import ru.bardinpetr.itmo.meddelivery.app.events.EventSenderService
 import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
 
 @Service
 class DroneService(
     override val repo: DroneRepository,
+    private val evt: EventSenderService
 ) : AbstractBaseService<Drone>(Drone::class, repo) {
 
     @Transactional
@@ -34,4 +36,8 @@ class DroneService(
     fun findIdleDrones(): List<Drone> =
         repo.findAllByStatus(DroneStatus.IDLE)
             .sortedByDescending { it.typeOfDrone.maxWeight }
+
+    fun droneArrived(drone: Drone) {
+        evt.sendProcessPlans()
+    }
 }

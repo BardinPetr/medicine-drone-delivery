@@ -1,6 +1,7 @@
 package ru.bardinpetr.itmo.meddelivery.app.service.drone
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -9,6 +10,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask
 import ru.bardinpetr.itmo.meddelivery.app.entities.Request
 import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
+import ru.bardinpetr.itmo.meddelivery.app.events.ExecutePlanningApplicationEvent
 import ru.bardinpetr.itmo.meddelivery.app.repository.FlightTaskRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.RequestEntryService
@@ -25,12 +27,16 @@ open class FlightPlannerService(
     private val droneService: DroneService,
     private val flightTaskRepo: FlightTaskRepository,
     private val routeService: RouteService,
-) {
+) : ApplicationListener<ExecutePlanningApplicationEvent> {
     @Autowired
     @Lazy
     private lateinit var _self: FlightPlannerService
     private val self
         get() = if (this::_self.isInitialized) _self else this
+
+    override fun onApplicationEvent(event: ExecutePlanningApplicationEvent) {
+        self.processUnfulfilledRequests()
+    }
 
     @Transactional
     fun processUnfulfilledRequests() {

@@ -7,6 +7,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
+import ru.bardinpetr.itmo.meddelivery.app.service.drone.FlightPlannerService
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.errors.NotAvailableException
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
@@ -19,6 +20,7 @@ class RequestService(
     private val requestRepo: RequestRepository,
     private val facilityRepo: MedicalFacilityRepository,
     private val userService: UserService,
+    private val plannerService: FlightPlannerService,
     override val repo: ICommonRestRepository<Request>,
 ) : AbstractBaseService<Request>(Request::class, repo) {
 
@@ -34,6 +36,7 @@ class RequestService(
             .apply { requestEntries.addAll(entries) }
             .let(requestRepo::save)
             .also { notifier.notifyChanges(Request::class, it.id!!, NotifyChangeType.ADD) }
+            .also(plannerService::processNewRequest)
     }
 
     override fun create(input: Request): Request = throw NotAvailableException()
