@@ -6,12 +6,12 @@ import ru.bardinpetr.itmo.meddelivery.common.models.ITypedBaseEntity
 @Entity
 data class RoutePoint(
     @EmbeddedId
-    override var id: RoutePointId?,
+    override var id: RoutePointId? = null,
 
     @ManyToOne
     @MapsId("routeId")
     @JoinColumn(name = "route_id", nullable = false)
-    var route: Route,
+    var route: Route? = null,
 
     @Embedded
     var location: Point,

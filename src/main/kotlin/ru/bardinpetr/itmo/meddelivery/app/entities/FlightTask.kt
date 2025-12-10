@@ -28,7 +28,7 @@ data class FlightTask(
     var medicalFacility: MedicalFacility? = null,
 
     @Column(nullable = false)
-    var quantity: Int,
+    var quantity: Int = 0,
 
     @OneToMany(mappedBy = "flightTask")
     var drones: MutableList<Drone> = mutableListOf(),
@@ -39,7 +39,7 @@ data class FlightTask(
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    var timestamp: Instant,
+    var timestamp: Instant = Instant.now(),
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

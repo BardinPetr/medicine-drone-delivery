@@ -11,12 +11,9 @@ import kotlin.jvm.optionals.getOrNull
 import kotlin.reflect.KClass
 
 abstract class AbstractBaseService<E : IBaseEntity>(
-    protected val clazz: KClass<E>
+    protected val clazz: KClass<E>,
+    protected open val repo: ICommonRestRepository<E>
 ) {
-
-    @Autowired
-    protected lateinit var repo: ICommonRestRepository<E>
-
     @Autowired
     protected lateinit var notifier: WebSocketNotifyService
 

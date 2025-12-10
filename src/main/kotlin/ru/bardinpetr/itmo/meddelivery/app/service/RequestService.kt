@@ -11,6 +11,7 @@ import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.errors.NotAvailableException
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
+import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
 import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 
 @Service
@@ -18,7 +19,8 @@ class RequestService(
     private val requestRepo: RequestRepository,
     private val facilityRepo: MedicalFacilityRepository,
     private val userService: UserService,
-) : AbstractBaseService<Request>(Request::class) {
+    override val repo: ICommonRestRepository<Request>,
+) : AbstractBaseService<Request>(Request::class, repo) {
 
     @Transactional
     fun makeOrder(entries: List<RequestEntry>): Request {

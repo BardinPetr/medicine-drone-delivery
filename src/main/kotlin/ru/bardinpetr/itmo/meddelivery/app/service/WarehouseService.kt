@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
@@ -20,8 +21,9 @@ import kotlin.jvm.optionals.getOrElse
 class WarehouseService(
     private val productsRepo: WarehouseProductsRepository,
     private val productTypeRepo: ProductTypeRepository,
-    private val warehouseRepo: WarehouseRepository
-) : AbstractBaseService<Warehouse>(Warehouse::class) {
+    private val warehouseRepo: WarehouseRepository,
+    repo: WarehouseRepository
+) : AbstractBaseService<Warehouse>(Warehouse::class, repo) {
 
     fun getProducts(
         spec: Specification<WarehouseProducts>?,
@@ -41,4 +43,7 @@ class WarehouseService(
             .apply { quantity = newQuantity }
             .let(productsRepo::save)
             .also { notifier.notifyChanges(WarehouseProducts::class, 0, NotifyChangeType.MOD) }
+
+    fun findAvailableWarehouses(rq: RequestEntry): List<WarehouseProducts> =
+        productsRepo.findByProductIdAndQuantityGreaterThanEqualOrderByQuantityDesc(rq.productType.id!!, 0L)
 }
