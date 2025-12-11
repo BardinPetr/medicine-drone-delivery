@@ -1,5 +1,6 @@
 package ru.bardinpetr.itmo.meddelivery.app.controller.map
 
+import org.maplibre.spatialk.geojson.toJson
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -15,17 +16,17 @@ class MapController(
 
     @GetMapping("drones.geojson")
     fun drones(): String =
-        mapService.getDrones().json()
+        mapService.getDrones().toJson()
 
     @GetMapping("medical.geojson")
     fun medicalFacilities(): String =
-        mapService.getMedicalFacilities().json()
+        mapService.getMedicalFacilities().toJson()
 
     @GetMapping("warehouses.geojson")
     fun warehouses(): String =
-        mapService.getWarehouses().json()
+        mapService.getWarehouses().toJson()
 
     @GetMapping("noFlightZones.geojson")
     fun noZones(): String =
-        mapService.getNoFlightZones().json()
+        mapService.getNoFlightZones().toJson()
 }

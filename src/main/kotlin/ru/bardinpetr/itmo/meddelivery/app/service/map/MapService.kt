@@ -1,6 +1,7 @@
 package ru.bardinpetr.itmo.meddelivery.app.service.map
 
-import io.github.dellisd.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.Point
 import org.springframework.stereotype.Service
 import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
 import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
@@ -18,25 +19,25 @@ class MapService(
     private val warehouseRepository: WarehouseRepository,
     private val zoneRepository: NoFlightZoneRepository,
 ) {
-    fun getDrones(): FeatureCollection =
+    fun getDrones(): FeatureCollection<Point, *> =
         droneRepository
             .findAll()
             .mapNotNull(Drone::toGeoFeature)
             .let(::FeatureCollection)
 
-    fun getMedicalFacilities(): FeatureCollection =
+    fun getMedicalFacilities(): FeatureCollection<Point, *> =
         medicalFacilityRepository
             .findAll()
             .mapNotNull(MedicalFacility::toGeoFeature)
             .let(::FeatureCollection)
 
-    fun getWarehouses(): FeatureCollection =
+    fun getWarehouses(): FeatureCollection<Point, *> =
         warehouseRepository
             .findAll()
             .mapNotNull(Warehouse::toGeoFeature)
             .let(::FeatureCollection)
 
-    fun getNoFlightZones(): FeatureCollection =
+    fun getNoFlightZones(): FeatureCollection<Point, *> =
         zoneRepository
             .findAll()
             .mapNotNull(NoFlightZone::toGeoFeature)
