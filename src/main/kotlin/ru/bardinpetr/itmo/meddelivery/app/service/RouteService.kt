@@ -38,7 +38,7 @@ class RouteService(
                         location = pt,
                     )
                 }
-            route.routePoints.addAll(pts)
+            route.routePoints.addAll(pts + pts.reversed())
             repo.save(route)
         }
         return route

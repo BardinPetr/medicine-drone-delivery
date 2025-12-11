@@ -74,8 +74,9 @@ open class FlightPlannerService(
         )
 
         while (leftQuantity > 0 && availability.isNotEmpty() && drones.isNotEmpty()) {
-            val nextWarehouse = availability.first()
-            val allowedToTake = min(nextWarehouse.quantity, leftQuantity)
+            val nextWarehouseProduct = availability.first()
+            val nextWarehouse = nextWarehouseProduct.warehouse
+            val allowedToTake = min(nextWarehouseProduct.quantity, leftQuantity)
 
             val drone = drones.removeFirst()
             val assignedQuantity = min(drone.typeOfDrone.maxWeight.toInt(), allowedToTake)
@@ -84,22 +85,23 @@ open class FlightPlannerService(
             tasks.add(
                 flightTaskTemplate.copy(
                     quantity = assignedQuantity,
-                    warehouse = nextWarehouse.warehouse,
+                    warehouse = nextWarehouse,
                     drones = mutableListOf(drone),
                     timestamp = Instant.now(),
                 )
             )
+            droneService.updateDrone(drone.id!!) { location = nextWarehouse.location }
 
-            if (nextWarehouse.quantity <= assignedQuantity) {
+            if (nextWarehouseProduct.quantity <= assignedQuantity) {
                 availability.removeFirst()
             } else {
                 availability.first().quantity -= assignedQuantity
             }
 
             warehouseService.setProductQuantity(
-                nextWarehouse.product.id!!,
-                nextWarehouse.warehouse.id!!,
-                nextWarehouse.quantity - assignedQuantity
+                nextWarehouseProduct.product.id!!,
+                nextWarehouse.id!!,
+                nextWarehouseProduct.quantity - assignedQuantity
             )
         }
 

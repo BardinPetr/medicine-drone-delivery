@@ -8,18 +8,21 @@ import org.maplibre.spatialk.turf.measurement.distance
 import org.maplibre.spatialk.turf.measurement.offset
 import org.maplibre.spatialk.units.extensions.inMeters
 import org.maplibre.spatialk.units.extensions.meters
-import org.springframework.beans.factory.annotation.Value
 import ru.bardinpetr.itmo.meddelivery.app.service.map.pt
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.logger
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.atomics.AtomicReference
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 open class BaseDroneSimulator(
+    pool: ScheduledThreadPoolExecutor?,
     val droneId: IdType,
     val speedMS: Double,
-    @Value("\${app.sim.epsilon-meters}")
     private val pointReachEpsilonMeters: Double,
+    private val stepPeriodMillis: Long,
+    startRunner: Boolean = true
 ) {
     private val log = logger<BaseDroneSimulator>("ID#$droneId")
 
@@ -30,15 +33,22 @@ open class BaseDroneSimulator(
     protected open var currentPoint = 0
     protected open val route: MutableList<Point> = mutableListOf()
 
+    init {
+        if (startRunner) {
+            pool?.scheduleAtFixedRate({ step(stepPeriodMillis / 1000.0) }, 0, stepPeriodMillis, TimeUnit.MILLISECONDS)
+        }
+    }
+
     fun setRoute(new: List<Point>) {
         require(new.size >= 2)
         currentPoint = -1
         route.clear()
         route.addAll(new)
+        position = new.first()
         state.store(DroneSimState.IDLE)
     }
 
-    fun start(startRunner: Boolean = true) {
+    fun start() {
         state.store(DroneSimState.FLYING)
     }
 
@@ -88,86 +98,3 @@ open class BaseDroneSimulator(
     val currentState
         get() = state.load()
 }
-
-//    @Scheduled(fixedRate = 250)
-//    @Transactional
-//    fun moveDrones() {
-//        var drones = repo.findAllByStatus(DroneStatus.FLYING_FROM)
-//
-//        if (!drones.isEmpty()) {
-//            drones.forEach { drone ->
-//                run {
-//                    val route = drone.flightTask?.route
-//                    val path = route?.routePoints?.sortedByDescending { routePoint -> routePoint.id?.pointNumber }
-//                    if (path != null) {
-//                        val ppath = addPointsAtInterval(
-//                            path.map { routePoint -> routePoint.location },
-//                            drone.typeOfDrone.speed * time
-//                        )
-//                        val nextPoint = ppath.let {
-//                            findNextPoint(
-//                                it,
-//                                drone.location.lat,
-//                                drone.location.lon,
-//                                drone.typeOfDrone.speed,
-//                                time.toDouble()
-//                            )
-//                        }
-//
-//                        drone.location.lat = nextPoint.lat
-//                        drone.location.lon = nextPoint.lon
-//
-//                        if (
-//                            abs(drone.location.lat - drone.flightTask!!.warehouse?.location?.lat!!) < 0.0001 &&
-//                            abs(drone.location.lon - drone.flightTask!!.warehouse?.location?.lon!!) < 0.0001
-//                        ) {
-//                            drone.status = DroneStatus.IDLE
-//                            drone.flightTask!!.status = TaskStatus.COMPLETED
-//                            droneService.droneArrived(drone)
-//                        }
-//                    }
-//                }
-//            }
-//
-//            repo.saveAllAndFlush(drones)
-//        }
-//        drones = repo.findAllByStatus(DroneStatus.FLYING_TO)
-//
-//        if (!drones.isEmpty()) {
-//            drones.forEach { drone ->
-//                run {
-//                    val route = drone.flightTask?.route
-//                    val path = route?.routePoints?.sortedBy { routePoint -> routePoint.id?.pointNumber }
-//                    if (path != null) {
-//                        val ppath = addPointsAtInterval(
-//                            path.map { routePoint -> routePoint.location },
-//                            drone.typeOfDrone.speed * time
-//                        )
-//                        val nextPoint = ppath.let {
-//                            findNextPoint(
-//                                it,
-//                                drone.location.lat,
-//                                drone.location.lon,
-//                                drone.typeOfDrone.speed,
-//                                time.toDouble()
-//                            )
-//                        }
-//
-//                        drone.location.lat = nextPoint.lat
-//                        drone.location.lon = nextPoint.lon
-//
-//                        drone.location.lat = nextPoint.lat
-//                        drone.location.lon = nextPoint.lon
-//                        if (
-//                            abs(drone.location.lat - drone.flightTask!!.medicalFacility?.location?.lat!!) < 0.0001 &&
-//                            abs(drone.location.lon - drone.flightTask!!.medicalFacility?.location?.lon!!) < 0.0001
-//                        ) {
-//                            drone.status = DroneStatus.FLYING_FROM
-//                        }
-//                    }
-//                }
-//            }
-//
-//            repo.saveAllAndFlush(drones)
-//        }
-//    }

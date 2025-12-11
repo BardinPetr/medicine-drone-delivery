@@ -10,7 +10,7 @@ import org.maplibre.spatialk.units.extensions.inMeters
 import ru.bardinpetr.itmo.meddelivery.app.service.map.featureCollection
 import ru.bardinpetr.itmo.meddelivery.app.service.map.toKPoint
 import ru.bardinpetr.itmo.meddelivery.app.service.sim.DroneSimState
-import ru.bardinpetr.itmo.meddelivery.app.service.sim.DroneSimulator
+import ru.bardinpetr.itmo.meddelivery.app.service.sim.BaseDroneSimulator
 
 class DroneSimulatorTest {
     @Test
@@ -19,7 +19,7 @@ class DroneSimulatorTest {
         val speed = 10.0 // m/s
         val timeStep = 20.0 // sec
 
-        val sim = DroneSimulator(0, speed, epsilon)
+        val sim = BaseDroneSimulator(null, 0, speed, epsilon, 0, startRunner = false)
 
         val route = listOf(
             59.931796 to 30.316429,
@@ -36,7 +36,7 @@ class DroneSimulatorTest {
             59.924399 to 30.289650,
         ).map { it.toKPoint() }
         sim.setRoute(route)
-        sim.start(startRunner = false)
+        sim.start()
 
         val flightLog = mutableListOf<Point>()
         var reachedStartPoint = false

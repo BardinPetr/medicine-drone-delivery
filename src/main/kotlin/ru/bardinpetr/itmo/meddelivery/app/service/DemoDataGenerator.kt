@@ -17,6 +17,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.*
 import ru.bardinpetr.itmo.meddelivery.app.service.map.containsPoint
+import ru.bardinpetr.itmo.meddelivery.app.service.fleet.DBDroneFleet
 import ru.bardinpetr.itmo.meddelivery.common.auth.dto.RegisterDto
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.UserRepository
@@ -35,7 +36,8 @@ class DemoDataGenerator(
     val droneRepo: DroneRepository,
     val nfzRepo: NoFlightZoneRepository,
     val pTypeRepo: ProductTypeRepository,
-    val whProducts: WarehouseProductsRepository
+    val whProducts: WarehouseProductsRepository,
+    val fleet: DBDroneFleet
 ) {
     @Autowired
     @Lazy
@@ -53,6 +55,7 @@ class DemoDataGenerator(
         self.makeMedicalFacilities()
         self.makeDrones()
         self.makeProducts()
+        fleet.makeFleet()
     }
 
     private fun randomPoint(): Point {
