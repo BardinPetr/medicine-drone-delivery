@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask
 import ru.bardinpetr.itmo.meddelivery.app.entities.Request
 import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.events.ExecutePlanningApplicationEvent
 import ru.bardinpetr.itmo.meddelivery.app.repository.FlightTaskRepository
@@ -16,7 +16,10 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.RequestEntryService
 import ru.bardinpetr.itmo.meddelivery.app.service.RouteService
 import ru.bardinpetr.itmo.meddelivery.app.service.WarehouseService
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 import java.time.Instant
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import kotlin.math.min
 
 @Service
@@ -34,6 +37,9 @@ open class FlightPlannerService(
     private val self
         get() = if (this::_self.isInitialized) _self else this
 
+    private val log = logger<FlightPlannerService>()
+    private val lock = ReentrantLock()
+
     override fun onApplicationEvent(event: ExecutePlanningApplicationEvent) {
         self.processUnfulfilledRequests()
     }
@@ -46,19 +52,14 @@ open class FlightPlannerService(
     }
 
     @Transactional
-    fun processNewRequest(request: Request) {
-        assign(request, request.requestEntries)
-    }
-
-    @Transactional
     protected fun assign(request: Request, unfulfilled: List<RequestEntry>) {
         unfulfilled
             .flatMap { entry -> self.assignWarehouseAndDrone(request, entry) }
             .map { ft -> self.assignRoute(ft) }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    protected fun assignWarehouseAndDrone(request: Request, entry: RequestEntry): List<FlightTask> {
+    @Transactional
+    protected fun assignWarehouseAndDrone(request: Request, entry: RequestEntry): List<FlightTask> = lock.withLock {
         val tasks = mutableListOf<FlightTask>()
         val targetQuantity = entry.quantity
         var leftQuantity = targetQuantity
@@ -73,6 +74,8 @@ open class FlightPlannerService(
             medicalFacility = request.medicalFacility
         )
 
+        log.info("Started planning request ${request.id}: ${entry.quantity} pieces of ${entry.productType.type}")
+
         while (leftQuantity > 0 && availability.isNotEmpty() && drones.isNotEmpty()) {
             val nextWarehouseProduct = availability.first()
             val nextWarehouse = nextWarehouseProduct.warehouse
@@ -82,7 +85,7 @@ open class FlightPlannerService(
             val assignedQuantity = min(drone.typeOfDrone.maxWeight.toInt(), allowedToTake)
             if (assignedQuantity < 1) break
 
-            tasks.add(
+            val task = flightTaskRepo.save(
                 flightTaskTemplate.copy(
                     quantity = assignedQuantity,
                     warehouse = nextWarehouse,
@@ -90,12 +93,11 @@ open class FlightPlannerService(
                     timestamp = Instant.now(),
                 )
             )
-            droneService.updateDrone(drone.id!!) { location = nextWarehouse.location }
-
-            if (nextWarehouseProduct.quantity <= assignedQuantity) {
-                availability.removeFirst()
-            } else {
-                availability.first().quantity -= assignedQuantity
+            tasks.add(task)
+            droneService.updateDrone(drone.id!!) {
+                location = nextWarehouse.location
+                status = DroneStatus.READY
+                flightTask = task
             }
 
             warehouseService.setProductQuantity(
@@ -103,11 +105,19 @@ open class FlightPlannerService(
                 nextWarehouse.id!!,
                 nextWarehouseProduct.quantity - assignedQuantity
             )
+
+            if (nextWarehouseProduct.quantity <= assignedQuantity) {
+                availability.removeFirst()
+            } else {
+                availability.first().quantity -= assignedQuantity
+            }
+            leftQuantity -= assignedQuantity
+            log.info("Assigned partially $assignedQuantity items from WH#${nextWarehouse.id} by DR#${drone.id}")
         }
 
-        request.status = TaskStatus.IN_PROGRESS
-        requestRepository.save(request)
+        reqEntryService.entryIncreaseFulfilledQuantity(entry.id!!, targetQuantity - leftQuantity)
 
+        log.info("Assigned drones: ${tasks.map { it.drones.first().id!! }.joinToString(";")}")
         return flightTaskRepo.saveAllAndFlush(tasks)
     }
 

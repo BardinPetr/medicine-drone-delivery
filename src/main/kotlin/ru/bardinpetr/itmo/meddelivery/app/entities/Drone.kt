@@ -17,7 +17,7 @@ data class Drone(
     @Embedded
     var location: Point,
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade = [CascadeType.ALL])
     @JoinColumn(name = "flight_task_id")
     var flightTask: FlightTask? = null,
 

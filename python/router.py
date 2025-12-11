@@ -1,14 +1,24 @@
 import json
-
+import math
 from extremitypathfinder import PolygonEnvironment
 
+def degrees_per_meter(lat):
+    a = 6378137.0
+    b = 6356752.314245
+    e2 = 1 - (b**2 / a**2)
+    lat_rad = math.radians(lat)
+    meridional = a * (1 - e2) / (1 - e2 * math.sin(lat_rad)**2)**(3/2)
+    parallel = a * math.cos(lat_rad) / math.sqrt(1 - e2 * math.sin(lat_rad)**2)
+    return math.degrees(1 / meridional), math.degrees(1 / parallel)
 
 def get_bbox(circle):
-    x, y, radius = circle
-    top_left = (x - radius, y + radius)
-    top_right = (x + radius, y + radius)
-    bottom_right = (x + radius, y - radius)
-    bottom_left = (x - radius, y - radius)
+    lat, lon, radius = circle
+    dlat, dlon = degrees_per_meter(lat)
+    r_lat, r_lon = radius * dlat, radius * dlon
+    top_left = (lat - r_lat, lon + r_lon)
+    top_right = (lat + r_lat, lon + r_lon)
+    bottom_right = (lat + r_lat, lon - r_lon)
+    bottom_left = (lat - r_lat, lon - r_lon)
     return [top_left, top_right, bottom_right, bottom_left]
 
 

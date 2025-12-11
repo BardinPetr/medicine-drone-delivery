@@ -66,5 +66,5 @@ app:
     port: 11883
   sim:
     threads: 8
-    epsilon-meters: 100
-    time-period-millis: 500
+    epsilon-meters: 300
+    time-period-millis: 200

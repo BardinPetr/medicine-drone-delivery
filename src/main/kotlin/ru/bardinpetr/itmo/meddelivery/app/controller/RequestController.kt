@@ -25,7 +25,7 @@ class RequestController(
     @PostMapping
     override fun create(@Valid @RequestBody rq: RequestDto): RequestDto =
         rq.requestEntries
-            .map(requestEntryMapper::toEntity)
+            .map(requestEntryMapper::toModel)
             .let(service::makeOrder)
             .let(mapper::toDto)
 }

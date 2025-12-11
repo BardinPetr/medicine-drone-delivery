@@ -127,8 +127,8 @@ class DemoDataGenerator(
     fun makeDrones() {
         val types = dTypeRepo.saveAllAndFlush(
             listOf(
-                TypeOfDrone("D-1", 100L, 0.002),
-                TypeOfDrone("D-2", 500L, 0.001),
+                TypeOfDrone("D-1", 5L, 1200.0),
+                TypeOfDrone("D-2", 10L, 900.0),
             )
         )
         droneRepo.saveAllAndFlush(
@@ -144,7 +144,7 @@ class DemoDataGenerator(
 
     @Transactional
     fun makeNoFlightZones(): List<NoFlightZone> = nfzRepo.saveAllAndFlush(
-        (0..5).map {
+        (0..10).map {
             NoFlightZone(
                 radius = Random.nextDouble(1000.0, 2000.0).toFloat(),
                 center = randomPoint(),

@@ -22,15 +22,16 @@ class RouteService(
         var route = repo.findByWarehouseIdAndMedicalFacilityId(warehouseId, medicalId)
         if (route == null) {
             val warehouseStart = warehouseService.get(warehouseId) ?: notFound()
-            val medicalEnd = medicalService.get(warehouseId) ?: notFound()
+            val medicalEnd = medicalService.get(medicalId) ?: notFound()
             route = repo.save(
                 Route(
                     warehouse = warehouseStart,
                     medicalFacility = medicalEnd
                 )
             )
-            val pts = router
+            router
                 .makeRoute(warehouseStart.location, medicalEnd.location)
+                .let { it + it.reversed().drop(1) }
                 .mapIndexed { idx, pt ->
                     RoutePoint(
                         id = RoutePointId(route.id!!, idx),
@@ -38,8 +39,8 @@ class RouteService(
                         location = pt,
                     )
                 }
-            route.routePoints.addAll(pts + pts.reversed())
-            repo.save(route)
+                .let { route.routePoints.addAll(it) }
+            return repo.save(route)
         }
         return route
     }

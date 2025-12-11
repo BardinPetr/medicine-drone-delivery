@@ -23,7 +23,6 @@ class WarehouseService(
     private val productsRepo: WarehouseProductsRepository,
     private val productTypeRepo: ProductTypeRepository,
     private val warehouseRepo: WarehouseRepository,
-    private val evt: EventSenderService,
     repo: WarehouseRepository
 ) : AbstractBaseService<Warehouse>(Warehouse::class, repo) {
 
@@ -45,7 +44,6 @@ class WarehouseService(
             .apply { quantity = newQuantity }
             .let(productsRepo::save)
             .also { notifier.notifyChanges(WarehouseProducts::class, 0, NotifyChangeType.MOD) }
-            .also { evt.sendProcessPlans() }
 
     fun findAvailableWarehouses(rq: RequestEntry): List<WarehouseProducts> =
         productsRepo.findByProductIdAndQuantityGreaterThanEqualOrderByQuantityDesc(rq.productType.id!!, 0L)

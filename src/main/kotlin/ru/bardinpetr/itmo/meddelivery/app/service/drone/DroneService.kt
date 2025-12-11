@@ -53,7 +53,10 @@ class DroneService(
 
     @Transactional
     fun droneArrived(droneId: IdType) {
-        updateDrone(droneId) { status = DroneStatus.IDLE }
+        updateDrone(droneId) {
+            status = DroneStatus.IDLE
+            flightTask = null
+        }
         evt.sendProcessPlans()
     }
 

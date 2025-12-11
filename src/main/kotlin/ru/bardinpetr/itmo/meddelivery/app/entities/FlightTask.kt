@@ -30,7 +30,7 @@ data class FlightTask(
     @Column(nullable = false)
     var quantity: Int = 0,
 
-    @OneToMany(mappedBy = "flightTask")
+    @OneToMany(mappedBy = "flightTask", cascade = [CascadeType.ALL])
     var drones: MutableList<Drone> = mutableListOf(),
 
     @ManyToOne

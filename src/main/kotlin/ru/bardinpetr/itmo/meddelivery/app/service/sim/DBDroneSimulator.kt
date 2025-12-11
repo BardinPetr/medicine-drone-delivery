@@ -23,7 +23,7 @@ class DBDroneSimulator(
 
     override fun onPointReached(reachedId: Int) {
         super.onPointReached(reachedId)
-        if (reachedId == ceil(route.size / 2.0).toInt()) {
+        if (reachedId == route.size / 2) {
             droneService.updateDroneState(droneId, DroneStatus.FLYING_FROM)
         }
     }

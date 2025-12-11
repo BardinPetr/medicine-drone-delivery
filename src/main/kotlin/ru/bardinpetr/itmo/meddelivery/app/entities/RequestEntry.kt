@@ -9,7 +9,7 @@ data class RequestEntry(
     @JoinColumn(name = "request_id", nullable = false)
     var request: Request?,
 
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "product_type_id", nullable = false)
     var productType: ProductType,
 

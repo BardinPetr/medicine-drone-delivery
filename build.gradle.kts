@@ -137,13 +137,6 @@ sonar {
     }
 }
 
-sonar {
-    properties {
-        property("sonar.projectKey", "BardinPetr_medicine-drone-delivery")
-        property("sonar.organization", "bardinpetr")
-    }
-}
-
 tasks.withType<Detekt>().configureEach {
     reports {
         html.required.set(true)
