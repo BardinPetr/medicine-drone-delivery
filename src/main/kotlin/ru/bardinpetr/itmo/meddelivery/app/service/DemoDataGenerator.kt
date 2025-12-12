@@ -5,18 +5,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility
+import ru.bardinpetr.itmo.meddelivery.app.entities.NoFlightZone
+import ru.bardinpetr.itmo.meddelivery.app.entities.Point
+import ru.bardinpetr.itmo.meddelivery.app.entities.ProductType
+import ru.bardinpetr.itmo.meddelivery.app.entities.TypeOfDrone
+import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
+import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.DroneStatus
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TypeOfDrone
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.MedicalFacility
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.Warehouse
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.WarehouseProducts
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.NoFlightZone
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.Point
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.ProductType
-import ru.bardinpetr.itmo.meddelivery.app.modules.map.service.containsPoint
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.*
+import ru.bardinpetr.itmo.meddelivery.app.service.fleet.DBDroneFleet
+import ru.bardinpetr.itmo.meddelivery.app.service.map.containsPoint
 import ru.bardinpetr.itmo.meddelivery.common.auth.dto.RegisterDto
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.UserRepository
@@ -35,7 +36,8 @@ class DemoDataGenerator(
     val droneRepo: DroneRepository,
     val nfzRepo: NoFlightZoneRepository,
     val pTypeRepo: ProductTypeRepository,
-    val whProducts: WarehouseProductsRepository
+    val whProducts: WarehouseProductsRepository,
+    val fleet: DBDroneFleet
 ) {
     @Autowired
     @Lazy
@@ -53,6 +55,7 @@ class DemoDataGenerator(
         self.makeMedicalFacilities()
         self.makeDrones()
         self.makeProducts()
+        fleet.makeFleet()
     }
 
     private fun randomPoint(): Point {
@@ -124,8 +127,8 @@ class DemoDataGenerator(
     fun makeDrones() {
         val types = dTypeRepo.saveAllAndFlush(
             listOf(
-                TypeOfDrone("D-1", 100L, 0.002),
-                TypeOfDrone("D-2", 500L, 0.001),
+                TypeOfDrone("D-1", 5L, 1200.0),
+                TypeOfDrone("D-2", 10L, 900.0),
             )
         )
         droneRepo.saveAllAndFlush(
@@ -141,7 +144,7 @@ class DemoDataGenerator(
 
     @Transactional
     fun makeNoFlightZones(): List<NoFlightZone> = nfzRepo.saveAllAndFlush(
-        (0..5).map {
+        (0..10).map {
             NoFlightZone(
                 radius = Random.nextDouble(1000.0, 2000.0).toFloat(),
                 center = randomPoint(),

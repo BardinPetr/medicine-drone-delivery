@@ -1,7 +1,7 @@
 package ru.bardinpetr.itmo.meddelivery.app.dto
 
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.TaskStatus
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
+import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseDto
 import java.time.Instant
 
 /**

@@ -2,7 +2,7 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.RoutePointDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.geo.RoutePoint
+import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 abstract class RoutePointMapper {

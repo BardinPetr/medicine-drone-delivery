@@ -4,9 +4,9 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     kotlin("jvm")
     kotlin("kapt")
-    kotlin("plugin.spring") version "2.0.21"
-    kotlin("plugin.jpa") version "2.0.21"
-    kotlin("plugin.allopen") version "2.0.21"
+    kotlin("plugin.spring") version "2.2.20"
+    kotlin("plugin.jpa") version "2.2.20"
+    kotlin("plugin.allopen") version "2.2.20"
 
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
@@ -66,7 +66,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
     // geo
-    implementation("io.github.dellisd.spatialk:geojson:0.3.0")
+    implementation("org.maplibre.spatialk:geojson:0.6.1")
+    implementation("org.maplibre.spatialk:turf:0.6.1")
 
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -126,13 +127,6 @@ detekt {
 tasks.withType<Detekt>().configureEach {
     reports {
         html.required = true
-    }
-}
-
-sonar {
-    properties {
-        property("sonar.projectKey", "BardinPetr_medicine-drone-delivery")
-        property("sonar.organization", "bardinpetr")
     }
 }
 

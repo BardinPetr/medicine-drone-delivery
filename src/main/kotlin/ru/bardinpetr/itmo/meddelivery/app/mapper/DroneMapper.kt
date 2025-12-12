@@ -2,8 +2,8 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.DroneDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.drones.Drone
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,

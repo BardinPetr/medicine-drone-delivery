@@ -2,7 +2,7 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 
 import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.WarehouseProductsDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.facility.WarehouseProducts
+import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,

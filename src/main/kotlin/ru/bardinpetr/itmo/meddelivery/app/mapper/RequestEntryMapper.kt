@@ -3,10 +3,11 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 import org.mapstruct.*
 import org.springframework.beans.factory.annotation.Autowired
 import ru.bardinpetr.itmo.meddelivery.app.dto.RequestEntryDto
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.Request
-import ru.bardinpetr.itmo.meddelivery.app.entities.product.RequestEntry
+import ru.bardinpetr.itmo.meddelivery.app.entities.Request
+import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
+import ru.bardinpetr.itmo.meddelivery.app.models.RequestEntryModel
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 import kotlin.jvm.optionals.getOrNull
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
@@ -33,6 +34,11 @@ abstract class RequestEntryMapper : IBaseMapper<RequestEntry, RequestEntryDto> {
         requestEntryDto: RequestEntryDto,
         @MappingTarget requestEntry: RequestEntry
     ): RequestEntry
+
+    @Mappings(
+        Mapping(source = "productTypeType", target = "productTypeCode")
+    )
+    abstract fun toModel(requestEntryDto: RequestEntryDto): RequestEntryModel
 
     fun createRequest(requestId: Long?): Request? =
         requestId

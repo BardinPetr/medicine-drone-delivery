@@ -12,7 +12,7 @@ import org.springdoc.core.customizers.OperationCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.HandlerMethod
-import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
+import ru.bardinpetr.itmo.meddelivery.common.base.controller.AbstractCommonRestController
 import java.util.*
 
 @Configuration
