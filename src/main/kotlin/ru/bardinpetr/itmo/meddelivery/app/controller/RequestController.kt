@@ -9,9 +9,9 @@ import ru.bardinpetr.itmo.meddelivery.app.dto.RequestDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.Request
 import ru.bardinpetr.itmo.meddelivery.app.mapper.RequestEntryMapper
 import ru.bardinpetr.itmo.meddelivery.app.service.RequestService
+import ru.bardinpetr.itmo.meddelivery.common.base.controller.AbstractCommonRestController
+import ru.bardinpetr.itmo.meddelivery.common.base.controller.deny
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
-import ru.bardinpetr.itmo.meddelivery.common.rest.controller.deny
 
 @RequestMapping("/api/request")
 @RestController

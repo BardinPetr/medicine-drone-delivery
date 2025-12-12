@@ -7,7 +7,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.Request
 import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.app.models.RequestEntryModel
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 import kotlin.jvm.optionals.getOrNull
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
@@ -45,4 +45,3 @@ abstract class RequestEntryMapper : IBaseMapper<RequestEntry, RequestEntryDto> {
             ?.let(reqRepo::findById)
             ?.getOrNull()
 }
-

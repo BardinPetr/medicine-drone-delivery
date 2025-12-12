@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.app.config
+package ru.bardinpetr.itmo.meddelivery.common.config
 
 import jakarta.persistence.EntityManagerFactory
 import org.hibernate.envers.AuditReader

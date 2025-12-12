@@ -3,7 +3,7 @@ package ru.bardinpetr.itmo.meddelivery.common.auth.dto
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseDto
 
 data class UserDto(
     @field:NotBlank

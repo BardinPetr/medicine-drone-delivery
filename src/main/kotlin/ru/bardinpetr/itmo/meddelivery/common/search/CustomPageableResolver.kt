@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.search
+package ru.bardinpetr.itmo.meddelivery.common.search
 
 import org.springframework.core.MethodParameter
 import org.springframework.data.domain.PageRequest

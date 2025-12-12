@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import ru.bardinpetr.itmo.meddelivery.common.auth.dto.UserDto
-import ru.bardinpetr.itmo.meddelivery.common.auth.dto.UserMapper
+import ru.bardinpetr.itmo.meddelivery.common.auth.mapper.UserMapper
 import ru.bardinpetr.itmo.meddelivery.common.auth.repository.UserRepository
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
-import ru.bardinpetr.itmo.meddelivery.common.rest.search.FilterModel
+import ru.bardinpetr.itmo.meddelivery.common.search.FilterModel
 
 @RestController
 @RequestMapping("/api/user")

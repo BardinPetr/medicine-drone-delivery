@@ -1,7 +1,8 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.base
+package ru.bardinpetr.itmo.meddelivery.common.base.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
+import ru.bardinpetr.itmo.meddelivery.common.base.repo.ICommonRestRepository
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException

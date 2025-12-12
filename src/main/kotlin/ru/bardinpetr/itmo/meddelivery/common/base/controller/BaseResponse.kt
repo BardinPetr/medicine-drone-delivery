@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.base
+package ru.bardinpetr.itmo.meddelivery.common.base.controller
 
 import org.springframework.http.ResponseEntity
 

@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.base
+package ru.bardinpetr.itmo.meddelivery.common.base.repo
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor

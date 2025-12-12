@@ -7,7 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.resource.NoResourceFoundException
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.BaseResponse
+import ru.bardinpetr.itmo.meddelivery.common.base.controller.BaseResponse
 
 @ControllerAdvice
 class ExceptionControllerAdvice {

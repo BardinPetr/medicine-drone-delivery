@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 import ru.bardinpetr.itmo.meddelivery.app.dto.DroneDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.Drone
 import ru.bardinpetr.itmo.meddelivery.app.service.drone.DroneService
-import ru.bardinpetr.itmo.meddelivery.common.rest.controller.AbstractCommonRestController
+import ru.bardinpetr.itmo.meddelivery.common.base.controller.AbstractCommonRestController
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
 
 @RequestMapping("/api/drone")

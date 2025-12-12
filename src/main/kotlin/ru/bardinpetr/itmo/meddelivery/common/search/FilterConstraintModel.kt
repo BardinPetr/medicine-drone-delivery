@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.search
+package ru.bardinpetr.itmo.meddelivery.common.search
 
 data class FilterConstraintModel(
     val field: String,

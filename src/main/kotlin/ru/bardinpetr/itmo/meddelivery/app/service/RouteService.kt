@@ -6,8 +6,8 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
 import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePointId
 import ru.bardinpetr.itmo.meddelivery.app.repository.RouteRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.drone.RouterConnectorService
+import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
 
 @Service

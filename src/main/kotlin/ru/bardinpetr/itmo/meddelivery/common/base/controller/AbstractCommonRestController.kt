@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.controller
+package ru.bardinpetr.itmo.meddelivery.common.base.controller
 
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -7,14 +7,14 @@ import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseDto
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.repo.ICommonRestRepository
+import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
-import ru.bardinpetr.itmo.meddelivery.common.rest.search.FilterModel
+import ru.bardinpetr.itmo.meddelivery.common.search.FilterModel
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
 import ru.bardinpetr.itmo.meddelivery.common.ws.WebSocketNotifyService
 import kotlin.reflect.KClass

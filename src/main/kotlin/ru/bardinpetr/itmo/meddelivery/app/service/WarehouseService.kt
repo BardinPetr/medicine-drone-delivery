@@ -8,12 +8,11 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.RequestEntry
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProducts
 import ru.bardinpetr.itmo.meddelivery.app.entities.WarehouseProductsId
-import ru.bardinpetr.itmo.meddelivery.app.events.EventSenderService
 import ru.bardinpetr.itmo.meddelivery.app.repository.ProductTypeRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseProductsRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
+import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
 import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 import kotlin.jvm.optionals.getOrElse
@@ -34,13 +33,15 @@ class WarehouseService(
     fun getProducts(): List<WarehouseProducts> = productsRepo.findAll()
 
     fun setProductQuantity(productId: IdType, warehouseId: IdType, newQuantity: Int): WarehouseProducts =
-        (productsRepo.findByProductIdAndWarehouseId(productId, warehouseId)
-            ?: WarehouseProducts(
-                id = WarehouseProductsId(productId, warehouseId),
-                product = productTypeRepo.findById(productId).getOrElse { throw NotFoundException() },
-                warehouse = warehouseRepo.findById(warehouseId).getOrElse { throw NotFoundException() },
-                quantity = newQuantity
-            ))
+        (
+            productsRepo.findByProductIdAndWarehouseId(productId, warehouseId)
+                ?: WarehouseProducts(
+                    id = WarehouseProductsId(productId, warehouseId),
+                    product = productTypeRepo.findById(productId).getOrElse { throw NotFoundException() },
+                    warehouse = warehouseRepo.findById(warehouseId).getOrElse { throw NotFoundException() },
+                    quantity = newQuantity
+                )
+            )
             .apply { quantity = newQuantity }
             .let(productsRepo::save)
             .also { notifier.notifyChanges(WarehouseProducts::class, 0, NotifyChangeType.MOD) }

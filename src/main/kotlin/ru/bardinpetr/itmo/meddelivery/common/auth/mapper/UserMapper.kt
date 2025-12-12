@@ -1,11 +1,15 @@
 package ru.bardinpetr.itmo.meddelivery.common.auth.mapper
 
-import ru.bardinpetr.itmo.meddelivery.common.auth.dto.RegisterDto
+import org.mapstruct.*
+import ru.bardinpetr.itmo.meddelivery.common.auth.dto.UserDto
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
-import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserPrincipal
 
-fun RegisterDto.toPrincipal() =
-    UserPrincipal(this.username, this.role)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+interface UserMapper {
+    fun toEntity(userDto: UserDto): User
 
-fun User.toPrincipal() =
-    UserPrincipal(this.username, this.role)
+    fun toDto(user: User): UserDto
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+    fun partialUpdate(userDto: UserDto, @MappingTarget user: User): User
+}

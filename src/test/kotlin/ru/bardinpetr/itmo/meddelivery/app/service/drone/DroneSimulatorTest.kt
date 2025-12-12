@@ -9,8 +9,8 @@ import org.maplibre.spatialk.turf.misc.nearestPointTo
 import org.maplibre.spatialk.units.extensions.inMeters
 import ru.bardinpetr.itmo.meddelivery.app.service.map.featureCollection
 import ru.bardinpetr.itmo.meddelivery.app.service.map.toKPoint
-import ru.bardinpetr.itmo.meddelivery.app.service.sim.DroneSimState
 import ru.bardinpetr.itmo.meddelivery.app.service.sim.BaseDroneSimulator
+import ru.bardinpetr.itmo.meddelivery.app.service.sim.DroneSimState
 
 class DroneSimulatorTest {
     @Test

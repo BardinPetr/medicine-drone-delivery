@@ -10,10 +10,10 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.drone.FlightPlannerService
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
+import ru.bardinpetr.itmo.meddelivery.common.base.repo.ICommonRestRepository
+import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.errors.NotAvailableException
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
 import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 

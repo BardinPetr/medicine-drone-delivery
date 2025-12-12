@@ -9,7 +9,7 @@ import ru.bardinpetr.itmo.meddelivery.app.events.EventSenderService
 import ru.bardinpetr.itmo.meddelivery.app.mapper.WarehouseProductsMapper
 import ru.bardinpetr.itmo.meddelivery.app.service.WarehouseService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
-import ru.bardinpetr.itmo.meddelivery.common.rest.search.FilterModel
+import ru.bardinpetr.itmo.meddelivery.common.search.FilterModel
 
 @RequestMapping("/api/warehouseproducts")
 @RestController

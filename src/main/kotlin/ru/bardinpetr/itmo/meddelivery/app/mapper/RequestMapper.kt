@@ -7,7 +7,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.Request
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,

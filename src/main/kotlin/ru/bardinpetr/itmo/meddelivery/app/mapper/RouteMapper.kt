@@ -8,7 +8,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.Route
 import ru.bardinpetr.itmo.meddelivery.app.entities.Warehouse
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 import kotlin.jvm.optionals.getOrNull
 
 @Mapper(

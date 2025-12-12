@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.controller
+package ru.bardinpetr.itmo.meddelivery.common.base.controller
 
 import ru.bardinpetr.itmo.meddelivery.common.errors.NotAvailableException
 

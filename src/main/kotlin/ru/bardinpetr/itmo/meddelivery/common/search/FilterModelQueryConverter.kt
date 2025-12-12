@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.search
+package ru.bardinpetr.itmo.meddelivery.common.search
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue

@@ -2,7 +2,7 @@ package ru.bardinpetr.itmo.meddelivery.common.auth.repository
 
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.User
 import ru.bardinpetr.itmo.meddelivery.common.auth.model.UserRole
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.ICommonRestRepository
+import ru.bardinpetr.itmo.meddelivery.common.base.repo.ICommonRestRepository
 
 interface UserRepository : ICommonRestRepository<User> {
     fun existsUserByRoleIs(role: UserRole): Boolean

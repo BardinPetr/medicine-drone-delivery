@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.common.rest.base
+package ru.bardinpetr.itmo.meddelivery.common.base.dto
 
 import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 

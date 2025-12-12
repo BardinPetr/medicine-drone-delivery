@@ -8,7 +8,7 @@ import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.BaseResponse
+import ru.bardinpetr.itmo.meddelivery.common.base.controller.BaseResponse
 
 @ControllerAdvice(annotations = [EnableResponseWrapper::class])
 class ResponseControllerAdvice : ResponseBodyAdvice<Any> {

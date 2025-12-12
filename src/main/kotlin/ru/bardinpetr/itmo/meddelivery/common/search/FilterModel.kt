@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package ru.bardinpetr.itmo.meddelivery.common.rest.search
+package ru.bardinpetr.itmo.meddelivery.common.search
 
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery

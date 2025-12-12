@@ -3,7 +3,7 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.FlightTaskDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 
 @Mapper(
     unmappedTargetPolicy = ReportingPolicy.IGNORE,

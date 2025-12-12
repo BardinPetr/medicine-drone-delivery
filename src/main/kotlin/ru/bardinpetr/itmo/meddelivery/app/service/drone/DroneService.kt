@@ -10,8 +10,8 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.events.EventSenderService
 import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.fleet.IDroneFleet
+import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 
 @Service

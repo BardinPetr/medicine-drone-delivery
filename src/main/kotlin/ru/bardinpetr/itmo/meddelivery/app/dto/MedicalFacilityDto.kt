@@ -4,7 +4,7 @@ package ru.bardinpetr.itmo.meddelivery.app.dto
  * DTO for {@link ru.bardinpetr.itmo.meddelivery.app.entities.MedicalFacility}
  */
 import ru.bardinpetr.itmo.meddelivery.common.auth.dto.UserDto
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseDto
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseDto
 
 data class MedicalFacilityDto(
     val name: String?,

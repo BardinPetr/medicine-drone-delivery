@@ -5,7 +5,6 @@ import ru.bardinpetr.itmo.meddelivery.app.mapper.ePoint
 import ru.bardinpetr.itmo.meddelivery.app.service.drone.DroneService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import java.util.concurrent.ScheduledThreadPoolExecutor
-import kotlin.math.ceil
 
 class DBDroneSimulator(
     private val droneService: DroneService,

@@ -12,7 +12,6 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.enums.DroneStatus
 import ru.bardinpetr.itmo.meddelivery.app.entities.enums.TaskStatus
 import ru.bardinpetr.itmo.meddelivery.app.events.ExecutePlanningApplicationEvent
 import ru.bardinpetr.itmo.meddelivery.app.repository.FlightTaskRepository
-import ru.bardinpetr.itmo.meddelivery.app.repository.RequestRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.RequestEntryService
 import ru.bardinpetr.itmo.meddelivery.app.service.RouteService
 import ru.bardinpetr.itmo.meddelivery.app.service.WarehouseService
@@ -24,7 +23,6 @@ import kotlin.math.min
 
 @Service
 open class FlightPlannerService(
-    private val requestRepository: RequestRepository,
     private val reqEntryService: RequestEntryService,
     private val warehouseService: WarehouseService,
     private val droneService: DroneService,

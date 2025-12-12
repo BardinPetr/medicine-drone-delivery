@@ -1,4 +1,4 @@
-package ru.bardinpetr.itmo.meddelivery.app.config
+package ru.bardinpetr.itmo.meddelivery.common.config
 
 import org.modelmapper.ModelMapper
 import org.springframework.context.annotation.Bean

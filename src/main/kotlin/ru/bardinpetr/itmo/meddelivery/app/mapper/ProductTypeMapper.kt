@@ -3,7 +3,7 @@ package ru.bardinpetr.itmo.meddelivery.app.mapper
 import org.mapstruct.*
 import ru.bardinpetr.itmo.meddelivery.app.dto.ProductTypeDto
 import ru.bardinpetr.itmo.meddelivery.app.entities.ProductType
-import ru.bardinpetr.itmo.meddelivery.common.rest.base.IBaseMapper
+import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 abstract class ProductTypeMapper : IBaseMapper<ProductType, ProductTypeDto> {
