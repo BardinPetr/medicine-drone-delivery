@@ -49,6 +49,13 @@ springdoc:
     path: /
   default-produces-media-type: application/json
 
+grpc:
+  client:
+    router:
+      address: router:50051
+      negotiation-type: plaintext
+      enable-keep-alive: true
+
 security:
   basic:
     enable: false
@@ -60,7 +67,6 @@ server:
 app:
   jwt:
     secret: "demo-secret-key-to-be-changed-32-chars-minimum"
-  python-executable: "./python/run.sh"
   mqtt:
     host: 127.0.0.1
     port: 11883

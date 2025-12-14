@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package ru.bardinpetr.itmo.meddelivery.app.service.router;
+option java_multiple_files = true;
+option java_package = "ru.bardinpetr.itmo.meddelivery.app.service.router";
+option java_outer_classname = "RouterServiceProto";
+
+import "google/protobuf/empty.proto";
+
+message Point {
+  double lat = 1;
+  double lon = 2;
+}
+
+message NoFlightZone {
+  Point center = 1;
+  double radiusMeters = 2;
+}
+
+message UpdateNoFlightZonesRequest {
+  repeated NoFlightZone zones = 1;
+}
+
+message PlanRouteRequest {
+  Point src = 1;
+  Point dst = 2;
+}
+
+message PlanRouteResponse {
+  repeated Point route = 1;
+}
+
+service RouterService {
+  rpc UpdateNoFlightZones (UpdateNoFlightZonesRequest) returns (google.protobuf.Empty);
+  rpc PlanRoute (PlanRouteRequest) returns (PlanRouteResponse);
+}

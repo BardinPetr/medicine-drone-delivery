@@ -5,7 +5,7 @@ import ru.bardinpetr.itmo.meddelivery.app.entities.Route
 import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
 import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePointId
 import ru.bardinpetr.itmo.meddelivery.app.repository.RouteRepository
-import ru.bardinpetr.itmo.meddelivery.app.service.drone.RouterConnectorService
+import ru.bardinpetr.itmo.meddelivery.app.service.drone.IRouterService
 import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
@@ -13,7 +13,7 @@ import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
 @Service
 class RouteService(
     override val repo: RouteRepository,
-    private val router: RouterConnectorService,
+    private val router: IRouterService,
     private val warehouseService: WarehouseService,
     private val medicalService: MedicalFacilityService,
 ) : AbstractBaseService<Route>(Route::class, repo) {
