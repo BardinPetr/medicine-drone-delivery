@@ -14,7 +14,6 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
 import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
-import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 import kotlin.jvm.optionals.getOrElse
 
 @Service
@@ -44,7 +43,6 @@ class WarehouseService(
             )
             .apply { quantity = newQuantity }
             .let(productsRepo::save)
-            .also { notifier.notifyChanges(WarehouseProducts::class, 0, NotifyChangeType.MOD) }
 
     fun findAvailableWarehouses(rq: RequestEntry): List<WarehouseProducts> =
         productsRepo.findByProductIdAndQuantityGreaterThanEqualOrderByQuantityDesc(rq.productType.id!!, 0L)

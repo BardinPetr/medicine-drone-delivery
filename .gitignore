@@ -45,3 +45,4 @@ solution/.ssh/
 solution/.tmp/
 
 python/venv/
+python/__pycache__/

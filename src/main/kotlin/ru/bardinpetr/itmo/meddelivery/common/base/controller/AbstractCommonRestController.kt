@@ -26,9 +26,6 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
     protected val service: AbstractBaseService<E>
 ) {
     @Autowired
-    protected lateinit var notifier: WebSocketNotifyService
-
-    @Autowired
     protected lateinit var mapper: IBaseMapper<E, D>
 
     @Autowired

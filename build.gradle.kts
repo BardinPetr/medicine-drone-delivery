@@ -1,4 +1,3 @@
-import com.google.protobuf.gradle.id
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
@@ -7,6 +6,7 @@ plugins {
     kotlin("plugin.spring") version "2.2.20"
     kotlin("plugin.jpa") version "2.2.20"
     kotlin("plugin.allopen") version "2.2.20"
+    kotlin("plugin.serialization") version "2.2.20"
 
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
@@ -35,7 +35,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-web-services")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("org.fusesource.mqtt-client:mqtt-client:1.15")
 
     // data
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -56,6 +55,8 @@ dependencies {
     implementation("org.modelmapper:modelmapper:3.2.0")
     implementation("org.modelmapper.extensions:modelmapper-spring:3.0.0")
     kapt("org.mapstruct:mapstruct-processor:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat")
 
     // audit
     implementation("org.hibernate:hibernate-envers:7.0.0.Beta1")
