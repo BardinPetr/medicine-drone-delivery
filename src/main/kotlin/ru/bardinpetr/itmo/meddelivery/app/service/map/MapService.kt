@@ -11,6 +11,7 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.MedicalFacilityRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository
 import ru.bardinpetr.itmo.meddelivery.app.repository.WarehouseRepository
+import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 
 @Service
 class MapService(
@@ -19,9 +20,8 @@ class MapService(
     private val warehouseRepository: WarehouseRepository,
     private val zoneRepository: NoFlightZoneRepository,
 ) {
-    fun getDrones(): FeatureCollection<Point, *> =
-        droneRepository
-            .findAll()
+    fun getDrones(ids: List<IdType>? = null): FeatureCollection<Point, *> =
+        (if (ids != null) droneRepository.findAllById(ids) else droneRepository.findAll())
             .mapNotNull(Drone::toGeoFeature)
             .let(::FeatureCollection)
 

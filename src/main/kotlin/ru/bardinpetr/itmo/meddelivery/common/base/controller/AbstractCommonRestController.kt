@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import ru.bardinpetr.itmo.meddelivery.common.auth.service.UserService
 import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseDto
 import ru.bardinpetr.itmo.meddelivery.common.base.dto.IBaseMapper
 import ru.bardinpetr.itmo.meddelivery.common.base.repo.ICommonRestRepository
@@ -16,7 +15,6 @@ import ru.bardinpetr.itmo.meddelivery.common.models.IBaseEntity
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.search.FilterModel
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.NotFoundException
-import ru.bardinpetr.itmo.meddelivery.common.ws.WebSocketNotifyService
 import kotlin.reflect.KClass
 
 @Validated
@@ -31,9 +29,6 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
     @Autowired
     protected lateinit var repository: ICommonRestRepository<E>
 
-    @Autowired
-    protected lateinit var userService: UserService
-
     @GetMapping
     fun list(pageable: Pageable, @RequestParam filter: FilterModel?): Page<D> =
         repository
@@ -43,6 +38,10 @@ abstract class AbstractCommonRestController<E : IBaseEntity, D : IBaseDto>(
     @GetMapping("/all")
     fun listAll(): List<D> =
         service.getAll().map(mapper::toDto)
+
+    @PostMapping("/select")
+    fun select(@RequestBody ids: List<IdType>): List<D> =
+        service.get(ids).map(mapper::toDto)
 
     @PostMapping
     fun create(@Valid @RequestBody rq: D): D =

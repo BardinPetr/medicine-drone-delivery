@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: ITMO Lab1 API
-  version: 0.3.3
+  version: 0.3.5
 servers:
 - url: http://0.0.0.0:8080
 - url: http://meddelivery.bardinpetr.ru
@@ -13,13 +13,6 @@ paths:
       tags:
       - warehouse-products-controller
       operationId: update
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
       requestBody:
         content:
           application/json:
@@ -182,10 +175,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RouteDto"
     delete:
       tags:
       - route-controller
@@ -200,10 +189,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/requestentry/{id}:
     get:
       tags:
@@ -261,10 +246,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/request/{id}:
     get:
       tags:
@@ -322,10 +303,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/producttype/{id}:
     get:
       tags:
@@ -383,10 +360,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/noflightzone/{id}:
     get:
       tags:
@@ -444,10 +417,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /api/medicalfacility/{id}:
     get:
       tags:
@@ -611,10 +580,6 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: boolean
   /auth/register:
     post:
       tags:
@@ -731,6 +696,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WarehouseDto"
+  /api/warehouse/select:
+    post:
+      tags:
+      - warehouse-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WarehouseDto"
   /api/typeofdrone:
     get:
       tags:
@@ -771,6 +759,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TypeOfDroneDto"
+  /api/typeofdrone/select:
+    post:
+      tags:
+      - type-of-drone-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TypeOfDroneDto"
   /api/route:
     get:
       tags:
@@ -807,10 +818,29 @@ paths:
       responses:
         "200":
           description: OK
+  /api/route/select:
+    post:
+      tags:
+      - route-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RouteDto"
+                type: array
+                items:
+                  $ref: "#/components/schemas/RouteDto"
   /api/requestentry:
     get:
       tags:
@@ -851,6 +881,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RequestEntryDto"
+  /api/requestentry/select:
+    post:
+      tags:
+      - request-entry-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RequestEntryDto"
   /api/request:
     get:
       tags:
@@ -891,6 +944,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RequestDto"
+  /api/request/select:
+    post:
+      tags:
+      - request-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RequestDto"
   /api/producttype:
     get:
       tags:
@@ -931,6 +1007,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductTypeDto"
+  /api/producttype/select:
+    post:
+      tags:
+      - product-type-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductTypeDto"
   /api/noflightzone:
     get:
       tags:
@@ -971,6 +1070,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NoFlightZoneDto"
+  /api/noflightzone/select:
+    post:
+      tags:
+      - no-flight-zone-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NoFlightZoneDto"
   /api/medicalfacility:
     get:
       tags:
@@ -1011,6 +1133,61 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MedicalFacilityDto"
+  /api/medicalfacility/select:
+    post:
+      tags:
+      - medical-facility-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MedicalFacilityDto"
+  /api/map/drones.geojson:
+    get:
+      tags:
+      - map-controller
+      operationId: drones
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+    post:
+      tags:
+      - map-controller
+      operationId: dronesPartial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
   /api/flighttask:
     get:
       tags:
@@ -1047,6 +1224,29 @@ paths:
       responses:
         "200":
           description: OK
+  /api/flighttask/select:
+    post:
+      tags:
+      - flight-task-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlightTaskDto"
   /api/drone:
     get:
       tags:
@@ -1106,6 +1306,29 @@ paths:
             application/json:
               schema:
                 type: boolean
+  /api/drone/select:
+    post:
+      tags:
+      - drone-controller
+      operationId: select
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DroneDto"
   /api/warehouse/count:
     get:
       tags:
@@ -1400,18 +1623,6 @@ paths:
       tags:
       - map-controller
       operationId: medicalFacilities
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: string
-  /api/map/drones.geojson:
-    get:
-      tags:
-      - map-controller
-      operationId: drones
       responses:
         "200":
           description: OK
@@ -1797,13 +2008,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageableObject:
@@ -1856,13 +2067,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageUserDto:
@@ -1888,13 +2099,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     User:
@@ -1941,13 +2152,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageRouteDto:
@@ -1973,13 +2184,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageRequestEntryDto:
@@ -2005,13 +2216,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageRequestDto:
@@ -2037,13 +2248,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageProductTypeDto:
@@ -2069,13 +2280,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageNoFlightZoneDto:
@@ -2101,13 +2312,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageMedicalFacilityDto:
@@ -2133,13 +2344,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageFlightTaskDto:
@@ -2165,13 +2376,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
     PageDroneDto:
@@ -2197,13 +2408,13 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        numberOfElements:
-          type: integer
-          format: int32
         empty:
           type: boolean
   securitySchemes:

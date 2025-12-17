@@ -23,4 +23,3 @@ data class NotificationEvents(
     @Serializable(with = DateSerializer::class)
     val timestamp: LocalDateTime = LocalDateTime.now(),
 )
-

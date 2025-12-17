@@ -14,6 +14,8 @@ abstract class AbstractBaseService<E : IBaseEntity>(
 ) {
     open fun get(id: IdType): E? = repo.findById(id).getOrNull()
 
+    open fun get(ids: List<IdType>): List<E> = repo.findAllById(ids)
+
     open fun getAll(): List<E> = repo.findAll()
 
     open fun count(): Long = repo.count()
