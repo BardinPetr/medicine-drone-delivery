@@ -25,7 +25,8 @@ class RouterServiceGrpc(
         zoneRep
             .findAll()
             .let(::noFlyZonesRq)
-            .let(routerGrpc::updateNoFlightZones)
+            .runCatching { routerGrpc.updateNoFlightZones(this) }
+            .getOrNull()
 
     override fun makeRoute(pt1: Point, pt2: Point): List<Point> =
         routerGrpc

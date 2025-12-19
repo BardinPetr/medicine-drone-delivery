@@ -12,7 +12,6 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.fleet.IDroneFleet
 import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 
 @Service
 class DroneService(
@@ -49,7 +48,6 @@ class DroneService(
         get(id)
             ?.apply(block)
             ?.let { repo.save(it) }
-            ?.also { notifier.notifyChanges(clazz, id, NotifyChangeType.MOD) }
 
     @Transactional
     fun droneArrived(droneId: IdType) {

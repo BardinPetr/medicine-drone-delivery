@@ -15,7 +15,6 @@ import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.errors.NotAvailableException
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
-import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
 
 @Service
 class RequestService(
@@ -43,7 +42,6 @@ class RequestService(
             user = user,
         )
             .let(requestRepo::save)
-            .also { notifier.notifyChanges(Request::class, it.id!!, NotifyChangeType.ADD) }
             .apply { requestEntries!!.addAll(entries.map { resolveRequestEntry(it, this) }) }
             .let(requestRepo::save)
             .also { plannerService.processUnfulfilledRequests() }

@@ -67,10 +67,11 @@ server:
 app:
   jwt:
     secret: "demo-secret-key-to-be-changed-32-chars-minimum"
-  mqtt:
-    host: 127.0.0.1
-    port: 11883
   sim:
     threads: 8
     epsilon-meters: 300
     time-period-millis: 200
+  notify:
+    enabled: Drone,FlightTask,WarehouseProducts,Request
+    min-period-ms: 300
+    max-period-ms: 500

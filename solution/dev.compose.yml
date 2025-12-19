@@ -10,11 +10,3 @@ services:
       POSTGRES_DB: medical
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
-  mqtt:
-    image: eclipse-mosquitto
-    volumes:
-      - ./config/mqtt:/mosquitto/config:ro
-    ports:
-      - "11883:1883"
-      - "9001:9001"
