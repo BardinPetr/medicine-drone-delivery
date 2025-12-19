@@ -10,6 +10,7 @@ import ru.bardinpetr.itmo.meddelivery.app.mapper.grpc.router.toPointList
 import ru.bardinpetr.itmo.meddelivery.app.repository.NoFlightZoneRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.drone.IRouterService
 import ru.bardinpetr.itmo.meddelivery.app.service.router.RouterServiceGrpc
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 import java.util.concurrent.TimeUnit
 
 @Service
@@ -20,16 +21,22 @@ class RouterServiceGrpc(
     @GrpcClient("router")
     private lateinit var routerGrpc: RouterServiceGrpc.RouterServiceBlockingStub
 
+    private val log = logger<RouterServiceGrpc>()
+
     @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
     fun init() =
         zoneRep
             .findAll()
             .let(::noFlyZonesRq)
             .runCatching { routerGrpc.updateNoFlightZones(this) }
-            .getOrNull()
+            .onFailure { log.error("Failed to update no-flight-zone to router: ${it.message}; ${it.stackTrace}") }
 
     override fun makeRoute(pt1: Point, pt2: Point): List<Point> =
-        routerGrpc
-            .planRoute(planRouteRq(pt1, pt2))
-            .toPointList()
+        runCatching {
+            routerGrpc
+                .planRoute(planRouteRq(pt1, pt2))
+                .toPointList()
+        }
+            .onFailure { log.error("Failed to query route [$pt1 $pt2]: ${it.message}") }
+            .getOrElse { listOf(pt1, pt2) }
 }

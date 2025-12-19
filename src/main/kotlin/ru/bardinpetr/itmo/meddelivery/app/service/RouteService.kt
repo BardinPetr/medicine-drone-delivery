@@ -9,6 +9,7 @@ import ru.bardinpetr.itmo.meddelivery.app.service.drone.IRouterService
 import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 
 @Service
 class RouteService(
@@ -18,11 +19,14 @@ class RouteService(
     private val medicalService: MedicalFacilityService,
 ) : AbstractBaseService<Route>(Route::class, repo) {
 
+    private val log = logger<RouteService>()
+
     fun findOrCreateRoute(warehouseId: IdType, medicalId: IdType): Route {
         var route = repo.findByWarehouseIdAndMedicalFacilityId(warehouseId, medicalId)
         if (route == null) {
             val warehouseStart = warehouseService.get(warehouseId) ?: notFound()
             val medicalEnd = medicalService.get(medicalId) ?: notFound()
+            log.debug("Creating new route WH=${warehouseStart.name} MF=${medicalEnd.name}")
             route = repo.save(
                 Route(
                     warehouse = warehouseStart,
@@ -32,6 +36,7 @@ class RouteService(
             router
                 .makeRoute(warehouseStart.location, medicalEnd.location)
                 .let { it + it.reversed().drop(1) }
+                .also { log.info("Created route WH=${warehouseStart.name} MF=${medicalEnd.name}: $it") }
                 .mapIndexed { idx, pt ->
                     RoutePoint(
                         id = RoutePointId(route.id!!, idx),

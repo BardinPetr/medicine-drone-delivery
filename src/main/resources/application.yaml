@@ -64,6 +64,13 @@ security:
 server:
   address: 0.0.0.0
 
+logging:
+  level:
+    ru:
+      bardinpetr:
+        itmo:
+          meddelivery: DEBUG
+
 app:
   jwt:
     secret: "demo-secret-key-to-be-changed-32-chars-minimum"

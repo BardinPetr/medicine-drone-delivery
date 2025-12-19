@@ -25,19 +25,23 @@ class RouterServiceService(RouterServiceServicer):
     def UpdateNoFlightZones(self, request: UpdateNoFlightZonesRequest, context):
         zones = [zone_from_grpc(i) for i in request.zones]
         holes = [get_bbox(i) for i in zones]
+        print(f"Update NFZ: {holes}")
         self.__update_polygon_env(holes)
         return empty_pb2.Empty()
 
     def PlanRoute(self, request: PlanRouteRequest, context) -> PlanRouteResponse:
         points = [pt_from_grpc(i) for i in (request.src, request.dst)]
+        print(f"New request: [{points}]")
         try:
             route = self.polygon_env.find_shortest_path(*points)[0]
+            print(f"OK request [{points}] --> {route}")
         except ValueError:
             route = points
         return pts_to_grpc(route)
 
 
 def main():
+    print("starting router")
     server = grpc.server(ThreadPoolExecutor(max_workers=os.cpu_count()))
     service = RouterServiceService()
     add_RouterServiceServicer_to_server(service, server)

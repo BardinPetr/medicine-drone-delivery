@@ -15,6 +15,7 @@ import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.errors.NotAvailableException
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 import ru.bardinpetr.itmo.meddelivery.common.utils.error.notFound
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 
 @Service
 class RequestService(
@@ -26,6 +27,8 @@ class RequestService(
     override val repo: ICommonRestRepository<Request>,
 ) : AbstractBaseService<Request>(Request::class, repo) {
 
+    private val log = logger<RequestService>()
+
     private fun resolveRequestEntry(entry: RequestEntryModel, request: Request) = RequestEntry(
         productType = pTypeService.getByCode(entry.productTypeCode) ?: throw notFound(),
         quantity = entry.quantity,
@@ -36,6 +39,7 @@ class RequestService(
     fun makeOrder(entries: List<RequestEntryModel>): Request {
         val user = userService.getCurrent()!!
         val facility = facilityRepo.getFirstByResponsibleUserId(user.id!!)
+        log.info("New MF=${facility?.name}: ${entries.joinToString(", ") { "${it.productTypeCode}@${it.quantity}" }}")
         return Request(
             status = TaskStatus.QUEUED,
             medicalFacility = facility,
