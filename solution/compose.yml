@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/bardinpetr/medicine-drone-delivery:master
+    image: ghcr.io/bardinpetr/medicine-drone-delivery:latest
     build: ../
     restart: always
     depends_on:
@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
   frontend:
-    image: ghcr.io/bardinpetr/medicine-drone-delivery-frontend:master
+    image: ghcr.io/bardinpetr/medicine-drone-delivery-frontend:latest
     build:
       context: ../../medicine-drone-delivery-client
     restart: always
@@ -36,6 +36,6 @@ services:
     ports:
       - "4200:80"
 
-  rotuer:
-    image: ghcr.io/bardinpetr/medicine-drone-delivery-rotuer:master
+  router:
+    image: ghcr.io/bardinpetr/medicine-drone-delivery:router-latest
     build: ../python

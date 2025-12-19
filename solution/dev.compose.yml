@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
-  rotuer:
+  router:
     image: ghcr.io/bardinpetr/medicine-drone-delivery:router-latest
     build: ../python
     ports:
