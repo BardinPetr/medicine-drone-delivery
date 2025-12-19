@@ -11,10 +11,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
-  mqtt:
-    image: eclipse-mosquitto
-    volumes:
-      - ./config/mqtt:/mosquitto/config:ro
+  router:
+    image: ghcr.io/bardinpetr/medicine-drone-delivery:router-latest
+    build: ../python
     ports:
-      - "11883:1883"
-      - "9001:9001"
+      - "50051:50051"

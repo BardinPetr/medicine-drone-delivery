@@ -49,6 +49,13 @@ springdoc:
     path: /
   default-produces-media-type: application/json
 
+grpc:
+  client:
+    router:
+      address: router:50051
+      negotiation-type: plaintext
+      enable-keep-alive: true
+
 security:
   basic:
     enable: false
@@ -57,14 +64,21 @@ security:
 server:
   address: 0.0.0.0
 
+logging:
+  level:
+    ru:
+      bardinpetr:
+        itmo:
+          meddelivery: DEBUG
+
 app:
   jwt:
     secret: "demo-secret-key-to-be-changed-32-chars-minimum"
-  python-executable: "./python/run.sh"
-  mqtt:
-    host: 127.0.0.1
-    port: 11883
   sim:
     threads: 8
     epsilon-meters: 300
     time-period-millis: 200
+  notify:
+    enabled: Drone,FlightTask,WarehouseProducts,Request
+    min-period-ms: 300
+    max-period-ms: 500

@@ -39,6 +39,7 @@ open class FlightPlannerService(
     private val lock = ReentrantLock()
 
     override fun onApplicationEvent(event: ExecutePlanningApplicationEvent) {
+        log.debug("Processing requests initiated due to external event")
         self.processUnfulfilledRequests()
     }
 
@@ -46,7 +47,9 @@ open class FlightPlannerService(
     fun processUnfulfilledRequests() {
         reqEntryService
             .getUnfulfilledRequests()
-            .forEach { rq, list -> assign(rq, list) }
+            .takeIf { it.isNotEmpty() }
+            ?.also { log.info("Start processing unfulfilled requests: IDS=${it.keys.joinToString(",")}") }
+            ?.forEach { rq, list -> assign(rq, list) }
     }
 
     @Transactional
@@ -72,7 +75,7 @@ open class FlightPlannerService(
             medicalFacility = request.medicalFacility
         )
 
-        log.info("Started planning request ${request.id}: ${entry.quantity} pieces of ${entry.productType.type}")
+        log.info("[RQ=${request.id}] Started planning: ${entry.quantity} pieces of ${entry.productType.type}")
 
         while (leftQuantity > 0 && availability.isNotEmpty() && drones.isNotEmpty()) {
             val nextWarehouseProduct = availability.first()
@@ -109,20 +112,30 @@ open class FlightPlannerService(
             } else {
                 availability.first().quantity -= assignedQuantity
             }
+            log.info(
+                "[RQ=${request.id}] " +
+                        "Assigned partially [WH#${nextWarehouse.id} | DR#${drone.id}]: " +
+                        "$assignedQuantity/$leftQuantity"
+            )
             leftQuantity -= assignedQuantity
-            log.info("Assigned partially $assignedQuantity items from WH#${nextWarehouse.id} by DR#${drone.id}")
         }
 
         reqEntryService.entryIncreaseFulfilledQuantity(entry.id!!, targetQuantity - leftQuantity)
 
-        log.info("Assigned drones: ${tasks.map { it.drones.first().id!! }.joinToString(";")}")
+        log.info("[RQ=${request.id}] Assigned drones: ${tasks.map { it.drones.first().id!! }.joinToString(";")}")
         return flightTaskRepo.saveAllAndFlush(tasks)
     }
 
     @Transactional
-    protected fun assignRoute(task: FlightTask): FlightTask {
+    protected fun assignRoute(task: FlightTask): FlightTask = runCatching {
         task.route = routeService.findOrCreateRoute(task.warehouse?.id!!, task.medicalFacility?.id!!)
         task.status = TaskStatus.PACKING
-        return flightTaskRepo.save(task)
+        flightTaskRepo.save(task)
     }
+        .onSuccess { log.debug("[TASK=${task.id}] Assigned route") }
+        .onFailure {
+            log.error("[TASK=${task.id}] Failed to assign route: ${it.message}; ${it.stackTrace}")
+            throw it
+        }
+        .getOrThrow()
 }

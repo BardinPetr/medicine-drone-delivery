@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service
 import ru.bardinpetr.itmo.meddelivery.app.entities.FlightTask
 import ru.bardinpetr.itmo.meddelivery.app.entities.Point
 import ru.bardinpetr.itmo.meddelivery.app.entities.RoutePoint
+import ru.bardinpetr.itmo.meddelivery.app.mapper.ePoint
 import ru.bardinpetr.itmo.meddelivery.app.mapper.skPoint
 import ru.bardinpetr.itmo.meddelivery.app.service.drone.DroneService
 import ru.bardinpetr.itmo.meddelivery.app.service.sim.DBDroneSimulator
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 @Service
@@ -20,6 +22,7 @@ class DBDroneFleet(
     @Value("\${app.sim.time-period-millis}")
     private val stepPeriodMillis: Long,
 ) : IDroneFleet {
+    private val log = logger<DBDroneFleet>()
     private val pool = ScheduledThreadPoolExecutor(threadPoolSize)
     private var fleet: Map<Long, DBDroneSimulator> = emptyMap()
 
@@ -45,6 +48,8 @@ class DBDroneFleet(
             .routePoints
             .map(RoutePoint::location)
             .map(Point::skPoint)
+
+        log.info("[FLEET DRONE=${drone.droneId}] Started with route ${route.first().ePoint} -> ${route.last().ePoint}")
         drone.setRoute(route)
         drone.start()
     }

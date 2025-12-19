@@ -1,17 +1,14 @@
 services:
   backend:
-    image: bardinpetr/itmo_med_delivery_backend:latest
+    image: ghcr.io/bardinpetr/medicine-drone-delivery:latest
     build: ../
     restart: always
     depends_on:
       - pg
-      - mqtt
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://pg:5432/medical
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      APP_MQTT_HOST: mqtt
-      APP_MQTT_PORT: 1883
 
   pg:
     image: postgres:17-alpine
@@ -23,7 +20,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
   frontend:
-    image: bardinpetr/itmo_med_delivery_frontend:latest
+    image: ghcr.io/bardinpetr/medicine-drone-delivery-frontend:latest
     build:
       context: ../../medicine-drone-delivery-client
     restart: always
@@ -39,10 +36,6 @@ services:
     ports:
       - "4200:80"
 
-  mqtt:
-    image: eclipse-mosquitto
-    ports:
-      - "11883:1883"
-      - "9001:9001"
-    volumes:
-      - ./config/mqtt:/mosquitto/config:ro
+  router:
+    image: ghcr.io/bardinpetr/medicine-drone-delivery:router-latest
+    build: ../python

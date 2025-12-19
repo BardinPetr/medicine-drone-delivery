@@ -22,4 +22,6 @@ data class RequestEntry(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     override var id: Long? = null
-) : IBaseEntity
+) : IBaseEntity {
+    override fun toString(): String = "RE[${productType.type}@$quantity]"
+}

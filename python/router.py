@@ -1,42 +1,54 @@
-import json
-import math
+import os
+from concurrent.futures import ThreadPoolExecutor
+from typing import List
+
+import grpc
 from extremitypathfinder import PolygonEnvironment
+from google.protobuf import empty_pb2
 
-def degrees_per_meter(lat):
-    a = 6378137.0
-    b = 6356752.314245
-    e2 = 1 - (b**2 / a**2)
-    lat_rad = math.radians(lat)
-    meridional = a * (1 - e2) / (1 - e2 * math.sin(lat_rad)**2)**(3/2)
-    parallel = a * math.cos(lat_rad) / math.sqrt(1 - e2 * math.sin(lat_rad)**2)
-    return math.degrees(1 / meridional), math.degrees(1 / parallel)
-
-def get_bbox(circle):
-    lat, lon, radius = circle
-    dlat, dlon = degrees_per_meter(lat)
-    r_lat, r_lon = radius * dlat, radius * dlon
-    top_left = (lat - r_lat, lon + r_lon)
-    top_right = (lat + r_lat, lon + r_lon)
-    bottom_right = (lat + r_lat, lon - r_lon)
-    bottom_left = (lat - r_lat, lon - r_lon)
-    return [top_left, top_right, bottom_right, bottom_left]
+from geo import get_bbox
+from mapper import zone_from_grpc, pt_from_grpc, pts_to_grpc
+from models import PtModel
+from service_pb2 import PlanRouteRequest, UpdateNoFlightZonesRequest, PlanRouteResponse
+from service_pb2_grpc import RouterServiceServicer, add_RouterServiceServicer_to_server
 
 
-def find_path(p1, p2, holes):
-    bound = [(-180, -90), (180, -90), (180, 90), (-180, 90)]
-    env = PolygonEnvironment()
-    env.store(bound, holes, validate=False)
-    try:
-        return env.find_shortest_path(p1, p2)[0]
-    except ValueError:
-        return [p1, p2]
+class RouterServiceService(RouterServiceServicer):
+    def __init__(self):
+        self.geo_bound = [(-180, -90), (180, -90), (180, 90), (-180, 90)]
+        self.__update_polygon_env()
+
+    def __update_polygon_env(self, holes: List[List[PtModel]] = None):
+        self.polygon_env = PolygonEnvironment()
+        self.polygon_env.store(self.geo_bound, holes or [], validate=False)
+
+    def UpdateNoFlightZones(self, request: UpdateNoFlightZonesRequest, context):
+        zones = [zone_from_grpc(i) for i in request.zones]
+        holes = [get_bbox(i) for i in zones]
+        print(f"Update NFZ: {holes}")
+        self.__update_polygon_env(holes)
+        return empty_pb2.Empty()
+
+    def PlanRoute(self, request: PlanRouteRequest, context) -> PlanRouteResponse:
+        points = [pt_from_grpc(i) for i in (request.src, request.dst)]
+        print(f"New request: [{points}]")
+        try:
+            route = self.polygon_env.find_shortest_path(*points)[0]
+            print(f"OK request [{points}] --> {route}")
+        except ValueError:
+            route = points
+        return pts_to_grpc(route)
 
 
-def run(data):
-    holes = [get_bbox(c) for c in data['circles']]
-    out = find_path(data['p1'], data['p2'], holes)
-    return json.dumps(out)
+def main():
+    print("starting router")
+    server = grpc.server(ThreadPoolExecutor(max_workers=os.cpu_count()))
+    service = RouterServiceService()
+    add_RouterServiceServicer_to_server(service, server)
+    server.add_insecure_port("0.0.0.0:50051")
+    server.start()
+    server.wait_for_termination()
 
 
-data = json.loads(input())
-print(run(data))
+if __name__ == '__main__':
+    main()

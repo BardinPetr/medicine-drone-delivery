@@ -8,7 +8,9 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured
 import org.springframework.data.web.config.EnableSpringDataWebSupport
+import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker
 import ru.bardinpetr.itmo.meddelivery.app.service.DemoDataGenerator
 
 @SpringBootApplication
@@ -17,6 +19,7 @@ import ru.bardinpetr.itmo.meddelivery.app.service.DemoDataGenerator
 @ConfigurationPropertiesScan
 @EnableSpringDataWebSupport
 @EnableSpringConfigured
+@EnableAsync
 class ItmoMedDeliveryApplication {
     @Bean
     fun launchDataGenerator(gen: DemoDataGenerator) = CommandLineRunner { params ->

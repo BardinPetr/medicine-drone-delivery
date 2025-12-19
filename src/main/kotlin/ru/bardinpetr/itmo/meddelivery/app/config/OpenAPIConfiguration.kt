@@ -19,7 +19,7 @@ import java.util.*
 @OpenAPIDefinition(
     info = Info(
         title = "ITMO Lab1 API",
-        version = "0.3.3"
+        version = "0.3.5"
     ),
     servers = [
         Server(

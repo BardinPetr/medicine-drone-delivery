@@ -46,10 +46,12 @@ open class BaseDroneSimulator(
         route.addAll(new)
         position = new.first()
         state.store(DroneSimState.IDLE)
+        log.debug("New route")
     }
 
     fun start() {
         state.store(DroneSimState.FLYING)
+        log.debug("Started")
     }
 
     val nextPointId: Int?
@@ -75,7 +77,7 @@ open class BaseDroneSimulator(
         }
         val heading = position.bearingTo(next)
         val step = (timeDeltaS * speedMS).meters
-        log.debug("ID=$nextId dist=${delta.inMeters} | h=$heading s=$step")
+        log.debug("ID=$nextId dist=${delta.inMeters} | heading=$heading deg | step=$step m")
         position = position.offset(step, heading).pt
     }
 

@@ -1,11 +1,10 @@
 package ru.bardinpetr.itmo.meddelivery.app.controller.map
 
 import org.maplibre.spatialk.geojson.toJson
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.bardinpetr.itmo.meddelivery.app.service.map.MapService
 import ru.bardinpetr.itmo.meddelivery.common.handling.EnableResponseWrapper
+import ru.bardinpetr.itmo.meddelivery.common.models.IdType
 
 @RestController
 @RequestMapping("/api/map")
@@ -17,6 +16,10 @@ class MapController(
     @GetMapping("drones.geojson")
     fun drones(): String =
         mapService.getDrones().toJson()
+
+    @PostMapping("drones.geojson")
+    fun dronesPartial(@RequestBody ids: List<IdType>): String =
+        mapService.getDrones(ids).toJson()
 
     @GetMapping("medical.geojson")
     fun medicalFacilities(): String =

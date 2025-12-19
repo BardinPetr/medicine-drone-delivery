@@ -1,4 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
@@ -7,13 +6,15 @@ plugins {
     kotlin("plugin.spring") version "2.2.20"
     kotlin("plugin.jpa") version "2.2.20"
     kotlin("plugin.allopen") version "2.2.20"
+    kotlin("plugin.serialization") version "2.2.20"
 
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
     id("org.openapi.generator") version "7.17.0"
     id("org.liquibase.gradle") version "2.2.0"
-    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    //id("io.gitlab.arturbosch.detekt") version "1.23.8"
     id("org.sonarqube") version "7.2.0.6526"
+    id("com.google.protobuf") version "0.9.5"
 }
 
 group = "ru.bardinpetr.itmo"
@@ -34,7 +35,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-web-services")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("org.fusesource.mqtt-client:mqtt-client:1.15")
 
     // data
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -42,10 +42,21 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    // grpc
+    implementation("io.grpc:grpc-protobuf:1.62.2")
+    implementation("io.grpc:grpc-stub:1.62.2")
+    implementation("io.grpc:grpc-kotlin-stub:1.5.0")
+    implementation("io.grpc:protoc-gen-grpc-java:1.62.2")
+    implementation("io.grpc:protoc-gen-grpc-kotlin:1.5.0")
+    implementation("com.google.protobuf:protobuf-kotlin:4.33.2")
+    implementation("net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE")
+
     // mappers
     implementation("org.modelmapper:modelmapper:3.2.0")
     implementation("org.modelmapper.extensions:modelmapper-spring:3.0.0")
     kapt("org.mapstruct:mapstruct-processor:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat")
 
     // audit
     implementation("org.hibernate:hibernate-envers:7.0.0.Beta1")
@@ -77,7 +88,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     compileOnly("org.mapstruct:mapstruct:1.6.0")
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
+    //detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.8")
 }
 
 kotlin {
@@ -120,15 +131,15 @@ dependencyAnalysis {
     }
 }
 
-detekt {
-    config.setFrom("detekt.yml")
-}
-
-tasks.withType<Detekt>().configureEach {
-    reports {
-        html.required = true
-    }
-}
+//detekt {
+//    config.setFrom("detekt.yml")
+//}
+//
+//tasks.withType<Detekt>().configureEach {
+//    reports {
+//        html.required = true
+//    }
+//}
 
 sonar {
     properties {
@@ -137,9 +148,27 @@ sonar {
     }
 }
 
-tasks.withType<Detekt>().configureEach {
-    reports {
-        html.required.set(true)
-        sarif.required.set(true)
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:4.33.2"
+    }
+    plugins {
+        create("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.62.2"
+        }
+        create("grpckt") {
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.5.0:jdk8@jar"
+        }
+    }
+    generateProtoTasks {
+        all().forEach {
+            it.plugins {
+                create("grpc")
+                create("grpckt")
+            }
+            it.builtins {
+                create("kotlin")
+            }
+        }
     }
 }

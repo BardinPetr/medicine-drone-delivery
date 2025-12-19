@@ -12,7 +12,7 @@ import ru.bardinpetr.itmo.meddelivery.app.repository.DroneRepository
 import ru.bardinpetr.itmo.meddelivery.app.service.fleet.IDroneFleet
 import ru.bardinpetr.itmo.meddelivery.common.base.service.AbstractBaseService
 import ru.bardinpetr.itmo.meddelivery.common.models.IdType
-import ru.bardinpetr.itmo.meddelivery.common.ws.NotifyChangeType
+import ru.bardinpetr.itmo.meddelivery.common.utils.logger
 
 @Service
 class DroneService(
@@ -20,6 +20,8 @@ class DroneService(
     private val evt: EventSenderService,
     @Lazy private val fleet: IDroneFleet
 ) : AbstractBaseService<Drone>(Drone::class, repo) {
+
+    private val log = logger<DroneService>()
 
     @Transactional
     override fun create(entity: Drone): Drone =
@@ -33,11 +35,17 @@ class DroneService(
     @Transactional
     fun sendDrone(drone: Drone) {
         require(drone.status == DroneStatus.READY) { "Drone is not ready" }
-        drone.location = drone.flightTask?.route?.warehouse?.location!!
+
+        val warehouse = drone.flightTask?.route?.warehouse
+        log.info("Sending drone [ID=${drone.id}] from warehouse [WID=${warehouse?.id} TASK=${drone.flightTask?.id}")
+
+        drone.location = warehouse?.location!!
         drone.status = DroneStatus.FLYING_TO
         drone.flightTask!!.status = TaskStatus.IN_PROGRESS
         repo.save(drone)
         fleet.launch(drone.flightTask!!)
+
+        log.info("Drone [ID=${drone.id}] sent from warehouse [WID=${warehouse.id}]")
     }
 
     fun findIdleDrones(): List<Drone> =
@@ -49,10 +57,10 @@ class DroneService(
         get(id)
             ?.apply(block)
             ?.let { repo.save(it) }
-            ?.also { notifier.notifyChanges(clazz, id, NotifyChangeType.MOD) }
 
     @Transactional
     fun droneArrived(droneId: IdType) {
+        log.info("Drone [ID=$droneId] arrived")
         updateDrone(droneId) {
             status = DroneStatus.IDLE
             flightTask = null
@@ -67,6 +75,7 @@ class DroneService(
 
     @Transactional
     fun updateDroneState(droneId: IdType, newStatus: DroneStatus) {
+        log.debug("Drone [ID=$droneId] status changes to ${newStatus.name}")
         updateDrone(droneId) { status = newStatus }
     }
 }
